@@ -31,9 +31,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('book_id');
             $table->integer('quantity');
-            $table->timestamp('created_at')->useCurrent();
             $table->unique(['user_id', 'book_id']);
-             $table->timestamps();
+            $table->timestamps();
         });
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
@@ -41,7 +40,7 @@ return new class extends Migration
             $table->unsignedBigInteger('payment_method_id');
             $table->decimal('amount', 8, 2);
             $table->enum('status', ['paid', 'failed'])->default('paid');
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
             
         });
         Schema::create('payment_methods', function (Blueprint $table) {
