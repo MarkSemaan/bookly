@@ -11,10 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('books', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+    Schema::create('books', function (Blueprint $table) {
+    $table->id();
+    $table->string('title');
+    $table->string('author');
+    $table->string('category')->nullable();
+    $table->string('publisher')->nullable();
+    $table->year('published_year')->nullable();
+    $table->text('description')->nullable();
+    $table->decimal('price', 8, 2);
+    $table->integer('stock')->default(0);
+    $table->string('image')->nullable();
+    $table->boolean('is_available')->default(true);
+    $table->timestamps();
+});
     }
 
     /**
