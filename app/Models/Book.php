@@ -6,11 +6,13 @@ use App\Models\OrderItem;
 use App\Models\CartItem;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Book extends Model
 {
-  protected $fillable = [
+    use HasFactory;
+    protected $fillable = [
     'title', 'author', 'publisher', 'published_year',
     'description', 'price', 'stock', 'sold', 'image', 'is_available','rating'
 ];

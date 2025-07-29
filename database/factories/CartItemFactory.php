@@ -16,9 +16,19 @@ class CartItemFactory extends Factory
      */
     public function definition(): array
     {
+       static $usedPairs = [];
+
+        do {
+            $userId = fake()->numberBetween(1, 10);
+            $bookId = fake()->numberBetween(1, 20);
+            $key = "$userId-$bookId";
+        } while (in_array($key, $usedPairs));
+
+        $usedPairs[] = $key;
+
         return [
-            'user_id' => fake()->numberBetween(1, 10),
-            'book_id' => fake()->numberBetween(1, 20),
+            'user_id' => $userId,
+            'book_id' => $bookId,
             'quantity' => fake()->numberBetween(1, 5),
         ];
     }
