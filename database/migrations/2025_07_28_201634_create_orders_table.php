@@ -14,7 +14,7 @@ return new class extends Migration
        Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id'); 
-            $table->enum('status', ['pending', 'paid', 'shipped'])->default('pending');
+            $table->enum('status', ['pending','packed', 'delivered', 'cancelled' ,'paid', 'shipped'])->default('pending');
             $table->decimal('total', 8, 2);
             $table->timestamps();
         });
@@ -24,21 +24,29 @@ return new class extends Migration
             $table->unsignedBigInteger('book_id');
             $table->integer('quantity');
             $table->decimal('price', 8, 2);
+             $table->timestamps();
         });
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('book_id');
             $table->integer('quantity');
-            $table->timestamp('created_at')->useCurrent();
             $table->unique(['user_id', 'book_id']);
+            $table->timestamps();
         });
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('payment_method_id');
             $table->decimal('amount', 8, 2);
             $table->enum('status', ['paid', 'failed'])->default('paid');
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
+            
+        });
+        Schema::create('payment_methods', function (Blueprint $table) {
+            $table->id();
+            $table->string('name'); 
+            $table->timestamps();
         });
             }
 
