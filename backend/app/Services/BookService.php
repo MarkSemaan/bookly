@@ -17,6 +17,11 @@ class BookService
         return Book::all();
     }
 
+    public function findBookByID(int $id): Book
+    {
+        return Book::findOrFail($id);
+    }
+
     public function updateBook(int $id, array $data)
     {
         $book = Book::findOrFail($id);
