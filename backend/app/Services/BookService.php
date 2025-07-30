@@ -11,20 +11,25 @@ class BookService
     {
         return Book::create($data);
     }
-    public function updateBook(array $data, int $id): Book
-    {
-        $book = Book::findOrFail($id);
-        $book->update($data);
-        return $book;
-    }
+
     public function allBooks(): Collection
     {
         return Book::all();
     }
-    public function searchBook() {}
-    public function deleteBook(int $id): bool
+
+    public function updateBook(int $id, array $data)
     {
         $book = Book::findOrFail($id);
-        return $book->delete();
+        $book->update($data);
+        if (isset($data['categories'])) {
+            $book->categories()->sync($data['categories']);
+        }
+        return $book;
+    }
+
+    public function deleteBook(int $id): void
+    {
+        $book = Book::findOrFail($id);
+        $book->delete();
     }
 }
