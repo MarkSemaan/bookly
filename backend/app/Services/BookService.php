@@ -12,7 +12,7 @@ class BookService
         return Book::create($data);
     }
 
-    public function allBooks(): Collection
+    public static function allBooks(): Collection
     {
         return Book::all();
     }
