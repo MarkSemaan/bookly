@@ -1,0 +1,32 @@
+:root {
+
+  --nav-bg: #FAF2EE;
+  --main-bg: #FEFBFA;
+  --soft-bg: #e0e0e0;
+  
+
+  --soft-color: #ffffff;
+  --dark-color: #000000;
+  --main-color: #000000;
+
+  --button-bg:  #D4885F;
+
+}
+
+body.dark {
+  --nav-bg: #1f1f1f;        
+  --main-bg: #121212;      
+  --soft-bg: #2a2a2a;   
+  --main-color: #ffffff;    
+
+  --soft-color: #ffffff;    
+  --dark-color: #000000;     
+
+  --button-bg: #D4885F;      
+}
+
+
+body {
+  background-color: var(--main-bg);
+  color: var(--main-color);
+}
