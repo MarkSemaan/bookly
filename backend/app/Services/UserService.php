@@ -10,7 +10,7 @@ class UserService
 
     public function loginUser() {}
 
-    public function deactivateUser() {}
+    public function logoutUser() {}
 
     public function getUserByID() {}
 }
