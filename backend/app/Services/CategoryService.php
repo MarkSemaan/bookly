@@ -20,4 +20,13 @@ class CategoryService
         $category->update($data);
         return $category;
     }
+    public function deleteCategory(int $id): bool
+    {
+        $category = Category::findOrFail($id);
+        return $category->delete();
+    }
+    public function getCategoryById(int $id): Category
+    {
+        return Category::findOrFail($id);
+    }
 }
