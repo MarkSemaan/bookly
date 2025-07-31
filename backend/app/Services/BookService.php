@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Book;
@@ -8,20 +9,26 @@ use Illuminate\Support\Facades\Storage;
 
 class BookService
 {
-    public function getBooks(?int $id = null, ?string $search = null): Collection|Book
+
+    public function getBooks(int $perPage = 15)
     {
-        if ($id) {
-            return Book::findOrFail($id);
+        return Book::latest()->paginate($perPage);
+    }
+
+    public function getBookById(int $id): ?Book
+    {
+        return Book::find($id);
+    }
+
+    public function createBook(array $data): Book
+    {
+        if (isset($data['image'])) {
+            $data['image'] = $data['image']->store('images/books', 'public');
         }
 
-        return Book::when($search, function ($query) use ($search) {
-                $query->where('title', 'like', "%$search%")
-                      ->orWhere('author', 'like', "%$search%")
-                      ->orWhere('publisher', 'like', "%$search%");
-            })
-            ->latest('id')
-            ->limit(50)
-            ->get();
+        $data['is_available'] = ($data['stock'] > 0);
+
+        return Book::create($data);
     }
 
     public function getBooksByCategory(int $categoryId): Collection
