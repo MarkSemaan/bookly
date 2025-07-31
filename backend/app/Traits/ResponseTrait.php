@@ -12,7 +12,7 @@ trait ResponseTrait
         ], $status_code);
     }
 
-    public function fail($errors, $status = "fail", $status_code = 400)
+    static function fail($errors, $status = "fail", $status_code = 400)
      {
         return response()->json([
             "status"   => $status,

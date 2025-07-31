@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Serivces;
+namespace App\Services;
 
-use app\Models\Category;
+use App\Models\Category;
 
 class CategoryService
 {
