@@ -111,4 +111,35 @@ class BookService
 
         return $imageFile->store('book-covers', 'public');
     }
+    public function getBestSellers(int $limit = 10)
+    {
+        return Book::where('is_available', true)
+            ->orderBy('sold', 'desc')
+            ->limit($limit)
+            ->get();
+    }
+    public function getNewReleases(int $limit = 10)
+    {
+        return Book::where('is_available', true)
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get();
+    }
+
+    public function getBooksByCategory(int $categoryId, int $perPage = 15)
+    {
+        return Book::whereHas('categories', function ($query) use ($categoryId) {
+            $query->where('categories.id', $categoryId);
+        })
+            ->where('is_available', true)
+            ->paginate($perPage);
+    }
+    public function updateBookRating(Book $book)
+    {
+        $averageRating = $book->reviews()->avg('rating') ?? 0;
+        $book->rating = round($averageRating);
+        $book->save();
+
+        return $book;
+    }
 }
