@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Payment;
 use App\Models\Order;
+use App\Models\PaymentMethod;
+use Illuminate\Support\Facades\DB;
 
 class PaymentService
 {
@@ -30,5 +32,10 @@ class PaymentService
     {
         $payment = Payment::findOrFail($paymentId);
         return $payment->status;
+    }
+
+    public function getPaymentMethods()
+    {
+        return PaymentMethod::all();
     }
 }
