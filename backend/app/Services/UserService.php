@@ -24,7 +24,6 @@ class UserService
         }
         return null;
     }
-
     public function logoutUser()
     {
         Auth::logout();
