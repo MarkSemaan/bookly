@@ -25,6 +25,11 @@ class UserService
         return null;
     }
 
+    public function logoutUser()
+    {
+        Auth::logout();
+    }
+
     public function getUserByID(int $id)
     {
         return User::findOrFail($id);
