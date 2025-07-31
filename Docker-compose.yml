@@ -6,7 +6,7 @@ services:
       - bookly-backend-app
     container_name: bookly-frontend
     ports:
-      - "3000:81"  
+      - "3000:80"  
     restart: unless-stopped 
 
   bookly-backend-app:
