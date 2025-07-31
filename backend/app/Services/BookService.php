@@ -8,6 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Collection;
 
 class BookService
 {
@@ -25,7 +26,7 @@ class BookService
     public function createBook(array $data): Book
     {
         if (isset($data['image'])) {
-            $data['image_path'] = $data['image']->store('images/books', 'public');
+            $data['image'] = $data['image']->store('images/books', 'public');
         }
 
         $data['is_available'] = ($data['stock'] > 0);
@@ -34,8 +35,9 @@ class BookService
     }
 
 
-    public static function allBooks(): Collection{
-      return Book::all();
+    public static function allBooks(): Collection
+    {
+        return Book::all();
     }
 
     public function updateBook(Book $book, array $data)
