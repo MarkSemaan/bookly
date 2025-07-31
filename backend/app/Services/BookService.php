@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Serivces;
+namespace App\Services;
 
 use App\Models\Book;
 use Illuminate\Http\UploadedFile;
