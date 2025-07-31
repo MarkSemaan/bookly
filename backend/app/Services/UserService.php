@@ -33,4 +33,15 @@ class UserService
     {
         return User::findOrFail($id);
     }
+    public function getUserOrders(int $userId)
+    {
+        $user = User::findOrFail($userId);
+        return $user->orders()->with('orderItems.book')->get();
+    }
+
+    public function getUserReviews(int $userId)
+    {
+        $user = User::findOrFail($userId);
+        return $user->reviews()->with('book')->get();
+    }
 }
