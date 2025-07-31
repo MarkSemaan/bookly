@@ -18,13 +18,15 @@ services:
       - "8000:80"  
     restart: unless-stopped 
 
+
   database:
     image: mysql:8.0
     container_name: bookly-db
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: bookstore
       MYSQL_USER: ali
-      MYSQL_PASSWORD: ali123
+      MYSQL_PASSWORD:
     ports:
-      - "3306:3306"
+      - 3306:3306
+

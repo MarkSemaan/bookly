@@ -5,6 +5,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
+Route::get('/greeting', function () {
+    return 'Hello World';
+});
 Route::group(["prefix" => "v0.1"], function () {
     Route::group(["middleware" => "auth:api"], function () {
         //AUTHENTICATED APIs
