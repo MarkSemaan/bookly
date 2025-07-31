@@ -14,20 +14,20 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->text('search_query');
-            $table->timestamp('searched_at');
+            $table->timestamp('searched_at')->default(now());
         });
         Schema::create('user_book_views', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('book_id');
-            $table->timestamp('viewed_at');
+            $table->timestamp('viewed_at')->default(now());
         });
           Schema::create('recommendation_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->json('book_ids');
             $table->string('reason');
-            $table->timestamp('generated_at');
+            $table->timestamp('generated_at')->default(now());
         });
     }
 
