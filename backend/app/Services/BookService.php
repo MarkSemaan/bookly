@@ -33,7 +33,13 @@ class BookService
         return Book::create($data);
     }
 
+
+    public static function allBooks(): Collection{
+      return Book::all();
+    }
+
     public function updateBook(Book $book, array $data)
+
     {
         if (!empty($data['image']) && $data['image'] instanceof UploadedFile) {
             $data['image'] = $this->handleImageUpload($data['image'], $book->image);
