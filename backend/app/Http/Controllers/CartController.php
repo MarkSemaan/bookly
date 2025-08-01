@@ -12,6 +12,7 @@ class CartController extends Controller
 {
     use \App\Traits\ResponseTrait;
 
+
   public function getCartItems(Request $request, $id = null)
 {
     try {
