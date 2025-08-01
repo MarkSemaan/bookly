@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Book\StoreBookRequest;
-use App\Http\Requests\Book\UpdateBookRequest;
 use App\Models\Book;
 use App\Services\BookService;
 use App\Traits\ResponseTrait;

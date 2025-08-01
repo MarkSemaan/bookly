@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    protected $cartService;
+    protected CartService $cartService;
 
     public function __construct(CartService $cartService)
     {
