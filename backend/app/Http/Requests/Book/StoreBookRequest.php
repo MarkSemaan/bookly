@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Book;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -20,7 +21,7 @@ class StoreBookRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -42,6 +43,6 @@ class StoreBookRequest extends FormRequest
     // {
     //     $errors = (new ValidationException($validator))->errors();
     //     throw new HttpResponseException(ResponseTrait::fail($errors, "error", 422));
-        
+
     // }
 }
