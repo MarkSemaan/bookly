@@ -2,72 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Cart\StoreCartItemRequest;
+use App\Models\CartItem;
 use App\Services\CartService;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    protected $cartService;
+    use \App\Traits\ResponseTrait;
 
-    public function __construct(CartService $cartService)
+    public function getCartItems(Request $request)
     {
-        $this->cartService = $cartService;
-    }
-
-    public function index(Request $request)
-    {
-        $userId = $request->user()->id;
-        $cartContents = $this->cartService->getCartContents($userId);
-        return response()->json($cartContents);
-    }
-
-    public function store(Request $request)
-    {
-        $userId = $request->user()->id;
-        $bookId = $request->input('book_id');
-        $quantity = $request->input('quantity', 1);
-
         try {
-            $cartItem = $this->cartService->addToCart($userId, $bookId, $quantity);
-            return response()->json($cartItem, 201);
+            $id = $id ?? $request->query('id');
+            $search = $request->query('search');
+
+            $service = app()->make(CartService::class);
+
+            $items = $service->getCartItems($id, $search);
+
+            return $this->responseJSON($items, $id ? "Cart item found" : "Cart items loaded");
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 400);
+            return $this->fail($e->getMessage(), "error", 500);
         }
     }
 
-    public function update(Request $request, $cartItemId)
+    public function storeOrUpdate(Request $request)
     {
-        $quantity = $request->input('quantity');
-
         try {
-            $cartItem = $this->cartService->updateCartItemQuantity($cartItemId, $quantity);
-            return response()->json($cartItem);
+            $id = $request->input('id');
+            $validated = app(StoreCartItemRequest::class)->validate($request);
+
+            $service = app()->make(CartService::class);
+
+            $item = $id ? CartItem::findOrFail($id) : null;
+
+            $item = $service->createOrUpdateCartItem($validated, $item);
+
+            return $this->responseJSON($item, $id ? "Cart item updated" : "Cart item added", $id ? 200 : 201);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 400);
+            return $this->fail($e->getMessage(), "error", 500);
         }
     }
 
-    public function destroy($cartItemId)
+    public function getUserCartItems(int $userId)
     {
         try {
-            $this->cartService->removeFromCart($cartItemId);
-            return response()->json(null, 204);
+            $service = app()->make(CartService::class);
+            $cartItems = $service->getUserCartItems($userId);
+
+            return $this->responseJSON($cartItems, "User cart items loaded");
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 404);
+            return $this->fail($e->getMessage(), "error", 500);
         }
     }
 
-    public function clear(Request $request)
+    public function destroy(CartItem $cartItem)
     {
-        $userId = $request->user()->id;
-        $this->cartService->clearCart($userId);
-        return response()->json(null, 204);
-    }
+        try {
+            $service = app()->make(CartService::class);
+            $service->deleteCartItem($cartItem);
 
-    public function total(Request $request)
-    {
-        $userId = $request->user()->id;
-        $total = $this->cartService->getCartTotal($userId);
-        return response()->json(['total' => $total]);
+            return $this->responseJSON(null, "Cart item deleted");
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
     }
 }
