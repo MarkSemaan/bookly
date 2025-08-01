@@ -30,7 +30,15 @@ class BookController extends Controller
         $books = BookService::getTopRatedBooks();
         return $this->responseJSON($books);
     }
-
+    public function getTopSellingBooks()
+    {
+        try {
+            $books = BookService::getTopSellingBooks();
+            return $this->responseJSON($books, "Top 15 best-selling books loaded");
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
+    }
     public function getBooksByCategory(int $categoryId)
     {
         try {
