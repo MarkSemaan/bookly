@@ -29,7 +29,7 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::group(["prefix" => "ai_support"], function () {
                     //APIs for ai
                     Route::post('/save_search', [AgentController::class, 'saveSearch']);
-                    Route::post('/save_view', [AgentController::class, 'saveView']);
+                    Route::post('/save_view', [AgentController::class, 'saveBookView']);
                 });
 
 
