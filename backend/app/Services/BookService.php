@@ -63,4 +63,9 @@ class BookService
 
         return $imageFile->store('book-covers', 'public');
     }
+    public static function getTopRatedBooks(): \Illuminate\Support\Collection
+        {
+            return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
+        }
+
 }
