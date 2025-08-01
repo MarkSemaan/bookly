@@ -14,6 +14,14 @@ Route::get('/greeting', function () {
 });
 
 
+Route::prefix('users')->controller(UserController::class)->group(function () {
+    Route::get('/', 'getUsers');
+    Route::get('/{id}', 'getUsers');
+    Route::put('/{id}', 'update');
+    Route::put('/{id}/upgrade', 'upgrade');
+    Route::get('/{id}/reviews', 'getUserReviews');
+});
+
 
 
 
