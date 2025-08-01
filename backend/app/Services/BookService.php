@@ -22,10 +22,7 @@ class BookService
 
     public static function getBooksByCategory(int $categoryId)
     {
-        return Book::where('category_id', $categoryId)
-                   ->latest('id')
-                   ->limit(50)
-                   ->get();
+        return Book::where('category_id', $categoryId) ->latest('id') ->limit(50) ->get();
     }
 
     public static function createOrUpdateBook(array $data, ?Book $book = null): Book

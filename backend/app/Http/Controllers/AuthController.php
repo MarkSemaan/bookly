@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 use App\Traits\ResponseTrait;
 use App\Services\AuthService;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $user = AuthService::login($request);
+        $user = AuthService::login($request->validated());
         if ($user)
             return ResponseTrait::responseJSON($user);
         return ResponseTrait::responseJSON(null, "error", 401);
     }
+
     public function logout()
     {
         Auth::logout();
@@ -27,6 +27,7 @@ class AuthController extends Controller
             'message' => 'Successfully logged out',
         ]);
     }
+
     public function refresh()
     {
         return response()->json([
@@ -38,9 +39,10 @@ class AuthController extends Controller
             ]
         ]);
     }
-    public function register(Request $request)
+
+    public function register(RegisterRequest $request)
     {
-        $user = AuthService::register($request);
+        $user = AuthService::register($request->validated());
         return ResponseTrait::responseJSON($user);
     }
 }
