@@ -80,5 +80,4 @@ class CartService
 
         return $total;
     }
-    }
 }
