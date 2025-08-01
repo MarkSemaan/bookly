@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Cart\StoreCartItemRequest;
 use App\Models\CartItem;
+use App\Services\CartService;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -13,16 +15,12 @@ class CartController extends Controller
     public function getCartItems(Request $request)
     {
         try {
-            $id = $request->query('id');
+            $id = $id ?? $request->query('id');
             $search = $request->query('search');
 
-            $service = app()->make(\App\Services\CartService::class);
+            $service = app()->make(CartService::class);
 
-            if ($id) {
-                $items = $service->getCartItems($id);
-            } else {
-                $items = $service->getCartItems($search);
-            }
+            $items = $service->getCartItems($id, $search);
 
             return $this->responseJSON($items, $id ? "Cart item found" : "Cart items loaded");
         } catch (\Exception $e) {
@@ -36,7 +34,7 @@ class CartController extends Controller
             $id = $request->input('id');
             $validated = app(StoreCartItemRequest::class)->validate($request);
 
-            $service = app()->make(\App\Services\CartService::class);
+            $service = app()->make(CartService::class);
 
             $item = $id ? CartItem::findOrFail($id) : null;
 
@@ -51,7 +49,7 @@ class CartController extends Controller
     public function getUserCartItems(int $userId)
     {
         try {
-            $service = app()->make(\App\Services\CartService::class);
+            $service = app()->make(CartService::class);
             $cartItems = $service->getUserCartItems($userId);
 
             return $this->responseJSON($cartItems, "User cart items loaded");
@@ -63,7 +61,7 @@ class CartController extends Controller
     public function destroy(CartItem $cartItem)
     {
         try {
-            $service = app()->make(\App\Services\CartService::class);
+            $service = app()->make(CartService::class);
             $service->deleteCartItem($cartItem);
 
             return $this->responseJSON(null, "Cart item deleted");
