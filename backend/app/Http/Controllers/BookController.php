@@ -28,6 +28,11 @@ class BookController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
+      public function getTopRatedBooks()
+    {
+        $books = BookService::getTopRatedBooks();
+        return $this->responseJSON($books);
+    }
 
     public function getBooksByCategory(int $categoryId)
     {

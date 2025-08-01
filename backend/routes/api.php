@@ -5,17 +5,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
+
 
 Route::get('/greeting', function () {
     return 'Hello World';
 });
-Route::prefix('cartitems')->controller(CartController::class)->group(function () {
-    Route::get('/', 'getCartItems'); 
-    Route::get('/{id}', 'getCartItems'); 
-    Route::get('/user/{userId}', 'getUserCartItems');
-    Route::post('/', 'storeOrUpdate');
-    Route::delete('/{cartItem}', 'destroy');
-});
+
 
 
 
@@ -26,15 +23,37 @@ Route::group(["prefix" => "v0.1"], function () {
 
         
         Route::group(["prefix" => "user"], function () {
-        Route::prefix('books')->group(function () {
-        Route::get('/', [BookController::class, 'getBooks']); 
-        Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
-        Route::post('/', [BookController::class, 'storeOrUpdate']);
-        Route::delete('/{book}', [BookController::class, 'destroy']);
-});
+            Route::prefix('books')->group(function () {
+            Route::get('/', [BookController::class, 'getBooks']); 
+            Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
+            Route::post('/', [BookController::class, 'storeOrUpdate']);
+            Route::delete('/{book}', [BookController::class, 'destroy']);
+            Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
+
+        });
 
 
-            //Customer APIs
+        Route::prefix('cartitems')->controller(CartController::class)->group(function () {
+            Route::get('/', 'getCartItems'); 
+            Route::get('/{id}', 'getCartItems'); 
+            Route::get('/user/{userId}', 'getUserCartItems');
+            Route::post('/', 'storeOrUpdate');
+            Route::delete('/{cartItem}', 'destroy');
+     });
+
+
+        Route::prefix('orders')->controller(OrderController::class)->group(function () {
+            Route::get('orders', [OrderController::class, 'getOrders']);
+            Route::get('orders/{id}', [OrderController::class, 'getOrders']);
+            Route::get('users/{userId}', [OrderController::class, 'getUserOrders']);
+            Route::post('/', [OrderController::class, 'storeOrUpdate']);
+            Route::post('from-cart/{userId}', [OrderController::class, 'createFromCart']);
+            Route::post('{order}/cancel', [OrderController::class, 'cancel']);
+            Route::delete('{order}', [OrderController::class, 'destroy']);
+
+         });
+
+            
         });
 
         Route::group(["prefix" => "admin"], function () {
@@ -45,7 +64,6 @@ Route::group(["prefix" => "v0.1"], function () {
 
     });
 
-    //UNAUTHENTICATED APIs
     Route::group(["prefix" => "guest"], function () {
     Route::post("/login", [AuthController::class, "login"]);
     Route::post("/register", [AuthController::class, "register"]);

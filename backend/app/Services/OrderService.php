@@ -3,98 +3,105 @@
 namespace App\Services;
 
 use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Book;
+use App\Models\CartItem;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
-    public function placeOrder(array $cartItems, int $userId)
+    public static function getOrders(?int $id = null, ?string $search = null)
     {
-        return DB::transaction(function () use ($cartItems, $userId) {
-            $total = 0;
-            foreach ($cartItems as $item) {
-                $total += $item->book->price * $item->quantity;
-            }
-            $order = Order::create([
-                'user_id' => $userId,
-                'status' => 'pending',
-                'total' => $total
-            ]);
-            foreach ($cartItems as $item) {
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'book_id' => $item->book_id,
-                    'quantity' => $item->quantity,
-                    'price' => $item->book->price
-                ]);
-                $book = $item->book;
-                $book->stock -= $item->quantity;
-                $book->sold += $item->quantity;
-                $book->is_available = $book->stock > 0;
-                $book->save();
-            }
-            return $order;
-        });
-    }
-
-    public function getUserOrders(int $userId)
-    {
-        return Order::with('items')->where('user_id', $userId)->get();
-    }
-    public function getOrderDetails(int $orderId)
-    {
-        return Order::with(['orderItems.book', 'payment', 'user'])
-            ->findOrFail($orderId);
-    }
-    public function updateOrderStatus(int $orderId, string $status)
-    {
-        $order = Order::findOrFail($orderId);
-        $order->status = $status;
-        $order->save();
-
-        return $order;
-    }
-
-    public function cancelOrder(int $orderId)
-    {
-        return DB::transaction(function () use ($orderId) {
-            $order = Order::with('orderItems.book')->findOrFail($orderId);
-
-            if ($order->status !== 'pending' && $order->status !== 'processing') {
-                throw new \Exception('Cannot cancel an order that has been shipped or delivered');
-            }
-            foreach ($order->orderItems as $item) {
-                $book = $item->book;
-                $book->stock += $item->quantity;
-                $book->sold -= $item->quantity;
-                $book->is_available = $book->stock > 0;
-                $book->save();
-            }
-
-            $order->status = 'cancelled';
-            $order->save();
-
-            return $order;
-        });
-    }
-
-
-    public function getOrderStatistics(?array $dateRange = null)
-    {
-        $query = Order::query();
-
-        if ($dateRange) {
-            $query->whereBetween('created_at', [$dateRange['start'], $dateRange['end']]);
+        if ($id) {
+            return Order::with(['user', 'items.book'])->find($id);
         }
 
-        return [
-            'total_orders' => $query->count(),
-            'total_revenue' => $query->sum('total'),
-            'average_order_value' => $query->avg('total'),
-            'status_counts' => $query->selectRaw('status, count(*) as count')
-                ->groupBy('status')
-                ->pluck('count', 'status')
-        ];
+        $query = Order::with(['user', 'items.book']);
+
+        if ($search) {
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            });
+        }
+
+        return $query->get();
+    }
+
+    public static function getUserOrders(int $userId)
+    {
+        return Order::with('items.book')->where('user_id', $userId)->get();
+    }
+
+    public static function createOrderFromCart(int $userId): Order
+    {
+        return DB::transaction(function () use ($userId) {
+            $cartItems = CartItem::with('book')->where('user_id', $userId)->get();
+
+            if ($cartItems->isEmpty()) {
+                throw new \Exception("No items in cart to create order.");
+            }
+
+            $total = $cartItems->sum(function ($item) {
+                return $item->quantity * $item->book->price;
+            });
+
+            $order = Order::create([
+                'user_id' => $userId,
+                'total' => $total,
+                'status' => 'pending',
+            ]);
+
+            foreach ($cartItems as $item) {
+                $order->items()->create([
+                    'book_id' => $item->book_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->book->price,
+                ]);
+            }
+            CartItem::where('user_id', $userId)->delete();
+
+            return $order->fresh('items.book');
+        });
+    }
+
+    public static function cancelOrder(Order $order)
+    {
+        $order->update(['status' => 'cancelled']);
+        return $order->fresh('items.book');
+    }
+
+    public static function createOrUpdateOrder(array $data, ?Order $order = null): Order
+    {
+        return DB::transaction(function () use ($data, $order) {
+            $total = collect($data['items'])->sum(fn($item) => $item['price'] * $item['quantity']);
+
+            if ($order) {
+                $order->update([
+                    'status' => $data['status'] ?? $order->status,
+                    'total' => $total,
+                ]);
+                $order->items()->delete();
+            } else {
+                $order = Order::create([
+                    'user_id' => $data['user_id'],
+                    'status' => $data['status'] ?? 'pending',
+                    'total' => $total,
+                ]);
+            }
+
+            foreach ($data['items'] as $item) {
+                $order->items()->create([
+                    'book_id' => $item['book_id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                ]);
+            }
+
+            return $order->fresh('items.book');
+        });
+    }
+
+    public static function deleteOrder(Order $order): void
+    {
+        $order->items()->delete();
+        $order->delete();
     }
 }
