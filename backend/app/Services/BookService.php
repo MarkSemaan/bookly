@@ -71,4 +71,14 @@ class BookService
 
         return $imageFile->store('book-covers', 'public');
     }
+    public static function available()
+    {
+        $books = Book::where('is_available', true);
+        return $books;
+    }
+    public static function getBooksByIds($book_ids)
+    {
+        $recommended = Book::whereIn('id', $book_ids)->get();
+        return $recommended;
+    }
 }

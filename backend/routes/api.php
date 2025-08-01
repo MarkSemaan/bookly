@@ -26,10 +26,11 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::get('/{id}', [BookController::class, 'getBookById']);
                 Route::delete('/{id}', [BookController::class, 'deleteBook']);
 
-                Route::group(["prefix" => "ai_support"], function () {
+                Route::group(["prefix" => "recommennder"], function () {
                     //APIs for ai
                     Route::post('/save_search', [AgentController::class, 'saveSearch']);
                     Route::post('/save_view', [AgentController::class, 'saveBookView']);
+                    Route::get('/get', [AgentController::class, 'getRecommended']);
                 });
 
 

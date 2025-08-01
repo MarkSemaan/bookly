@@ -7,7 +7,7 @@ use App\Models\Book;
 
 class CartService
 {
-    public function getCartContents(int $userId)
+    public static function getCartContents(int $userId)
     {
         return CartItem::with('book')->where('user_id', $userId)->get();
     }
