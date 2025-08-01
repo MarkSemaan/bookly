@@ -5,6 +5,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
+
 
 Route::get('/greeting', function () {
     return 'Hello World';
@@ -17,7 +20,13 @@ Route::prefix('cartitems')->controller(CartController::class)->group(function ()
     Route::delete('/{cartItem}', 'destroy');
 });
 
-
+Route::get('orders', [OrderController::class, 'getOrders']);
+Route::get('orders/{id}', [OrderController::class, 'getOrders']);
+Route::get('users/{userId}/orders', [OrderController::class, 'getUserOrders']);
+Route::post('orders', [OrderController::class, 'storeOrUpdate']);
+Route::post('orders/from-cart/{userId}', [OrderController::class, 'createFromCart']);
+Route::post('orders/{order}/cancel', [OrderController::class, 'cancel']);
+Route::delete('orders/{order}', [OrderController::class, 'destroy']);
 
 
 Route::group(["prefix" => "v0.1"], function () {
