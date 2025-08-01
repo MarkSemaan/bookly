@@ -12,43 +12,41 @@ class CartController extends Controller
 {
     use \App\Traits\ResponseTrait;
 
-    public function getCartItems(Request $request)
-    {
-        try {
-            $id = $request->query('id');
-            $search = $request->query('search');
 
-            $service = app()->make(CartService::class);
+  public function getCartItems(Request $request, $id = null)
+{
+    try {
+        $search = $request->query('search');
+        $service = app()->make(CartService::class);
+        $items = $service->getCartItems($id, $search);
 
-            if ($id) {
-                $items = $service->getCartItems($id);
-            } else {
-                $items = $service->getCartItems($search);
-            }
-
-            return $this->responseJSON($items, $id ? "Cart item found" : "Cart items loaded");
-        } catch (\Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
+        if ($id && !$items) {
+            return $this->fail("Cart item not found", "fail", 404);
         }
+
+        return $this->responseJSON($items, $id ? "Cart item found" : "Cart items loaded");
+    } catch (\Exception $e) {
+        return $this->fail($e->getMessage(), "error", 500);
     }
+}
 
-    public function storeOrUpdate(Request $request)
-    {
-        try {
-            $id = $request->input('id');
-            $validated = app(StoreCartItemRequest::class)->validate($request);
 
-            $service = app()->make(CartService::class);
+public function storeOrUpdate(StoreCartItemRequest $request)
+{
+    try {
 
-            $item = $id ? CartItem::findOrFail($id) : null;
+        $validatedData = $request->validated();
+        $service = app()->make(CartService::class);
 
-            $item = $service->createOrUpdateCartItem($validated, $item);
+        $item = $service->createOrUpdateCartItem($validatedData);
 
-            return $this->responseJSON($item, $id ? "Cart item updated" : "Cart item added", $id ? 200 : 201);
-        } catch (\Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
-        }
+        return $this->responseJSON($item, "Cart item added/updated", 200);
+
+    } catch (\Exception $e) {
+        return $this->fail($e->getMessage(), "error", 500);
     }
+}
+
 
     public function getUserCartItems(int $userId)
     {
