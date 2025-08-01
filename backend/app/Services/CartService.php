@@ -3,74 +3,47 @@
 namespace App\Services;
 
 use App\Models\CartItem;
-use App\Models\Book;
+use Illuminate\Support\Facades\DB;
 
 class CartService
 {
-    public function getCartContents(int $userId)
+    public static function getCartItems($id = null, $search = null)
     {
-        return CartItem::with('book')->where('user_id', $userId)->get();
+        $query = CartItem::with(['user', 'book']);
+
+        if ($id) {
+            return $query->find($id);
+        }
+
+        if ($search) {
+            $query->whereHas('book', function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%");
+            });
+        }
+
+        return $query->get();
     }
 
-    public function addToCart(int $userId, int $bookId, int $quantity)
+    public static function createOrUpdateCartItem(array $data): CartItem
     {
-        $book = Book::findOrFail($bookId);
-
-        if ($book->stock < $quantity) {
-            throw new \Exception('Not enough stock available');
-        }
-
-        $existingItem = CartItem::where('user_id', $userId)
-            ->where('book_id', $bookId)
-            ->first();
-
-        if ($existingItem) {
-            $existingItem->quantity += $quantity;
-            $existingItem->save();
-            return $existingItem;
-        }
-
-        return CartItem::create([
-            'user_id' => $userId,
-            'book_id' => $bookId,
-            'quantity' => $quantity
+        $cartItem = CartItem::firstOrNew([
+            'user_id' => $data['user_id'],
+            'book_id' => $data['book_id'],
         ]);
-    }
 
-    public function removeFromCart(int $cartItemId)
-    {
-        $cartItem = CartItem::findOrFail($cartItemId);
-        return $cartItem->delete();
-    }
-
-    public function updateCartItemQuantity(int $cartItemId, int $quantity)
-    {
-        $cartItem = CartItem::with('book')->findOrFail($cartItemId);
-
-        if ($cartItem->book->stock < $quantity) {
-            throw new \Exception('Not enough stock available');
-        }
-
-        $cartItem->quantity = $quantity;
+        $cartItem->quantity = ($cartItem->exists ? $cartItem->quantity : 0) + $data['quantity'];
         $cartItem->save();
 
         return $cartItem;
     }
 
-    public function clearCart(int $userId)
+    public static function getUserCartItems($userId)
     {
-        return CartItem::where('user_id', $userId)->delete();
+        return CartItem::with('book')->where('user_id', $userId)->get();
     }
 
-    public function getCartTotal(int $userId)
+    public static function deleteCartItem(CartItem $cartItem): void
     {
-        $cartItems = CartItem::with('book')->where('user_id', $userId)->get();
-        $total = 0;
-
-        foreach ($cartItems as $item) {
-            $total += $item->book->price * $item->quantity;
-        }
-
-        return $total;
+        $cartItem->delete();
     }
 }

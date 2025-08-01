@@ -4,10 +4,17 @@ use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\CartController;
 
 Route::get('/greeting', function () {
     return 'Hello World';
+});
+Route::prefix('cartitems')->controller(CartController::class)->group(function () {
+    Route::get('/', 'getCartItems'); 
+    Route::get('/{id}', 'getCartItems'); 
+    Route::get('/user/{userId}', 'getUserCartItems');
+    Route::post('/', 'storeOrUpdate');
+    Route::delete('/{cartItem}', 'destroy');
 });
 
 
@@ -20,13 +27,13 @@ Route::group(["prefix" => "v0.1"], function () {
         
         Route::group(["prefix" => "user"], function () {
         Route::prefix('books')->group(function () {
-        Route::post('/', [BookController::class, 'storeOrUpdate']); 
-        Route::get('/', [BookController::class, 'getBooks']);
-        Route::get('/{id}', [BookController::class, 'getBookById']); 
-        Route::delete('/{id}', [BookController::class, 'deleteBook']);
-
-
+        Route::get('/', [BookController::class, 'getBooks']); 
+        Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
+        Route::post('/', [BookController::class, 'storeOrUpdate']);
+        Route::delete('/{book}', [BookController::class, 'destroy']);
 });
+
+
             //Customer APIs
         });
 
