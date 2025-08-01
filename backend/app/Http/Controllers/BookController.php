@@ -4,21 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Book\StoreBookRequest;
 use App\Models\Book;
-use App\Services\BookService;
 use App\Traits\ResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
+use App\Services\BookService;
+
+
 
 class BookController extends Controller
 {
     use ResponseTrait;
-
-    protected BookService $service;
-
-    public function __construct(BookService $service)
-    {
-        $this->service = $service;
-    }
 
     public function getBooks(Request $request)
     {
@@ -26,7 +21,12 @@ class BookController extends Controller
             $id = $request->query('id');
             $search = $request->query('search');
 
-            $books = $this->service->getBooks($id, $search);
+            $service = app()->make(BookService::class);
+            if ($id) {
+                $books = $service->getBooks($id);
+            } else {
+                $books = $service->getBooks();
+            }
 
             return $this->responseJSON($books, $id ? "Book found" : "Books loaded");
         } catch (Exception $e) {
@@ -37,7 +37,8 @@ class BookController extends Controller
     public function getBooksByCategory(int $categoryId)
     {
         try {
-            $books = $this->service->getBooksByCategory($categoryId);
+            $service = app()->make(BookService::class);
+            $books = $service->getBooksByCategory($categoryId);
             return $this->responseJSON($books, "Books by category loaded");
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
@@ -50,10 +51,10 @@ class BookController extends Controller
             $id = $request->input('id');
             $validated = app(StoreBookRequest::class)->validate($request);
 
-
+            $service = app()->make(BookService::class);
             $book = $id ? Book::findOrFail($id) : null;
 
-            $book = $this->service->createOrUpdateBook($validated, $book);
+            $book = $service->createOrUpdateBook($validated, $book);
 
             return $this->responseJSON($book, $id ? "Book updated" : "Book added", $id ? 200 : 201);
         } catch (Exception $e) {
@@ -64,7 +65,8 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         try {
-            $this->service->deleteBook($book);
+            $service = app()->make(BookService::class);
+            $service->deleteBook($book);
             return $this->responseJSON(null, "Book deleted");
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);

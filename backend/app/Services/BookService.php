@@ -10,16 +10,16 @@ use Illuminate\Support\Facades\Storage;
 class BookService
 {
 
-    public function getBooks(int $perPage = 15)
-    {
-        return Book::latest()->paginate($perPage);
+  public function getBooks(?int $id = null, ?string $search = null)
+{
+    if ($id) {
+        return Book::findOrFail($id);
     }
 
-    public function getBookById(int $id): ?Book
-    {
-        return Book::find($id);
-    }
-
+    return Book::when($search, function ($query) use ($search) {
+            $query->where('title', 'like', "%$search%")->orWhere('author', 'like', "%$search%")->orWhere('publisher', 'like', "%$search%");
+        })->latest('id')->limit(50)->get();
+}
     public function createBook(array $data): Book
     {
         if (isset($data['image'])) {

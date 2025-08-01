@@ -7,10 +7,16 @@ use App\Models\Book;
 use Exception;
 
 class CartService
+
 {
     public function getCartContents(int $userId)
     {
         return CartItem::with('book')->where('user_id', $userId)->get();
+    }
+
+    public function deleteCartItem(CartItem $cartItem): void
+    {
+        $cartItem->delete();
     }
 
     public function addToCart(int $userId, int $bookId, int $quantity)
@@ -73,5 +79,6 @@ class CartService
         }
 
         return $total;
+    }
     }
 }
