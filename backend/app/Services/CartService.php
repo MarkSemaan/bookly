@@ -3,17 +3,16 @@
 namespace App\Services;
 
 use App\Models\CartItem;
-use App\Models\Book;
+use Illuminate\Support\Facades\DB;
 
 class CartService
-
 {
-    public function getCartItems($id = null, $search = null)
+    public static function getCartItems($id = null, $search = null)
     {
         $query = CartItem::with(['user', 'book']);
 
-       if ($id) {
-           return CartItem::with(['user', 'book'])->findOrFail($id);
+        if ($id) {
+            return $query->find($id);
         }
 
         if ($search) {
@@ -25,16 +24,25 @@ class CartService
         return $query->get();
     }
 
-    public function createOrUpdateCartItem(array $data): CartItem
+    public static function createOrUpdateCartItem(array $data): CartItem
     {
-        return tap($cartItem ?? new CartItem())->fill($data)->save() ? $cartItem ?? new CartItem($data) : throw new \Exception("Failed to save cart item");
+        $cartItem = CartItem::firstOrNew([
+            'user_id' => $data['user_id'],
+            'book_id' => $data['book_id'],
+        ]);
+
+        $cartItem->quantity = ($cartItem->exists ? $cartItem->quantity : 0) + $data['quantity'];
+        $cartItem->save();
+
+        return $cartItem;
     }
-    public function getUserCartItems($userId)
+
+    public static function getUserCartItems($userId)
     {
         return CartItem::with('book')->where('user_id', $userId)->get();
     }
 
-    public function deleteCartItem(CartItem $cartItem): void
+    public static function deleteCartItem(CartItem $cartItem): void
     {
         $cartItem->delete();
     }
