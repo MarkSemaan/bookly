@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Payment;
 use App\Models\Order;
 use App\Models\PaymentMethod;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class PaymentService
@@ -12,7 +13,7 @@ class PaymentService
     public function processPayment(Order $order, array $paymentData)
     {
         if (!isset($paymentData['payment_method_id'])) {
-            throw new \Exception('Payment method is required');
+            throw new Exception('Payment method is required');
         }
 
         $payment = Payment::create([

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Book;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -62,7 +63,7 @@ class OrderService
             $order = Order::with('orderItems.book')->findOrFail($orderId);
 
             if ($order->status !== 'pending' && $order->status !== 'processing') {
-                throw new \Exception('Cannot cancel an order that has been shipped or delivered');
+                throw new Exception('Cannot cancel an order that has been shipped or delivered');
             }
             foreach ($order->orderItems as $item) {
                 $book = $item->book;

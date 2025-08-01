@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CartService;
+use Exception;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -30,7 +31,7 @@ class CartController extends Controller
         try {
             $cartItem = $this->cartService->addToCart($userId, $bookId, $quantity);
             return response()->json($cartItem, 201);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
@@ -42,7 +43,7 @@ class CartController extends Controller
         try {
             $cartItem = $this->cartService->updateCartItemQuantity($cartItemId, $quantity);
             return response()->json($cartItem);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
@@ -52,7 +53,7 @@ class CartController extends Controller
         try {
             $this->cartService->removeFromCart($cartItemId);
             return response()->json(null, 204);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }
     }

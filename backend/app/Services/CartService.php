@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\CartItem;
 use App\Models\Book;
+use Exception;
 
 class CartService
 {
@@ -17,7 +18,7 @@ class CartService
         $book = Book::findOrFail($bookId);
 
         if ($book->stock < $quantity) {
-            throw new \Exception('Not enough stock available');
+            throw new Exception('Not enough stock available');
         }
 
         $existingItem = CartItem::where('user_id', $userId)
@@ -48,7 +49,7 @@ class CartService
         $cartItem = CartItem::with('book')->findOrFail($cartItemId);
 
         if ($cartItem->book->stock < $quantity) {
-            throw new \Exception('Not enough stock available');
+            throw new Exception('Not enough stock available');
         }
 
         $cartItem->quantity = $quantity;

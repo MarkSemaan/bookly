@@ -6,6 +6,7 @@ use App\Http\Requests\Book\StoreBookRequest;
 use App\Models\Book;
 use App\Services\BookService;
 use App\Traits\ResponseTrait;
+use Exception;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -28,7 +29,7 @@ class BookController extends Controller
             $books = $this->service->getBooks($id, $search);
 
             return $this->responseJSON($books, $id ? "Book found" : "Books loaded");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
@@ -38,7 +39,7 @@ class BookController extends Controller
         try {
             $books = $this->service->getBooksByCategory($categoryId);
             return $this->responseJSON($books, "Books by category loaded");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
@@ -55,7 +56,7 @@ class BookController extends Controller
             $book = $this->service->createOrUpdateBook($validated, $book);
 
             return $this->responseJSON($book, $id ? "Book updated" : "Book added", $id ? 200 : 201);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
@@ -65,7 +66,7 @@ class BookController extends Controller
         try {
             $this->service->deleteBook($book);
             return $this->responseJSON(null, "Book deleted");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
