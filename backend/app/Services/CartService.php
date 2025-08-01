@@ -12,8 +12,8 @@ class CartService
     {
         $query = CartItem::with(['user', 'book']);
 
-        if ($id) {
-            return $query->findOrFail($id);
+       if ($id) {
+           return CartItem::with(['user', 'book'])->findOrFail($id);
         }
 
         if ($search) {

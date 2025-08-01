@@ -6,6 +6,9 @@ use App\Http\Requests\Book\StoreBookRequest;
 use App\Models\Book;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use App\Services\BookService;
+
+
 
 class BookController extends Controller
 {
@@ -17,7 +20,7 @@ class BookController extends Controller
             $id = $request->query('id');
             $search = $request->query('search');
 
-            $service = app()->make(\App\Services\BookService::class);
+            $service = app()->make(BookService::class);
             if ($id) {
                 $books = $service->getBooks($id);
             } else {
@@ -33,7 +36,7 @@ class BookController extends Controller
     public function getBooksByCategory(int $categoryId)
     {
         try {
-            $service = app()->make(\App\Services\BookService::class);
+            $service = app()->make(BookService::class);
             $books = $service->getBooksByCategory($categoryId);
             return $this->responseJSON($books, "Books by category loaded");
         } catch (\Exception $e) {
@@ -47,7 +50,7 @@ class BookController extends Controller
             $id = $request->input('id');
             $validated = app(StoreBookRequest::class)->validate($request);
 
-            $service = app()->make(\App\Services\BookService::class);
+            $service = app()->make(BookService::class);
             $book = $id ? Book::findOrFail($id) : null;
 
             $book = $service->createOrUpdateBook($validated, $book);
@@ -61,7 +64,7 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         try {
-            $service = app()->make(\App\Services\BookService::class);
+            $service = app()->make(BookService::class);
             $service->deleteBook($book);
             return $this->responseJSON(null, "Book deleted");
         } catch (\Exception $e) {

@@ -9,8 +9,9 @@ use App\Http\Controllers\CartController;
 Route::get('/greeting', function () {
     return 'Hello World';
 });
-Route::prefix('cart-items')->controller(CartController::class)->group(function () {
+Route::prefix('cartitems')->controller(CartController::class)->group(function () {
     Route::get('/', 'getCartItems'); 
+    Route::get('/{id}', 'getCartItems'); 
     Route::get('/user/{userId}', 'getUserCartItems');
     Route::post('/', 'storeOrUpdate');
     Route::delete('/{cartItem}', 'destroy');
