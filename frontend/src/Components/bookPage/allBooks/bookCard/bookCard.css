@@ -2,7 +2,7 @@
   position: relative;
   max-width: 1300px;
   padding: 0 2rem;
-  margin-left: 14rem;
+  margin-left: 8.5rem;
 }
 
 .bestsellers-header {
@@ -10,6 +10,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
 
 .bestsellers-container {
@@ -23,16 +24,16 @@
 .arrows {
   position: absolute;
   top: 50%;
-  left: -26px;
+  left: -60px;
   display: flex;
   justify-content: space-between;
   transform: translateY(-50%);
   pointer-events: none;
-  width: calc(100% + 60px); 
+  width: calc(100% + 50px); 
 }
 
 .arrows button {
-  font-size: 2rem;
+  font-size: 1rem;
   background: rgba(0, 0, 0, 0.4);
   color: white;
   border: none;
@@ -63,7 +64,7 @@
   background: var(--card-color);
   border-radius: 12px;
   padding: 1rem;
-  height: 400px;
+  height: 300px;
   width: 100px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
   text-align: center;
@@ -71,7 +72,7 @@
 
 .book-image {
   width: 100%;
-  height: 180px;
+  height: 150px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 0.75rem;
@@ -80,11 +81,12 @@
 .book-title {
   font-weight: 700;
   margin-bottom: 0.3rem;
+  font-size: 0.9rem;
 }
 
 .book-rating .star {
   color: #ccc;
-  font-size: 2rem;
+  font-size: 1.3rem;
 }
 
 .book-rating .star.filled {
@@ -93,17 +95,18 @@
 
 .book-price {
   font-weight: 700;
-  font-size: 20px;
+  font-size: 0.9rem;
   margin-bottom: 0.75rem;
   color: var(--price-bg);
 }
 
 .learn-more-btn {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.9rem;
   background-color: #b96c42b8;
   color: white;
   border: none;
   border-radius: 5px;
+  font-size: 0.7rem;
   cursor: pointer;
 }
 

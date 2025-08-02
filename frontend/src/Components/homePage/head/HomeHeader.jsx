@@ -14,9 +14,14 @@ const HomeHeader = () => {
           <h1>Welcome to Bookly</h1>
         </div>
         <div className="welcome-description">
-          <p>
-            Your personal bookshop on the web. Discover stories that speak to you, build your dream shelf, and let your next chapter begin.
-          </p>
+           <p>
+    Your personal bookshop on the web. Discover stories that speak to you,
+    build your dream shelf, and let your next chapter begin.
+  </p>
+  <p>
+    Curated just for you  whether you're into thrillers, romance, or cozy fantasy. 
+    Get comfy and let's find your next favorite read. 
+  </p>
         </div>
       </div>
     </section>
