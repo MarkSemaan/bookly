@@ -1,32 +1,37 @@
 <?php
 
+
 namespace App\Services;
 
 use App\Models\Category;
 
 class CategoryService
 {
-    public function getAllCategories()
+    public static function getCategories($id = null, $search = null)
     {
-        return Category::all();
+        if ($id) return Category::find($id);
+
+        $query = Category::query();
+
+        if ($search) {
+            $query->where('name', 'LIKE', "%$search%");
+        }
+
+        return $query->latest()->get();
     }
-    public function createCategory(array $data): Category
+
+    public static function createOrUpdateCategory(array $data, ?Category $category = null)
     {
+        if ($category) {
+            $category->update($data);
+            return $category;
+        }
+
         return Category::create($data);
     }
-    public function updateCategory(array $data, int $id): Category
+
+    public static function deleteCategory(Category $category): bool
     {
-        $category = Category::findOrFail($id);
-        $category->update($data);
-        return $category;
-    }
-    public function deleteCategory(int $id): bool
-    {
-        $category = Category::findOrFail($id);
         return $category->delete();
-    }
-    public function getCategoryById(int $id): Category
-    {
-        return Category::findOrFail($id);
     }
 }
