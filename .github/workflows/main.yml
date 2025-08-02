@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - dev
   pull_request:
     branches:
       - main
-      - dev
 
 jobs:
   backend-tests:
@@ -21,21 +19,21 @@ jobs:
           MYSQL_DATABASE: bookstore
         ports:
           - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
+        options: >- # Healthcheck for MySQL
+          --health-cmd="mysqladmin ping -h 127.0.0.1 --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Set up PHP
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2"
+          php-version: '8.2'
           extensions: pdo_mysql, mbstring, zip, bcmath
-          ini-values: post_max_size=256M, upload_max_filesize=256M
+          tools: composer
 
       - name: Copy .env
         run: cp .env.example .env
@@ -44,11 +42,11 @@ jobs:
       - name: Set up database environment variables
         run: |
           echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST=database" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
           echo "DB_PORT=3306" >> .env
           echo "DB_DATABASE=bookstore" >> .env
-          echo "DB_USERNAME=ali" >> .env
-          echo "DB_PASSWORD=password" >> .env
+          echo "DB_USERNAME=root" >> .env
+          echo "DB_PASSWORD=" >> .env
         working-directory: ./backend
 
       - name: Install Composer dependencies
@@ -59,11 +57,11 @@ jobs:
         run: php artisan key:generate
         working-directory: ./backend
 
-      - name: Run Laravel Migrations
+      - name: Run Laravel migrations
         run: php artisan migrate --force
         working-directory: ./backend
 
-      - name: Run Laravel Tests
+      - name: Run Laravel tests
         run: php artisan test
         working-directory: ./backend
 
@@ -71,17 +69,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Install frontend dependencies
         run: npm install
         working-directory: ./frontend
 
-      - name: Build frontend application
+      - name: Build frontend
         run: npm run build
         working-directory: ./frontend
