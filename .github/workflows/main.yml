@@ -13,6 +13,19 @@ on:
 jobs:
   backend-tests:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: bookstore
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,6 +39,16 @@ jobs:
 
       - name: Copy .env
         run: cp .env.example .env
+        working-directory: ./backend
+
+      - name: Set up database environment variables
+        run: |
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST=database" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_DATABASE=bookstore" >> .env
+          echo "DB_USERNAME=ali" >> .env
+          echo "DB_PASSWORD=password" >> .env
         working-directory: ./backend
 
       - name: Install Composer dependencies
