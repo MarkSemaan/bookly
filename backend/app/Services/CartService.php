@@ -11,7 +11,6 @@ use Exception;
 class CartService
 
     public static function getCartItems($id = null, $search = null)
-
     {
         return CartItem::with('book')->where('user_id', $userId)->get();
     }
