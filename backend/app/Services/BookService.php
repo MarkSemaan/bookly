@@ -65,7 +65,20 @@ class BookService
 
         return $imageFile->store('book-covers', 'public');
     }
-    public static function getTopRatedBooks()
+  
+    public static function available()
+    {
+        $books = Book::where('is_available', true)->get();
+        return $books;
+    }
+  
+    public static function getBooksByIds($book_ids)
+    {
+        $recommended = Book::whereIn('id', $book_ids)->get();
+        return $recommended;
+    }
+
+    public static function getTopRatedBooks(): \Illuminate\Support\Collection
         {
             return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
         }

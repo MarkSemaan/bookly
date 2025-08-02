@@ -1,0 +1,77 @@
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background:#F3DED3;
+  filter: blur(2px);
+  opacity: 0.3;
+  z-index: 0;
+  animation: float 10s infinite alternate;
+}
+
+.circleleft {
+  width: 252px;
+  height: 254px;
+  top: 6%;
+  left: 16%;
+  animation-delay: 0s;
+}
+.circledown {
+  width: 206px;
+  height: 208px;
+  top: 60%;
+  left: 16%;
+  animation-delay: 0s;
+}
+.circleright {
+  width: 230px;
+  height: 232px;
+  top: 60%;
+  left: 70%;
+  animation-delay: 0s;
+  z-index: 20;
+}
+.circles {
+  position: absolute;
+  border-radius: 50%;
+  background:#F3DED3;
+  filter: blur(90px);
+  opacity: 0.4;
+  z-index: 0;
+  animation: float 10s ease-in-out infinite alternate;
+}
+
+.circle1 {
+  width: 140px;
+  height: 190px;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.circle2 {
+  width: 210px;
+  height: 210px;
+  top: 20%;
+  left: 80%;
+  animation-delay: 2s;
+}
+
+.circle3 {
+  width: 130px;
+  height: 130px;
+  top: 70%;
+  left: 50%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

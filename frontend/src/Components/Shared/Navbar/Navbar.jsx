@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom"; 
 import Lottie from "lottie-react";
 import BookLogo from "../../../Assets/Animations/BookLogo.json";
-import ThemeToggle from "./ThemeToggle"; 
+import ThemeToggle from "../../themeToggle/ThemeToggle"; 
 import "./navbar.css";
 
 const Navbar = () => {
@@ -43,7 +43,19 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="right-section">
+      <div className="navbar-links">
+        <a href="/library" className="btn nav-btn">Library</a>
+        <a href="/myOrders" className="btn nav-btn">My Orders</a>
+        <a href="/management" className="btn nav-btn">Management</a>
+        <a href="/analytics" className="btn nav-btn">Analytics</a>
+     </div>
+
+
+      <div className='left'>
+        <a href="/login" class="btn nav-btn login-btn">Login</a>
+        <a href="/register" class="btn nav-btn register-btn">Register</a>
+      
+        
         <ThemeToggle />
         <div className="Navbar-profile" onClick={toggleDropdown} ref={dropdownRef}>
           <img

@@ -7,9 +7,11 @@
 
   --soft-color: #ffffff;
   --dark-color: #000000;
+  --cards-color: #ffffff;
   --main-color: #000000;
 
   --button-bg:  #D4885F;
+  --try-bg:  #d4885fb6;
 
 }
 
@@ -17,7 +19,9 @@ body.dark {
   --nav-bg: #1f1f1f;        
   --main-bg: #121212;      
   --soft-bg: #2a2a2a;   
-  --main-color: #ffffff;    
+  --main-color: #ffffff;   
+  --try-bg:  #FAF2EE; 
+  --cards-color: #000000;
 
   --soft-color: #ffffff;    
   --dark-color: #000000;     

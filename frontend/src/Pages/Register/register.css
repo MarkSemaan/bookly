@@ -1,0 +1,118 @@
+.register-container-wrapper {
+  position: relative;
+  text-align: center;
+  background-color: var(--main-bg);
+  padding: 2rem;
+  min-height: 100vh;
+  margin-top: 40px;
+  overflow: hidden;
+}
+
+.register-title-wrapper {
+  position: absolute;
+  top: 0.3rem;
+  width: 100%;
+  z-index: 2;
+  text-align: center;
+}
+
+.register-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.6rem;
+  letter-spacing: 1px;
+  margin-top: 2rem;
+}
+
+.register-container {
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding-top: 5rem; 
+  flex-wrap: wrap;
+  z-index: 2;
+  position: relative;
+  margin-top: 3rem;
+
+}
+
+.Animation {
+  flex: 1;
+  max-width: 450px;
+  min-width: 300px;
+}
+
+.register-form {
+  flex: 1;
+  max-width: 323px; 
+  height: 450px;     
+  background: white;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  justify-content: space-between; 
+}
+
+.name-row {
+  color: black;
+  display: flex;
+  gap: 1rem;
+}
+
+.input-group {
+  flex: 1;
+}
+
+.firstlast{
+  color: black;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 90%;
+  margin-left: -8px;
+}
+.firstlast input {
+  width: 130px; 
+}
+
+.Second{
+  margin-top: -20px;
+}
+
+.button-register{
+  margin-top: 60px;
+}
+
+.back{
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  margin-top: 40px;
+}
+
+@media (max-width: 821px) {
+  .register-title {
+    font-size: 2.2rem;
+  }
+
+  .register-form {
+    max-width: 100%;
+  }
+
+  .register-container {
+    flex-direction: column;
+    padding-top: 4rem;
+  }
+  
+  .name-row {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1014px) {
+  .Animation {
+    display: none;
+  }
+
+}
