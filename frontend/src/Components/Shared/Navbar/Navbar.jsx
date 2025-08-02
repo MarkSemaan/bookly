@@ -44,7 +44,7 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-links">
-        <a href="/library" className="btn nav-btn">Library</a>
+        <a href="/bookList" className="btn nav-btn">Library</a>
         <a href="/myOrders" className="btn nav-btn">My Orders</a>
         <a href="/management" className="btn nav-btn">Management</a>
         <a href="/analytics" className="btn nav-btn">Analytics</a>

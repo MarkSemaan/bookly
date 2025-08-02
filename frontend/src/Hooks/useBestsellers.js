@@ -7,7 +7,7 @@ const useBestsellers = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      setBestsellers(books.slice(0, 5)); 
+      setBestsellers(books.slice(0, 9)); 
       setLoading(false);
     }, 500);
   }, []);
