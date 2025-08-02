@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
-
+namespace App\Services;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Payment;
 use App\Models\RecommendationLog;
 use App\Models\UserBookView;
@@ -14,6 +15,19 @@ use function Laravel\Prompts\search;
 use App\Services\CartService;
 class AgentService
 {
+    private static $system_message = <<<EOT
+            You are an agent that can use ONLY the defined tools below to recommend 15 books for the user. 
+            Always respond with JSON in this format:
+
+            {
+            "action": "tool_name" | "final_answer",
+            "parameters": { ... },     // for tool calls
+            "result": [...]            // for final answer with book IDs
+            }
+
+            If you choose a tool, use the tool_name exactly as defined.
+            If you want to finish, reply with action = "final_answer" and the recommended book IDs in result.
+            EOT;
 
     public static function saveSearch($request)
     {
@@ -43,7 +57,7 @@ class AgentService
     private static function getUserHistories($user_id)
     {
         $histories = UserSearchHistory::where('user_id', $user_id)
-            ->where('searched_at', '>', now()->subDays(15))->pluck('search_query')->unique()->toArray();
+            ->where('searched_at', '>', now()->subDays(15))->pluck('search_query')->toArray();
         return $histories;
     }
 
@@ -54,7 +68,7 @@ class AgentService
                 ->from('user_book_views')
                 ->where('user_id', $user_id)
                 ->where('viewed_at', '>', now()->subDays(15));
-        })->unique()->get();
+        })->get();
 
         return $books;
 
@@ -74,115 +88,102 @@ class AgentService
         $reviews = Review::where('user_id', $user_id)->get();
         return $reviews;
     }
-
-
-
-    
-
-
-
-
-
-
-
-    private static function getPromptDependencies($user_id)
+    private static function handleAction($user_id, $action)
     {
-        $search_histories = AgentService::getUserHistories($user_id);
-        $view_histories = AgentService::getUserViews($user_id);
-        $bought = AgentService::getUserBooks($user_id);
-        $reviews = AgentService::getUserReviews($user_id);
-        $cart = CartService::getCartContents($user_id);
-        $books = BookService::available();
-        $dependencies = [
-            'searchs' => $search_histories,
-            'views' => $view_histories,
-            'bought' => $bought,
-            'reviews' => $reviews,
-            'cart_books' => $cart,
-            'books' => $books,
+        if ($action === 'final_answer') {
+            return [];
+        }
+
+        return match ($action) {
+            'getUserHistories' => self::getUserHistories($user_id),
+            'getUserViews' => self::getUserViews($user_id),
+            'getUserBooks' => self::getUserBooks($user_id),
+            'getUserReviews' => self::getUserReviews($user_id),
+            'getCartContents' => CartService::getCartContents($user_id),
+            'getAvailableBooks' => BookService::available(),
+            default => ["role" => "assistant", "content" => "Unknown tool requested: " . $action],
+        };
+    }
+
+    private static function process($max, $headers, $url, $user_id, &$messages)
+    {
+        for ($i = 0; $i < $max; $i++) {
+            $data = [
+                'model' => 'gpt-4o',
+                'messages' => $messages,
+                'temperature' => 0.7,
+                'max_tokens' => 1000,
+            ];
+
+            $response = Http::withHeaders($headers)->post($url, $data);
+
+            $content = $response->json()['choices'][0]['message']['content'] ?? null;
+
+            if (!$content)
+                break;
+
+            $json = json_decode($content, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $messages[] = ["role" => "assistant", "content" => "Sorry, I could not parse your response as JSON. Please follow the format."];
+                continue;
+            }
+
+            //✅ Check for final_answer
+            if ($json['action'] === 'final_answer') {
+                return $json['result'] ?? []; // ✅ Final return
+            }
+
+            if (!isset($json['action'])) {
+                $messages[] = ["role" => "assistant", "content" => "Response missing 'action' field, please respond with JSON action."];
+                continue;
+            }
+
+            $result = self::handleAction($user_id, $json['action']);
+            $resultArray = is_iterable($result)
+                ? collect($result)->map(fn($item) => is_object($item) && property_exists($item, 'id') ? $item->id : (is_string($item) ? $item : json_encode($item)))->toArray()
+                : [$result];
+
+            $messages[] = [
+                "role" => "assistant",
+                "content" => "Tool response for {$json['action']}: " . json_encode($resultArray),
+            ];
+
+
+            $messages[] = [
+                "role" => "user",
+                "content" => "Got result for {$json['action']}, what's next?",
+            ];
+        }
+
+
+        return [];
+    }
+
+
+    public static function agentLoop($user_id)
+    {
+        $system_message = self::$system_message;
+        $goal_prompt = 'Recommend 15 books for the user based on their search, views, purchases, cart, and reviews.';
+        $json = file_get_contents(storage_path('app/private/tools.json'));
+        $tools = json_decode($json, true);
+
+        $messages = [
+            ["role" => "system", "content" => $system_message],
+            ["role" => "system", "content" => "User Id: " . $user_id],
+            ["role" => "system", "content" => "Available tools: " . json_encode($tools)],
+            ["role" => "user", "content" => $goal_prompt],
         ];
-        return $dependencies;
-    }
-    public static function buildPrompt($user_id)
-    {
-        $data = self::getPromptDependencies($user_id);
-
-        $prompt = <<<EOT
-        You are a recommendation AI agent. Based on the following data, recommend 3 to 5 book IDs that the user is most likely interested in. Only return an array of book IDs, nothing else.
-
-        User Data:
-
-        - Recent Searches (last 15 days):
-        {$data['searchs']}
-
-        - Recently Viewed Books (last 15 days):
-        [ 
-            " . implode(", ", $data[views]->pluck('id')->toArray()) . "
-        ]
-
-        - Books Bought:
-        [
-            " . implode(", ", $data[bought]->pluck('id')->toArray()) . "
-        ]
-
-        - Books in Cart:
-        [
-            " . implode(", ", $data[cart_books]->pluck('id')->toArray()) . "
-        ]
-
-        - Reviews Written:
-        [ 
-            Book IDs: " . implode(", ", $data[reviews]->pluck('book_id')->toArray()) . " 
-        ]
-
-        - Available Books:
-        [
-            " . implode(", ", $data[books]->pluck('id')->toArray()) . "
-        ]
-
-        Only include recommended book IDs that exist in the 'Available Books' list. Return only the list of IDs like:
-        [12, 45, 88]
-        EOT;
-
-        return $prompt;
-    }
-    public static function prompt($prompt)
-    {
         $url = 'https://api.openai.com/v1/chat/completions';
         $headers = [
             'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
             'Content-Type' => 'application/json',
         ];
-        $data = [
-            'model' => 'gpt-4',
-            'messages' => [
-                [
-                    'role' => 'system',
-                    'content' => 'You are a recommendation engine for a book platform. Respond only in raw JSON.',
-                ],
-                [
-                    'role' => 'user',
-                    'content' => $prompt,
-                ],
-            ],
-            'temperature' => 0.7,
-            'max_tokens' => 1000,
-        ];
-        $response = Http::withHeaders($headers)->post($url, $data);
-        // Extract content from the assistant's response
-        $content = $response['choices'][0]['message']['content'];
 
-        // Try to decode JSON array (e.g., "[1, 2, 3]")
-        $bookIds = json_decode($content, true);
+        $max_iterations = 15;
 
-        // Make sure it's a valid array of integers
-        if (is_array($bookIds)) {
-            return array_filter($bookIds, fn($id) => is_int($id));
-        }
-
-        // Fallback if not valid
-        return [];
-
+        $result = self::process($max_iterations, $headers, $url, $user_id, $messages);
+        return $result;
     }
+
 
 }

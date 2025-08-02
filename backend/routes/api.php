@@ -16,9 +16,8 @@ Route::get('/greeting', function () {
 
 Route::group(["prefix" => "v0.1"], function () {
     Route::group(["middleware" => "auth:api"], function () {
+
         //AUTHENTICATED APIs
-
-
         Route::group(["prefix" => "user"], function () {
             Route::prefix('books')->group(function () {
                 Route::post('/', [BookController::class, 'storeOrUpdate']);
@@ -26,7 +25,7 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::get('/{id}', [BookController::class, 'getBookById']);
                 Route::delete('/{id}', [BookController::class, 'deleteBook']);
 
-                Route::group(["prefix" => "recommennder"], function () {
+                Route::group(["prefix" => "recommender"], function () {
                     //APIs for ai
                     Route::post('/save_search', [AgentController::class, 'saveSearch']);
                     Route::post('/save_view', [AgentController::class, 'saveBookView']);
