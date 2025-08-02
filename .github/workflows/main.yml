@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_mysql, mbstring, zip, bcmath
+          ini-values: post_max_size=256M, upload_max_filesize=256M
+
+      - name: Copy .env
+        run: cp .env.example .env
+        working-directory: ./backend
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        working-directory: ./backend
+
+      - name: Generate application key
+        run: php artisan key:generate
+        working-directory: ./backend
+
+      - name: Run Laravel Migrations
+        run: php artisan migrate --force
+        working-directory: ./backend
+
+      - name: Run Laravel Tests
+        run: php artisan test
+        working-directory: ./backend
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: ./frontend
+
+      - name: Build frontend application
+        run: npm run build
+        working-directory: ./frontend
