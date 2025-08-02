@@ -16,7 +16,8 @@ use App\Services\CartService;
 class AgentService
 {
     private static $system_message = <<<EOT
-            You are an agent that can use ONLY the defined tools below to recommend 15 books for the user. 
+            You are an agent that can use ONLY the defined tools below to recommend 5 books ONLY from the available books for the user.
+            Make sure to make sure the recommended books are available in the database!
             Always respond with JSON in this format:
 
             {
@@ -26,7 +27,7 @@ class AgentService
             }
 
             If you choose a tool, use the tool_name exactly as defined.
-            If you want to finish, reply with action = "final_answer" and the recommended book IDs in result.
+            If you want to finish, reply with action = "final_answer" and the recommended book names in result, make sure these books exist in the database.
             EOT;
 
     public static function saveSearch($request)
@@ -93,14 +94,19 @@ class AgentService
         if ($action === 'final_answer') {
             return [];
         }
+        // if ($action === 'getBooksByCategory') {
+        //     return BookService::getBooksByCategory($category_id);
+
+        // }
 
         return match ($action) {
             'getUserHistories' => self::getUserHistories($user_id),
             'getUserViews' => self::getUserViews($user_id),
             'getUserBooks' => self::getUserBooks($user_id),
             'getUserReviews' => self::getUserReviews($user_id),
-            'getCartContents' => CartService::getCartContents($user_id),
-            'getAvailableBooks' => BookService::available(),
+            'getCartItems' => CartService::getCartItems($user_id),
+            'available' => BookService::available(),
+            'getTopRatedBooks' => BookService::getTopRatedBooks(),
             default => ["role" => "assistant", "content" => "Unknown tool requested: " . $action],
         };
     }
@@ -109,7 +115,7 @@ class AgentService
     {
         for ($i = 0; $i < $max; $i++) {
             $data = [
-                'model' => 'gpt-4o',
+                'model' => 'gpt-3.5-turbo',
                 'messages' => $messages,
                 'temperature' => 0.7,
                 'max_tokens' => 1000,
@@ -127,7 +133,7 @@ class AgentService
                 $messages[] = ["role" => "assistant", "content" => "Sorry, I could not parse your response as JSON. Please follow the format."];
                 continue;
             }
-
+            echo json_encode($messages);
             //✅ Check for final_answer
             if ($json['action'] === 'final_answer') {
                 return $json['result'] ?? []; // ✅ Final return
@@ -163,13 +169,14 @@ class AgentService
     public static function agentLoop($user_id)
     {
         $system_message = self::$system_message;
-        $goal_prompt = 'Recommend 15 books for the user based on their search, views, purchases, cart, and reviews.';
+        $goal_prompt = 'Recommend 5 books for the user based on their search, views, purchases, cart, and reviews.';
         $json = file_get_contents(storage_path('app/private/tools.json'));
         $tools = json_decode($json, true);
-
+        $available_books = BookService::available();
         $messages = [
             ["role" => "system", "content" => $system_message],
             ["role" => "system", "content" => "User Id: " . $user_id],
+            ["role" => "system", "content" => "Available books: " . json_encode($available_books)],
             ["role" => "system", "content" => "Available tools: " . json_encode($tools)],
             ["role" => "user", "content" => $goal_prompt],
         ];

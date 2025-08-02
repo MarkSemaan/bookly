@@ -63,7 +63,7 @@ class BookService
   
     public static function available()
     {
-        $books = Book::where('is_available', true);
+        $books = Book::where('is_available', true)->get();
         return $books;
     }
   

@@ -25,30 +25,30 @@ Route::group(["prefix" => "v0.1"], function () {
         Route::group(["prefix" => "user"], function () {
             Route::prefix('books')->group(function () {
 
-            Route::get('/', [BookController::class, 'getBooks']); 
-            Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
-            Route::post('/', [BookController::class, 'storeOrUpdate']);
-            Route::delete('/{book}', [BookController::class, 'destroy']);
-            Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
-
-        });
-
-                Route::group(["prefix" => "recommender"], function () {
-                    //APIs for ai
-                    Route::post('/save_search', [AgentController::class, 'saveSearch']);
-                    Route::post('/save_view', [AgentController::class, 'saveBookView']);
-                    Route::get('/get', [AgentController::class, 'getRecommended']);
-                });
+                Route::get('/', [BookController::class, 'getBooks']);
+                Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
+                Route::post('/', [BookController::class, 'storeOrUpdate']);
+                Route::delete('/{book}', [BookController::class, 'destroy']);
+                Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
 
             });
-            //Customer APIs
+
+            Route::group(["prefix" => "recommender"], function () {
+                //APIs for ai
+                Route::post('/save_search', [AgentController::class, 'saveSearch']);
+                Route::post('/save_view', [AgentController::class, 'saveBookView']);
+                Route::get('/get', [AgentController::class, 'getRecommended']);
+            });
+
+        });
+        //Customer APIs
         Route::prefix('cartitems')->controller(CartController::class)->group(function () {
-            Route::get('/', 'getCartItems'); 
-            Route::get('/{id}', 'getCartItems'); 
+            Route::get('/', 'getCartItems');
+            Route::get('/{id}', 'getCartItems');
             Route::get('/user/{userId}', 'getUserCartItems');
             Route::post('/', 'storeOrUpdate');
             Route::delete('/{cartItem}', 'destroy');
-     });
+        });
 
 
         Route::prefix('orders')->controller(OrderController::class)->group(function () {
@@ -60,7 +60,6 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::post('{order}/cancel', [OrderController::class, 'cancel']);
             Route::delete('{order}', [OrderController::class, 'destroy']);
 
-         });
         });
 
         Route::group(["prefix" => "admin"], function () {

@@ -9,10 +9,11 @@ use App\Models\Book;
 use Exception;
 
 class CartService
+{
 
     public static function getCartItems($id = null, $search = null)
     {
-        return CartItem::with('book')->where('user_id', $userId)->get();
+        return CartItem::with('book')->where('user_id', $id)->get();
     }
 
     public function deleteCartItem(CartItem $cartItem): void
@@ -24,8 +25,8 @@ class CartService
     {
         $book = Book::findOrFail($bookId);
 
-        if ($id) {
-            return $query->find($id);
+        if ($bookId) {
+            return $query->find($bookId);
         }
 
         $existingItem = CartItem::where('user_id', $userId)
