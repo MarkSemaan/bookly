@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Models\Order;
 use App\Models\CartItem;
+use App\Models\OrderItem;
+use App\Models\Book;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -72,7 +75,6 @@ class OrderService
     {
         return DB::transaction(function () use ($data, $order) {
             $total = collect($data['items'])->sum(fn($item) => $item['price'] * $item['quantity']);
-
             if ($order) {
                 $order->update([
                     'status' => $data['status'] ?? $order->status,

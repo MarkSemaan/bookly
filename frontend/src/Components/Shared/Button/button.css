@@ -1,0 +1,17 @@
+.primary-button{
+  align-self: center;
+  margin-top: auto;
+  padding: 0.6em 2rem;
+  font-size: 1.2rem;
+  background-color: var(--button-bg);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.primary-button:hover {
+  background-color: #b8683d;
+}
