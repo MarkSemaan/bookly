@@ -2,7 +2,7 @@ FROM php:8.3.14-apache
 WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
+    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev default-mysql-client \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 RUN a2enmod rewrite \
