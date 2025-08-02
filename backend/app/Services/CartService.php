@@ -10,10 +10,18 @@ use Exception;
 
 class CartService
 
-    public static function getCartItems($id = null, $search = null)
-
+{
+    public static function getCartItems($userId, $search = null)
     {
-        return CartItem::with('book')->where('user_id', $userId)->get();
+        $query = CartItem::with('book')->where('user_id', $userId);
+
+        if ($search) {
+            $query->whereHas('book', function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%");
+            });
+        }
+
+        return $query->get();
     }
 
     public function deleteCartItem(CartItem $cartItem): void
@@ -24,10 +32,6 @@ class CartService
     public function addToCart(int $userId, int $bookId, int $quantity)
     {
         $book = Book::findOrFail($bookId);
-
-        if ($id) {
-            return $query->find($id);
-        }
 
         $existingItem = CartItem::where('user_id', $userId)
             ->where('book_id', $bookId)
@@ -46,7 +50,6 @@ class CartService
         ]);
     }
 
-
     public static function createOrUpdateCartItem(array $data): CartItem
     {
         $cartItem = CartItem::firstOrNew([
@@ -62,21 +65,7 @@ class CartService
 
     public static function getUserCartItems($userId)
     {
-        $cartItem = CartItem::with('book')->findOrFail($cartItemId);
-
-        if ($cartItem->book->stock < $quantity) {
-            throw new Exception('Not enough stock available');
-        }
-
-        $cartItem->quantity = $quantity;
-        $cartItem->save();
-
-        return $cartItem;
-    }
-
-    public static function deleteCartItem(CartItem $cartItem): void
-    {
-        return CartItem::where('user_id', $userId)->delete();
+        return CartItem::with('book')->where('user_id', $userId)->get();
     }
 
     public function getCartTotal(int $userId)
