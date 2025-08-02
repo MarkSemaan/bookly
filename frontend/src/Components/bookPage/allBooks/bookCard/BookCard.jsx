@@ -16,7 +16,7 @@ const BookCard = ({ book }) => {
       <img src={image} alt={title} className="book-image" />
       <h3 className="book-title">{title}</h3>
       <div className="book-rating">{stars}</div>
-      <p className="book-price">${price.toFixed(2)}</p>
+      <p className="book-price">${price}</p>
       <button className="learn-more-btn">Learn More</button>
     </div>
   );
