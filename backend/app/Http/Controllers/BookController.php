@@ -3,60 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Book\StoreBookRequest;
-use App\Http\Requests\Book\UpdateBookRequest;
 use App\Models\Book;
-use App\Services\BookService;
 use App\Traits\ResponseTrait;
+use App\Services\BookService;
 use Illuminate\Http\Request;
+use Exception;
 
 class BookController extends Controller
 {
     use ResponseTrait;
 
-    protected BookService $service;
-
-    public function __construct(BookService $service)
-    {
-        $this->service = $service;
-    }
-
-    public function getBooks(Request $request)
+    public function getBooks($id = null, Request $request)
     {
         try {
-            $id = $request->query('id');
             $search = $request->query('search');
+            $books = BookService::getBooks($id, $search);
 
-            $books = $this->service->getBooks($id, $search);
+            if ($id && !$books) {
+                return $this->fail("Book not found", "fail", 404);
+            }
 
             return $this->responseJSON($books, $id ? "Book found" : "Books loaded");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
+    }
+      public function getTopRatedBooks()
+    {
+        $books = BookService::getTopRatedBooks();
+        return $this->responseJSON($books);
     }
 
     public function getBooksByCategory(int $categoryId)
     {
         try {
-            $books = $this->service->getBooksByCategory($categoryId);
+            $books = BookService::getBooksByCategory($categoryId);
             return $this->responseJSON($books, "Books by category loaded");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
 
-    public function storeOrUpdate(Request $request)
+    public function storeOrUpdate(StoreBookRequest $request)
     {
         try {
-            $id = $request->input('id');
-            $validated = app(StoreBookRequest::class)->validate($request);
+            $validated = $request->validated();
+            $id = $validated['id'] ?? null;
+            $book = $id ? Book::find($id) : null;
+
+            if ($id && !$book) {
+                return $this->fail("Book not found", "fail", 404);
+            }
+
+            $result = BookService::createOrUpdateBook($validated, $book);
 
 
-            $book = $id ? Book::findOrFail($id) : null;
-
-            $book = $this->service->createOrUpdateBook($validated, $book);
-
-            return $this->responseJSON($book, $id ? "Book updated" : "Book added", $id ? 200 : 201);
-        } catch (\Exception $e) {
+            return $this->responseJSON($result, $id ? "Book updated" : "Book added", $id ? 200 : 201);
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
@@ -64,9 +67,9 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         try {
-            $this->service->deleteBook($book);
+            BookService::deleteBook($book);
             return $this->responseJSON(null, "Book deleted");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }

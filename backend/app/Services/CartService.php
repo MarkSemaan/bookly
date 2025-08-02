@@ -3,21 +3,29 @@
 namespace App\Services;
 
 use App\Models\CartItem;
+
+use Illuminate\Support\Facades\DB;
 use App\Models\Book;
+use Exception;
 
 class CartService
-{
-    public static function getCartContents(int $userId)
+
+    public static function getCartItems($id = null, $search = null)
     {
         return CartItem::with('book')->where('user_id', $userId)->get();
+    }
+
+    public function deleteCartItem(CartItem $cartItem): void
+    {
+        $cartItem->delete();
     }
 
     public function addToCart(int $userId, int $bookId, int $quantity)
     {
         $book = Book::findOrFail($bookId);
 
-        if ($book->stock < $quantity) {
-            throw new \Exception('Not enough stock available');
+        if ($id) {
+            return $query->find($id);
         }
 
         $existingItem = CartItem::where('user_id', $userId)
@@ -37,18 +45,26 @@ class CartService
         ]);
     }
 
-    public function removeFromCart(int $cartItemId)
+
+    public static function createOrUpdateCartItem(array $data): CartItem
     {
-        $cartItem = CartItem::findOrFail($cartItemId);
-        return $cartItem->delete();
+        $cartItem = CartItem::firstOrNew([
+            'user_id' => $data['user_id'],
+            'book_id' => $data['book_id'],
+        ]);
+
+        $cartItem->quantity = ($cartItem->exists ? $cartItem->quantity : 0) + $data['quantity'];
+        $cartItem->save();
+
+        return $cartItem;
     }
 
-    public function updateCartItemQuantity(int $cartItemId, int $quantity)
+    public static function getUserCartItems($userId)
     {
         $cartItem = CartItem::with('book')->findOrFail($cartItemId);
 
         if ($cartItem->book->stock < $quantity) {
-            throw new \Exception('Not enough stock available');
+            throw new Exception('Not enough stock available');
         }
 
         $cartItem->quantity = $quantity;
@@ -57,7 +73,7 @@ class CartService
         return $cartItem;
     }
 
-    public function clearCart(int $userId)
+    public static function deleteCartItem(CartItem $cartItem): void
     {
         return CartItem::where('user_id', $userId)->delete();
     }
