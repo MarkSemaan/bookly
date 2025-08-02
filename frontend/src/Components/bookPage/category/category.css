@@ -1,11 +1,12 @@
 .category-section {
-  max-width: 1300px;
+  max-width: 1700px;
   margin: 2rem auto;
   padding: 0 1rem;
+  justify-items: center;
 }
 
 .category-title {
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   text-align: center;
@@ -21,9 +22,9 @@
 
 .category-card {
   background-color: var(--try-bg);
-  padding: 1.5rem 1rem;
+  padding: 1rem 1rem;
   border-radius: 12px;
-  width: 200px;
+  width: 120px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -34,13 +35,13 @@
 }
 
 .category-name {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   font-weight: 700;
   margin-bottom: 0.7rem;
   color: var(--cards-color);
 }
 
 .category-description {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
     color: var(--cards-color);
 }
