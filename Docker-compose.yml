@@ -1,28 +1,32 @@
-services:
+services: 
+  
   bookly-frontend:
     build: ./frontend
-    depends_on:
+    depends_on: 
       - bookly-backend-app
     container_name: bookly-frontend
     ports:
-      - "3000:80"
-    restart: unless-stopped
+      - "3000:80"  
+    restart: unless-stopped 
 
   bookly-backend-app:
     build: ./backend
-    depends_on:
+    depends_on: 
       - database
     container_name: bookly-backend-app
     ports:
-      - "8000:80"
-    restart: unless-stopped
+      - "8000:80"  
+    restart: unless-stopped 
+
 
   database:
     image: mysql:8.0
     container_name: bookly-db
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: bookly
-
+      MYSQL_DATABASE: bookstore
+      MYSQL_USER: ali
+      MYSQL_PASSWORD:
     ports:
-      - 3307:3306
+      - 3306:3306
+
