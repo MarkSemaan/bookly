@@ -4,6 +4,12 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Event;
+use App\Events\OrderCreated;
+use App\Events\OrderStatusChanged;
+use App\Listeners\SendOrderCreatedNotification;
+use App\Listeners\SendOrderStatusNotification;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -20,5 +26,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191); 
+
+        Event::listen(OrderCreated::class, SendOrderCreatedNotification::class);
+        Event::listen(OrderStatusChanged::class, SendOrderStatusNotification::class);
     }
 }
