@@ -1,23 +1,29 @@
-services: 
-  
+services:
   bookly-frontend:
     build: ./frontend
-    depends_on: 
+    depends_on:
       - bookly-backend-app
     container_name: bookly-frontend
     ports:
-      - "3000:80"  
-    restart: unless-stopped 
+      - "3000:80"
+    restart: unless-stopped
 
   bookly-backend-app:
     build: ./backend
-    depends_on: 
+    depends_on:
       - database
     container_name: bookly-backend-app
     ports:
-      - "8000:80"  
-    restart: unless-stopped 
-
+      - "8000:80"
+    restart: unless-stopped
+    command: >
+      sh -c "
+        while ! mysqladmin ping -hdatabase --silent; do
+          sleep 1;
+        done;
+        php artisan migrate --force &&
+        apache2-foreground
+      "
 
   database:
     image: mysql:8.0
@@ -26,7 +32,12 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: bookstore
       MYSQL_USER: ali
-      MYSQL_PASSWORD:
+      MYSQL_PASSWORD: password
     ports:
-      - 3306:3306
+      - "3306:3306"
 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

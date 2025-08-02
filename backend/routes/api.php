@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CategoryController;
 
 
 Route::get('/greeting', function () {
@@ -24,7 +25,13 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
     Route::get('/{id}/reviews', 'getUserReviews');
 });
 
-
+Route::prefix('categories')->controller(CategoryController::class)->group(function () {
+    Route::get('/', 'getCategories');
+    Route::get('/{id}', 'getCategories');
+    Route::post('/', 'storeOrUpdate');
+    Route::post('/{id}', 'storeOrUpdate');
+    Route::delete('/{id}', 'destroy');
+});
 
 
 
@@ -72,7 +79,7 @@ Route::group(["prefix" => "v0.1"], function () {
             });
 
 
-            
+
         Route::prefix('orders')->controller(OrderController::class)->group(function () {
             Route::get('orders', [OrderController::class, 'getOrders']);
             Route::get('orders/{id}', [OrderController::class, 'getOrders']);

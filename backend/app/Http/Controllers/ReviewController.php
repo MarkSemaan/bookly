@@ -11,10 +11,10 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
- 
 
-    
-    public function getReviews( Request $request,$id = null)
+
+
+    public function getReviews(Request $request, $id = null)
     {
         try {
             $search = $request->query('search');
@@ -76,6 +76,5 @@ class ReviewController extends Controller
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
-    }   
-
+    }
 }
