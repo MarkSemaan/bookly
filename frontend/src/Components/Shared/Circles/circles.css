@@ -9,26 +9,25 @@
 }
 
 .circleleft {
-  width: 252px;
-  height: 254px;
+  width: 190px;
+  height: 190px;
   top: 6%;
   left: 16%;
   animation-delay: 0s;
 }
 .circledown {
-  width: 206px;
-  height: 208px;
+  width: 160px;
+  height: 160px;
   top: 60%;
   left: 16%;
   animation-delay: 0s;
 }
 .circleright {
-  width: 230px;
-  height: 232px;
-  top: 60%;
+  width: 150px;
+  height: 150px;
+  top: 65%;
   left: 70%;
   animation-delay: 0s;
-  z-index: 20;
 }
 .circles {
   position: absolute;
@@ -41,8 +40,8 @@
 }
 
 .circle1 {
-  width: 140px;
-  height: 190px;
+  width: 100px;
+  height: 120px;
   top: 10%;
   left: 10%;
   animation-delay: 0s;
