@@ -2,9 +2,11 @@ import "./Assets/Styles/App.css";
 import "./Assets/Styles/variable.css"
 import AppLayout from "./Components/Shared/Layouts/AppLayout";
 import Navbar from "./Components/Shared/Navbar/Navbar";
+import BookList from "./Pages/BookList/BookList";
 import HomePage from "./Pages/HomePage/HomePage";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
+
 
 
 import {
@@ -32,7 +34,7 @@ const MyRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route element={<AppLayout />}>
       <Route path="/homePage" element={<HomePage />} />
-          
+          <Route path="/bookList" element={<BookList />} />
         </Route>
       </Routes>
   );
