@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Category;
+namespace App\Http\Requests\review;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategoryRequest extends FormRequest
+class StoreReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,9 +21,11 @@ class StoreCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-      return [
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-    ];
+        return [
+            'user_id' => 'required|exists:users,id',
+            'book_id' => 'required|exists:books,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string|max:1000',
+        ];
     }
 }
