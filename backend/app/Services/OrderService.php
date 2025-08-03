@@ -6,6 +6,8 @@ use App\Models\Order;
 use App\Models\CartItem;
 use App\Models\OrderItem;
 use App\Models\Book;
+use App\Events\OrderCreated;
+use App\Events\OrderStatusChanged;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -37,6 +39,7 @@ class OrderService
     {
         return DB::transaction(function () use ($userId) {
             $cartItems = CartItem::with('book')->where('user_id', $userId)->get();
+            
 
             if ($cartItems->isEmpty()) {
                 throw new \Exception("No items in cart to create order.");
@@ -60,6 +63,7 @@ class OrderService
                 ]);
             }
             CartItem::where('user_id', $userId)->delete();
+            event(new OrderCreated($order)); 
 
             return $order->fresh('items.book');
         });
@@ -68,6 +72,7 @@ class OrderService
     public static function cancelOrder(Order $order)
     {
         $order->update(['status' => 'cancelled']);
+        event(new OrderStatusChanged($order, 'cancelled'));
         return $order->fresh('items.book');
     }
 
@@ -87,6 +92,7 @@ class OrderService
                     'status' => $data['status'] ?? 'pending',
                     'total' => $total,
                 ]);
+                event(new OrderCreated($order)); 
             }
 
             foreach ($data['items'] as $item) {
