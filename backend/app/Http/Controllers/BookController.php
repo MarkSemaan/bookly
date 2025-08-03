@@ -25,7 +25,7 @@ class BookController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
-      public function getTopRatedBooks()
+    public function getTopRatedBooks()
     {
         $books = BookService::getTopRatedBooks();
         return $this->responseJSON($books);
@@ -75,6 +75,16 @@ class BookController extends Controller
             BookService::deleteBook($book);
             return $this->responseJSON(null, "Book deleted");
         } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
+    }
+
+    public function getAllBooks()
+    {
+        try {
+            $books = BookService::getAllBooks();
+            return $this->responseJSON($books);
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }

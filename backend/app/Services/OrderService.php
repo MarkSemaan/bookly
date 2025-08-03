@@ -66,8 +66,9 @@ class OrderService
         });
     }
 
-    public static function cancelOrder(Order $order)
+    public static function cancelOrder($order_id)
     {
+        $order = Order::find($order_id);
         $order->update(['status' => 'cancelled']);
         return $order->fresh('items.book');
     }
@@ -106,5 +107,9 @@ class OrderService
     {
         $order->items()->delete();
         $order->delete();
+    }
+    public static function getAllOrders() {
+        $orders = Order::all();
+        return $orders;
     }
 }

@@ -94,6 +94,8 @@ Route::group(["prefix" => "v0.1"], function () {
         Route::group(["prefix" => "admin"], function () {
             Route::group(["middleware" => "isAdmin"], function () {
                 //Admin APIs
+                Route::get('/orders',[OrderController::class, 'getAllOrders']);
+                Route::get('/books', [BookController::class, 'getAllBooks']);
             });
         });
 
