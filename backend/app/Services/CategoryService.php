@@ -7,7 +7,10 @@ use App\Models\Category;
 
 class CategoryService
 {
-    public static function getCategories($id = null, $search = null)
+
+    public static function getAllCategories()
+
+
     {
         if ($id) return Category::find($id);
 

@@ -57,6 +57,7 @@ class CartService
             'user_id' => $data['user_id'],
             'book_id' => $data['book_id'],
         ]);
+        
 
         $cartItem->quantity = ($cartItem->exists ? $cartItem->quantity : 0) + $data['quantity'];
         $cartItem->save();
