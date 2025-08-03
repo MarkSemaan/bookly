@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const API_BASE_URL = "http://127.0.0.1:8000/api/v0.1"; 
+const API_BASE_URL = "http://127.0.0.1:8000/api/v0.1";
 
 
 const api = axios.create({
@@ -18,5 +18,6 @@ api.interceptors.request.use(config => {
   }
   return config;
 });
+
 
 export default api;

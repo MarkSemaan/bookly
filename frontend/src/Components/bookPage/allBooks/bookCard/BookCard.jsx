@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import "./bookCard.css";
 
 const BookCard = ({ book }) => {
@@ -16,8 +17,12 @@ const BookCard = ({ book }) => {
       <img src={image} alt={title} className="book-image" />
       <h3 className="book-title">{title}</h3>
       <div className="book-rating">{stars}</div>
-      <p className="book-price">${price.toFixed(2)}</p>
-      <button className="learn-more-btn">Learn More</button>
+      <p className="book-price">${price}</p>
+      
+      <Link to={`/book/${book.id}`}>
+        <button className="learn-more-btn">Learn More</button>
+     </Link>
+
     </div>
   );
 };

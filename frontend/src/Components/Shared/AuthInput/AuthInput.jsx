@@ -1,7 +1,7 @@
 import React from "react";
 import "./authInput.css";
 
-const Input = ({ type, name, hint, placeholder, required, onChangeListener }) => {
+const Input = ({ type = "text", name, hint, placeholder, required, value, onChangeListener }) => {
   return (
     <div className="input-group">
       <label className="auth-label" htmlFor={name}>
@@ -11,13 +11,13 @@ const Input = ({ type, name, hint, placeholder, required, onChangeListener }) =>
       <input
         id={name}
         type={type}
-        hint={hint}
+        name={name}
         placeholder={placeholder}
         required={required}
         className="primary-input"
+        value={value} 
         onChange={onChangeListener}
       />
-
     </div>
   );
 };

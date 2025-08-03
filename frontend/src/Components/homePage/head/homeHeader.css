@@ -1,7 +1,7 @@
 .welcome-section {
   display: flex;
-  align-items: center;
-  justify-content: center;
+   align-items: flex-start; 
+  justify-content: flex-start;
   padding: 4rem 8%;
   gap: 9rem;
   flex-wrap: wrap;
@@ -9,7 +9,14 @@
 
 .left-section img {
   width: 100%;
-  max-width:550px;
+  max-width:350px;
+  height: auto;
+  border-radius: 12px;
+}
+
+.left-section img {
+  width: 100%;
+  max-width: 350px;
   height: auto;
   border-radius: 12px;
 }
@@ -17,18 +24,25 @@
 .right-section {
   max-width: 500px;
   display: flex;
-  margin-bottom: 7rem;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  text-align: left; 
+  margin-bottom: 7rem;
 }
 
 .welcome-title h1 {
-  font-size: 3rem;
+  font-size: 1.5rem;
   font-weight: 500;
-  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  text-align: left;
+  margin-right: 280px;
+ 
+  
 }
 
 .welcome-description p {
-  font-size: 1.3rem;
+  font-size: 1rem;
   line-height: 1.6;
+  text-align: left;
+  margin-top: 1rem;
 }
