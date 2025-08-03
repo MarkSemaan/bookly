@@ -8,7 +8,12 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
+
 use App\Http\Controllers\CategoryController;
+
+use App\Http\Controllers\ReviewController;
+
+
 
 Route::get('/greeting', function () {
     return 'Hello World';
@@ -82,6 +87,17 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
 
             });
+
+     
+            Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
+                Route::get('/', 'getReviews');            
+                Route::get('/{id}', 'getReviews');
+                Route::post('/', 'storeOrUpdate');
+                Route::delete('/{id}', 'destroy');
+            });
+
+
+
 
      
             Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
