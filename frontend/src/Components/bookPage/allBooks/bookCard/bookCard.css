@@ -20,7 +20,6 @@
   overflow-x: auto;
   scroll-behavior: smooth;
   padding-bottom: 1rem;
-  
 }
 .arrows {
   position: absolute;
@@ -30,7 +29,7 @@
   justify-content: space-between;
   transform: translateY(-50%);
   pointer-events: none;
-  width: calc(100% + 50px); 
+  width: calc(100% + 50px);
 }
 
 .arrows button {
@@ -43,13 +42,12 @@
   height: 40px;
   cursor: pointer;
   pointer-events: auto;
-  transition:  0.3s ease;
+  transition: 0.3s ease;
 }
 
 .arrows button:hover {
   background: rgba(0, 0, 0, 0.7);
 }
-
 
 .bestsellers-container {
   display: flex;
@@ -57,50 +55,52 @@
   overflow-x: auto;
   scroll-behavior: smooth;
   padding-bottom: 1rem;
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
-
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .book-card {
-  flex: 0 0 19%; 
-  background: var(--card-color);
+  background: #fceeea;
   border-radius: 12px;
   padding: 1rem;
-  height: 330px;
-  width:100px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  height: 100%;
+  transition: transform 0.2s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
 }
 
 .book-image {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
+  height: 180px;
+  object-fit: contain;
   margin-bottom: 0.75rem;
 }
 
 .book-title {
-  font-weight: 700;
-  margin-top: -0.2rem;
-  font-size: 0.9rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 0.5rem;
 }
 
-.book-rating .star {
-  color: #ccc;
-  font-size: 1.3rem;
-}
-
-.book-rating .star.filled {
-  color: gold;
+.book-rating {
+  margin: 0.25rem 0;
+  color: #ffcc00;
+  font-size: 1.2rem;
 }
 
 .book-price {
+  color: #b75c3c;
   font-weight: 700;
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
-  color: var(--price-bg);
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .learn-more-btn {
@@ -115,4 +115,32 @@
 
 .learn-more-btn:hover {
   background-color: #a25a36;
+}
+
+.admin-btns {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.admin-btns button {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  text-transform: lowercase;
+  transition: all 0.2s ease;
+}
+
+.admin-btns button:first-child {
+  background: #c08a5d;
+  color: white;
+}
+
+.admin-btns button:last-child {
+  background: #f44336;
+  color: white;
 }

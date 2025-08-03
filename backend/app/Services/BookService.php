@@ -43,13 +43,14 @@ class BookService
         return Book::create($data);
     }
 
-    public static function deleteBook(Book $book)
+    public static function deleteBook($book_id)
     {
+        $book = Book::find($book_id);
         if ($book->image) {
             Storage::disk('public')->delete($book->image);
         }
 
-        $book->delete();
+        return $book->delete();
     }
     public static function getTopSellingBooks()
     {

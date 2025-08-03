@@ -46,7 +46,7 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::get('/', [BookController::class, 'getBooks']);
                 Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
                 Route::post('/', [BookController::class, 'storeOrUpdate']);
-                Route::delete('/{book}', [BookController::class, 'destroy']);
+                Route::post('/delete/{book_id}', [BookController::class, 'destroy']);
                 Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
 
             });
@@ -69,15 +69,12 @@ Route::group(["prefix" => "v0.1"], function () {
         });
 
 
-
-
         Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
             Route::get('/', 'getReviews');
             Route::get('/{id}', 'getReviews');
             Route::post('/', 'storeOrUpdate');
             Route::delete('/{id}', 'destroy');
         });
-
 
 
         Route::prefix('orders')->controller(OrderController::class)->group(function () {

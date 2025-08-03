@@ -69,11 +69,11 @@ class BookController extends Controller
         }
     }
 
-    public function destroy(Book $book)
+    public function destroy($book_id)
     {
         try {
-            BookService::deleteBook($book);
-            return $this->responseJSON(null, "Book deleted");
+            $book = BookService::deleteBook($book_id);
+            return $this->responseJSON($book, "Book deleted");
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
