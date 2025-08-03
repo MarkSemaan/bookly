@@ -13,6 +13,8 @@ use App\Listeners\UpdateBookStock;
 use App\Listeners\PushOrderWebhook;
 use App\Listeners\SendOrderSms;
 
+use App\Listeners\LogOrderAnalytics;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -35,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(OrderCreated::class, UpdateBookStock::class);
         Event::listen(OrderCreated::class, PushOrderWebhook::class);
         Event::listen(OrderStatusChanged::class, SendOrderSms::class);
+         Event::listen(OrderCreated::class, LogOrderAnalytics::class);
 
     }
 }
