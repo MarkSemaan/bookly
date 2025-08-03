@@ -3,12 +3,12 @@ import { useState } from "react";
 const useForm = (initialValues = {}) => {
   const [form, setForm] = useState(initialValues);
 
-  const handleChange = (e) => {
+  const handleRegister = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  return [form, handleChange];
+  return [form, handleRegister];
 };
 
 export default useForm;

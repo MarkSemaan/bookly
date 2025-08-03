@@ -12,7 +12,7 @@
   --card-color: #faece5;
 
 
-  --button-bg:  #D4885F;
+  --button-bg:  #d4885fb6;
   --try-bg:  #d4885fb6;
   --price-bg:  #DEA283;
  
@@ -28,11 +28,11 @@ body.dark {
   --cards-color: #000000;
   --card-color: #1f1f1f;
   --price-bg:  #FAF2EE;
+  --button-bg:  #FAF2EE;
  
   --soft-color: #ffffff;    
   --dark-color: #000000;     
-
-  --button-bg: #D4885F;      
+   
 }
 
 

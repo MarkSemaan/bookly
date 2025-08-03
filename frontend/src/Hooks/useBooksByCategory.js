@@ -1,31 +1,33 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-
-const useBooksByCategory = () => {
-  const { category } = useParams(); 
+import api from "../../src/Services/booklist/bestlistService"; 
+const useBooksByCategory = (categoryId) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!categoryId) return;
+
     const fetchBooks = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:3000/books?category=${category}`);
-        setBooks(res.data);
+        const res = await api.get(`/user/books/category/${categoryId}`);
+        setBooks(res.data.payload);
+        setError(null);
       } catch (err) {
-        setError(err);
-        console.error("Error fetching books: ", err);
+        const msg = err.response?.data?.message || err.message || "Failed to load books";
+        setError(msg);
       } finally {
         setLoading(false);
       }
     };
 
     fetchBooks();
-  }, [category]);
+  }, [categoryId]);
 
-  return { books, loading, error, category };
+  return { books, loading, error };
 };
+
 
 export default useBooksByCategory;
