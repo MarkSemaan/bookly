@@ -33,9 +33,9 @@ const Bestsellers = () => {
       </div>
       
       <div className="arrows">
-  <button onClick={() => scroll("left")}>&lt;</button>
-  <button onClick={() => scroll("right")}>&gt;</button>
-  </div>
+        <button onClick={() => scroll("left")}>&lt;</button>
+        <button onClick={() => scroll("right")}>&gt;</button>
+      </div>
 
     </section>
   );
