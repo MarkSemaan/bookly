@@ -70,10 +70,10 @@ class OrderController extends Controller
         }
     }
 
-    public function cancel($order_id)
+    public function cancel($id)
     {
         try {
-            $order = OrderService::cancelOrder($order_id);
+            $order = OrderService::cancelOrder($id);
             return $this->responseJSON($order, "Order cancelled");
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
@@ -94,6 +94,15 @@ class OrderController extends Controller
         try {
             $orders = OrderService::getAllOrders();
             return $this->responseJSON($orders);
+        } catch (Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
+    }
+    public function moveStatus($id)
+    {
+        try {
+            $order = OrderService::moveStatus($id);
+            return $this->responseJSON($order);
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }

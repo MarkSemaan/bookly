@@ -17,7 +17,7 @@ const UserOrders = () => {
     const handleFetchError = (error) => {
         if (error.response && error.response.data) {
             console.log('API Error:', error.response.data);
-            setError(error.response.data.message || 'failed to fetch capsules');
+            setError(error.response.data.message || 'failed to fetch orders');
         } else {
             console.error('Error:', error);
             setError('Error occurred');

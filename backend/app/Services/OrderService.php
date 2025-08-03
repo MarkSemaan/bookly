@@ -69,8 +69,9 @@ class OrderService
     public static function cancelOrder($order_id)
     {
         $order = Order::find($order_id);
-        $order->update(['status' => 'cancelled']);
-        return $order->fresh('items.book');
+        $order->status = 'cancelled';
+        $order->save();
+        return $order;
     }
 
     public static function createOrUpdateOrder(array $data, ?Order $order = null): Order
@@ -108,8 +109,31 @@ class OrderService
         $order->items()->delete();
         $order->delete();
     }
-    public static function getAllOrders() {
+    public static function getAllOrders()
+    {
         $orders = Order::all();
         return $orders;
     }
+
+
+    public static function moveStatus($id)
+    {
+        $order = Order::find($id);
+        if ($order->status === 'pending')
+            $order->status = 'paid';
+        else if ($order->status === 'paid')
+            $order->status = 'packed';
+        else if ($order->status === 'packed')
+            $order->status = 'shipped';
+        else if ($order->status === 'shipped')
+            $order->status = 'delivered';
+        else if ($order->status === 'cancelled')
+            return $order;
+        else if ($order->status === 'delivered')
+            return $order;
+        $order->save();
+        return $order;
+
+    }
+
 }
