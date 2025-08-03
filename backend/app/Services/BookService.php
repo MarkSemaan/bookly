@@ -27,6 +27,7 @@ class BookService
         })->latest('id')->limit(50)->get();
     }
 
+
     public static function createOrUpdateBook(array $data, ?Book $book = null)
     {
         if (!empty($data['image']) && $data['image'] instanceof UploadedFile) {
