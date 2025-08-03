@@ -3,7 +3,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
- padding: 30px;
+ padding-bottom: 30px;
   background-color: #f8f8f8;
   font-family: sans-serif;
   color: #333;
@@ -118,4 +118,40 @@
   }
 
 
+}
+
+body.light .footer {
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+body.light .footer-links li {
+  color: #333;
+}
+
+body.light .footer-links li:hover,
+body.light .footer-links li:hover .icon {
+  color: #D4885F;
+}
+
+body.dark .footer {
+  background-color: #1a1a1a;
+  color: #eee;
+}
+
+body.dark .footer-links li {
+  color: #ccc;
+}
+
+body.dark .footer-links li:hover,
+body.dark .footer-links li:hover .icon {
+  color: #ffbb88;
+}
+
+body.dark .footer-about-logo {
+  color: #ffbb88;
+}
+
+body.dark .footer-bottom {
+  color: #888;
 }
