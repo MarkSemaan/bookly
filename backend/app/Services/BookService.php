@@ -28,7 +28,7 @@ class BookService
     }
 
 
-    public static function createOrUpdateBook(array $data, ?Book $book = null): Book
+    public static function createOrUpdateBook(array $data, ?Book $book = null)
     {
         if (!empty($data['image']) && $data['image'] instanceof UploadedFile) {
             $data['image'] = self::handleImageUpload($data['image'], $book?->image);
@@ -46,13 +46,18 @@ class BookService
         return Book::create($data);
     }
 
-    public static function deleteBook(Book $book): void
+    public static function deleteBook(Book $book)
     {
         if ($book->image) {
             Storage::disk('public')->delete($book->image);
         }
 
         $book->delete();
+    }
+    public static function getTopSellingBooks()
+    {
+        
+        return Book::where('sold', '>', 0)->orderByDesc('sold')->limit(15)->get();
     }
 
     private static function handleImageUpload(UploadedFile $imageFile, ?string $oldImagePath = null): string
@@ -63,20 +68,8 @@ class BookService
 
         return $imageFile->store('book-covers', 'public');
     }
-  
-    public static function available()
-    {
-        $books = Book::where('is_available', true)->get();
-        return $books;
-    }
-  
-    public static function getBooksByIds($book_ids)
-    {
-        $recommended = Book::whereIn('id', $book_ids)->get();
-        return $recommended;
-    }
 
-    public static function getTopRatedBooks(): \Illuminate\Support\Collection
+    public static function getTopRatedBooks()
         {
             return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
         }

@@ -9,11 +9,20 @@ use App\Models\Book;
 use Exception;
 
 class CartService
-{
 
-    public static function getCartItems($id = null, $search = null)
+
+{
+    public static function getCartItems($userId, $search = null)
     {
-        return CartItem::with('book')->where('user_id', $id)->get();
+        $query = CartItem::with('book')->where('user_id', $userId);
+
+        if ($search) {
+            $query->whereHas('book', function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%");
+            });
+        }
+
+        return $query->get();
     }
 
     public function deleteCartItem(CartItem $cartItem): void
@@ -24,10 +33,6 @@ class CartService
     public function addToCart(int $userId, int $bookId, int $quantity)
     {
         $book = Book::findOrFail($bookId);
-
-        if ($bookId) {
-            return $query->find($bookId);
-        }
 
         $existingItem = CartItem::where('user_id', $userId)
             ->where('book_id', $bookId)
@@ -45,7 +50,6 @@ class CartService
             'quantity' => $quantity
         ]);
     }
-
 
     public static function createOrUpdateCartItem(array $data): CartItem
     {
@@ -65,11 +69,6 @@ class CartService
     {
         return CartItem::with('book')->where('user_id', $userId)->get();
     }
-
-    // public static function deleteCartItem(CartItem $cartItem): void
-    // {
-    //     return CartItem::where('user_id', $userId)->delete();
-    // }
 
     public function getCartTotal(int $userId)
     {

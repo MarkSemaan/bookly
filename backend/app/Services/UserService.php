@@ -3,45 +3,41 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
-    public function registerUser(array $userData)
+    public static function getUsers(?int $id = null, ?string $search = null)
     {
-        return User::create([
-            'name' => $userData['name'],
-            'email' => $userData['email'],
-            'password' => bcrypt($userData['password']),
-            'role' => $userData['role'] ?? 'user',
-        ]);
-    }
-
-    public function loginUser(array $credentials)
-    {
-        if (Auth::attempt($credentials)) {
-            return Auth::user();
+        if ($id) {
+            return User::find($id);
         }
-        return null;
-    }
-    public function logoutUser()
-    {
-        Auth::logout();
+
+        return User::when($search, function ($query) use ($search) {
+            $query->where('first_name', 'like', "%$search%")
+                  ->orWhere('last_name', 'like', "%$search%");
+        })->latest('id')->get();
     }
 
-    public function getUserByID(int $id)
+    public static function updateUserInfo(User $user, array $data): User
     {
-        return User::findOrFail($id);
-    }
-    public function getUserOrders(int $userId)
-    {
-        $user = User::findOrFail($userId);
-        return $user->orders()->with('orderItems.book')->get();
+        $user->update([
+            'first_name' => $data['first_name'],
+            'last_name'  => $data['last_name'],
+        ]);
+
+        return $user->fresh();
     }
 
-    public function getUserReviews(int $userId)
+    public static function upgradeToAdmin(User $user): User
     {
-        $user = User::findOrFail($userId);
+        $user->role = 'admin';
+        $user->save();
+
+        return $user->fresh();
+    }
+
+    public static function getUserReviews(User $user)
+    {
         return $user->reviews()->with('book')->get();
     }
 }

@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Book\StoreBookRequest;
 use App\Models\Book;
-use App\Traits\ResponseTrait;
 use App\Services\BookService;
 use Illuminate\Http\Request;
 use Exception;
 
 class BookController extends Controller
 {
-    use ResponseTrait;
-
-    public function getBooks($id = null, Request $request)
+    public function getBooks( Request $request, $id = null)
     {
         try {
             $search = $request->query('search');
@@ -24,17 +21,27 @@ class BookController extends Controller
             }
 
             return $this->responseJSON($books, $id ? "Book found" : "Books loaded");
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
+
       public function getTopRatedBooks()
     {
         $books = BookService::getTopRatedBooks();
         return $this->responseJSON($books);
     }
-
-    public function getBooksByCategory(int $categoryId)
+    
+    public function getTopSellingBooks()
+    {
+        try {
+            $books = BookService::getTopSellingBooks();
+            return $this->responseJSON($books, "Top 15 best-selling books loaded");
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
+    }
+      public function getBooksByCategory(int $categoryId)
     {
         try {
             $books = BookService::getBooksByCategory($categoryId);
@@ -43,6 +50,7 @@ class BookController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
+
 
     public function storeOrUpdate(StoreBookRequest $request)
     {
@@ -59,7 +67,7 @@ class BookController extends Controller
 
 
             return $this->responseJSON($result, $id ? "Book updated" : "Book added", $id ? 200 : 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
@@ -69,7 +77,7 @@ class BookController extends Controller
         try {
             BookService::deleteBook($book);
             return $this->responseJSON(null, "Book deleted");
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
