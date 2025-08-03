@@ -30,7 +30,8 @@ class OrderService
 
     public static function getUserOrders(int $userId)
     {
-        return Order::with('items.book')->where('user_id', $userId)->get();
+        $orders = Order::with('books')->where('user_id', $userId)->get();
+        return $orders;
     }
 
     public static function createOrderFromCart(int $userId): Order

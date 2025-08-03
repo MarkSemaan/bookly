@@ -2,11 +2,11 @@ import "./Assets/Styles/App.css";
 import "./Assets/Styles/variable.css"
 import BookDetails from "./Components/bookDetails/BookDetails";
 import AppLayout from "./Components/Shared/Layouts/AppLayout";
+import UserOrders from "./Components/userOrders/UserOrders";
 import BookList from "./Pages/BookList/BookList";
 import HomePage from "./Pages/HomePage/HomePage";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
-
 
 import {
   Routes,
@@ -32,10 +32,11 @@ const MyRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route element={<AppLayout />}>
-      <Route path="/homePage" element={<HomePage />} />
-          <Route path="/bookList" element={<BookList />} />
-          <Route path="/book/:id" element={<BookDetails />} />
-        </Route>
-      </Routes>
+        <Route path="/homePage" element={<HomePage />} />
+        <Route path="/bookList" element={<BookList />} />
+        <Route path="/book/:id" element={<BookDetails />} />
+        <Route path="/my_orders" element={<UserOrders />}></Route>
+      </Route>
+    </Routes>
   );
 };

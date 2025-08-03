@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Book;
 
 class Order extends Model
 {
@@ -24,4 +25,11 @@ class Order extends Model
     {
         return $this->hasOne(Payment::class);
     }
+    public function books()
+    {
+        return $this->belongsToMany(Book::class, 'order_items')
+            ->withPivot('quantity', 'price')
+            ->withTimestamps();
+    }
+
 }
