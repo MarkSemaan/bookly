@@ -53,6 +53,7 @@ class CartService
             'user_id' => $data['user_id'],
             'book_id' => $data['book_id'],
         ]);
+        
 
         $cartItem->quantity = ($cartItem->exists ? $cartItem->quantity : 0) + $data['quantity'];
         $cartItem->save();
@@ -62,22 +63,13 @@ class CartService
 
     public static function getUserCartItems($userId)
     {
-        $cartItem = CartItem::with('book')->findOrFail($cartItemId);
-
-        if ($cartItem->book->stock < $quantity) {
-            throw new Exception('Not enough stock available');
-        }
-
-        $cartItem->quantity = $quantity;
-        $cartItem->save();
-
-        return $cartItem;
+        return CartItem::with('book')->where('user_id', $userId)->get();
     }
 
-    public static function deleteCartItem(CartItem $cartItem): void
-    {
-        return CartItem::where('user_id', $userId)->delete();
-    }
+    // public static function deleteCartItem(CartItem $cartItem): void
+    // {
+    //     return CartItem::where('user_id', $userId)->delete();
+    // }
 
     public function getCartTotal(int $userId)
     {

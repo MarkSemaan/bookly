@@ -30,14 +30,14 @@ class CartController extends Controller
     }
 }
 
-
+//mnzo3a kenet
 public function storeOrUpdate(StoreCartItemRequest $request)
 {
     try {
-
         $validatedData = $request->validated();
-        $service = app()->make(CartService::class);
+        $validatedData['user_id'] = auth()->id(); 
 
+        $service = app()->make(CartService::class);
         $item = $service->createOrUpdateCartItem($validatedData);
 
         return $this->responseJSON($item, "Cart item added/updated", 200);
@@ -46,6 +46,7 @@ public function storeOrUpdate(StoreCartItemRequest $request)
         return $this->fail($e->getMessage(), "error", 500);
     }
 }
+
 
 
     public function getUserCartItems(int $userId)

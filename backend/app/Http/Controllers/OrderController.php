@@ -13,7 +13,7 @@ class OrderController extends Controller
 {
     use ResponseTrait;
 
-    public function getOrders(?int $id = null, Request $request)
+    public function getOrders(Request $request, ?int $id = null)
     {
         try {
             $search = $request->query('search');

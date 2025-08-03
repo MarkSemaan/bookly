@@ -6,7 +6,7 @@ use App\Models\Category;
 
 class CategoryService
 {
-    public function getAllCategories()
+    public static function getAllCategories()
     {
         return Category::all();
     }

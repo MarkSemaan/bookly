@@ -8,7 +8,7 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\CategoryController;
 
 Route::get('/greeting', function () {
     return 'Hello World';
@@ -25,13 +25,17 @@ Route::group(["prefix" => "v0.1"], function () {
         Route::group(["prefix" => "user"], function () {
             Route::prefix('books')->group(function () {
 
-                Route::get('/', [BookController::class, 'getBooks']);
+                Route::get('/book/{id?}', [BookController::class, 'getBooks']);
                 Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
                 Route::post('/', [BookController::class, 'storeOrUpdate']);
                 Route::delete('/{book}', [BookController::class, 'destroy']);
                 Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
-
             });
+
+            Route::prefix('categories')->group(function () {
+               Route::get('/', [CategoryController::class, 'getAllCategories']);
+            });
+           
 
             Route::group(["prefix" => "recommender"], function () {
                 //APIs for ai
@@ -46,7 +50,7 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::get('/', 'getCartItems');
             Route::get('/{id}', 'getCartItems');
             Route::get('/user/{userId}', 'getUserCartItems');
-            Route::post('/', 'storeOrUpdate');
+            Route::post('/cart', [CartController::class, 'storeOrUpdate']);
             Route::delete('/{cartItem}', 'destroy');
         });
 
