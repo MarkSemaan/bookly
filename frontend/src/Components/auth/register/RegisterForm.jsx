@@ -7,8 +7,8 @@ import useForm from "../../../Hooks/useForm";
 
 const RegisterForm = () => {
   const [form, handleChange] = useForm({
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
   });
@@ -18,9 +18,12 @@ const RegisterForm = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    console.log("Form state at submission:", form);
 
     try {
       await registerService(form);
+      const data = await registerService(form);
+      localStorage.setItem("token", data.token); 
       setMessage({ type: "success", text: "Registration successful!" });
       navigate("/homePage");
     } catch (error) {
@@ -41,38 +44,38 @@ const RegisterForm = () => {
 
       <div className="name-row firstlast">
         <Input
-          name="firstName"
+          name="first_name"
           hint="First Name"
           placeholder="John"
           onChangeListener={handleChange}
-          value={form.firstName}
+          value={form.first_name}
         />
         <Input
-          name="lastName"
+          name="last_name"
           hint="Last Name"
           placeholder="Doe"
           onChangeListener={handleChange}
-          value={form.lastName}
+          value={form.last_name}
         />
       </div>
 
       <div className="Second">
-      <Input
-        name="email"
-        hint="Email"
-        placeholder="john@example.com"
-        onChangeListener={handleChange}
-        value={form.email}
-      />
+        <Input
+          name="email"
+          hint="Email"
+          placeholder="john@example.com"
+          onChangeListener={handleChange}
+          value={form.email}
+        />
 
-      <Input
-        type="password"
-        name="password"
-        hint="Password"
-        placeholder="Enter your password"
-        onChangeListener={handleChange}
-        value={form.password}
-      />
+        <Input
+          type="password"
+          name="password"
+          hint="Password"
+          placeholder="Enter your password"
+          onChangeListener={handleChange}
+          value={form.password}
+        />
       </div>
 
       <div className="button-register">

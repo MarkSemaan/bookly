@@ -9,8 +9,8 @@ const useCategories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await api.get("/categories");
-        setCategories(response.data);
+        const response = await api.get("user/categories");
+        setCategories(response.data.payload);
       } catch (err) {
         setError("Failed to load categories");
       } finally {

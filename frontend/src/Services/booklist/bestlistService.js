@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000/api"; 
+const API_BASE_URL = "http://localhost:8000/api/v0.1"; 
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -10,8 +10,9 @@ const api = axios.create({
 });
 
 
-api.interceptors.request.use(config => {
-  const token = localStorage.getItem("token"); 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  console.log("Token from localStorage:", token);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -20,6 +21,5 @@ api.interceptors.request.use(config => {
 
 export default api;
 
-export const getBooksByCategory = (category) => {
-  return api.get(`/books?category=${category}`);
-};
+
+
