@@ -8,6 +8,7 @@ import HomePage from "./Pages/HomePage/HomePage";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import OrderManagement from "./Components/orderManagement/OrderManagement";
+import UserCart from "./Pages/UserCart/UserCart";
 
 import {
   Routes,
@@ -15,6 +16,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import BooksManagement from "./Pages/BooksManagement/BooksManagement";
+
 
 const App = () => {
   const location = useLocation();
@@ -34,13 +36,14 @@ const MyRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route element={<AppLayout />}>
-        <Route path="/homePage" element={<HomePage />} />
-        <Route path="/bookList" element={<BookList />} />
-        <Route path="/book/:id" element={<BookDetails />} />
-        <Route path="/myOrders" element={<UserOrders />} />
-        <Route path="/management" element={<OrderManagement />} />
-        <Route path="/booksManagement" element={<BooksManagement />} />
-      </Route>
-    </Routes>
+      <Route path="/homePage" element={<HomePage />} />
+          <Route path="/bookList" element={<BookList />} />
+          <Route path="/book/:id" element={<BookDetails />} />
+          <Route path="/cart" element={<UserCart />} />
+          <Route path="/my_orders" element={<UserOrders />} />
+          <Route path="/management" element={<OrderManagement />} />
+          <Route path="/booksManagement" element={<BooksManagement />} />
+        </Route>
+      </Routes>
   );
 };
