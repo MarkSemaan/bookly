@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Book;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +19,7 @@ class BookTest extends TestCase
     {
         parent::setUp();
 
-        $user = \App\Models\User::factory()->create([
+        $user = User::factory()->create([
             'email' => 'test@example.com',
             'password' => Hash::make('password'),
         ]);
