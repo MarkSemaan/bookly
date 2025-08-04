@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\NotificationController;
 
 
 
@@ -39,6 +40,17 @@ Route::group(["prefix" => "v0.1"], function () {
                Route::get('/', [CategoryController::class, 'getCategories']);
             });
            
+           
+           
+
+
+        Route::prefix('notifications')->group(function () {
+            Route::get('/', [NotificationController::class, 'index']);
+            Route::get('/unread', [NotificationController::class, 'unread']);
+            Route::post('/read/{id}', [NotificationController::class, 'markAsRead']);
+            Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
+        });
+
 
             Route::group(["prefix" => "recommender"], function () {
                 //APIs for ai
