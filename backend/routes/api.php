@@ -48,7 +48,7 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::get('/book/{id?}', [BookController::class, 'getBooks']);
                 Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
                 Route::post('/', [BookController::class, 'storeOrUpdate']);
-                Route::post('/delete/{book_id}', [BookController::class, 'destroy']);
+                Route::delete('/{book_id}', [BookController::class, 'destroy']);
                 Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
             });
 
