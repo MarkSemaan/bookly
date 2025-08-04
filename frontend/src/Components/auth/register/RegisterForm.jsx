@@ -15,22 +15,25 @@ const RegisterForm = () => {
 
   const [message, setMessage] = useState({ type: "", text: "" });
   const navigate = useNavigate();
-
   const handleRegister = async (e) => {
-    e.preventDefault();
-    console.log("Form state at submission:", form);
+  e.preventDefault();
+  console.log("Form state at submission:", form);
 
-    try {
-      await registerService(form);
-      const data = await registerService(form);
-      localStorage.setItem("token", data.token); 
-      setMessage({ type: "success", text: "Registration successful!" });
-      navigate("/homePage");
-    } catch (error) {
-      setMessage({ type: "error", text: "Failed to register" });
-      console.error(error);
-    }
-  };
+  try {
+    const data = await registerService(form);
+    localStorage.setItem("token", data); 
+    setMessage({ type: "success", text: "Registration successful!" });
+
+
+    setTimeout(() => {
+      navigate("/homePage"); 
+    }, 500); 
+  } catch (error) {
+    setMessage({ type: "error", text: "Failed to register" });
+    console.error(error);
+  }
+};
+
 
   return (
     <form className="register-form" onSubmit={handleRegister}>

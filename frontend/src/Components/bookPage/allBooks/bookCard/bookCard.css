@@ -73,7 +73,7 @@
   text-align: center;
 }
 
-.book-image {
+.book-card-image {
   width: 100%;
   height: 150px;
   object-fit: cover;
@@ -81,22 +81,22 @@
   margin-bottom: 0.75rem;
 }
 
-.book-title {
+.book-card-title {
   font-weight: 700;
   margin-top: -0.2rem;
   font-size: 0.9rem;
 }
 
-.book-rating .star {
+.book-card-rating .star {
   color: #ccc;
   font-size: 1.3rem;
 }
 
-.book-rating .star.filled {
+.book-card-rating .star.filled {
   color: gold;
 }
 
-.book-price {
+.book-card-price {
   font-weight: 700;
   font-size: 0.9rem;
   margin-bottom: 1.5rem;

@@ -4,7 +4,7 @@ import "./bookCard.css";
 
 const BookCard = ({ book }) => {
   const { title, price, rating, image } = book;
-
+  const backendBaseUrl = "http://127.0.0.1:8000/";
 
   const stars = Array(5).fill(0).map((_, i) => (
     <span key={i} className={i < rating ? "star filled" : "star"}>
@@ -14,10 +14,10 @@ const BookCard = ({ book }) => {
 
   return (
     <div className="book-card">
-      <img src={image} alt={title} className="book-image" />
-      <h3 className="book-title">{title}</h3>
-      <div className="book-rating">{stars}</div>
-      <p className="book-price">${price}</p>
+       <img src={image ? `${backendBaseUrl}${image}` : '/default-book.png'} className="book-card-image" />
+      <h3 className="book-card-title">{title}</h3>
+      <div className="book-card-rating">{stars}</div>
+      <p className="book-card-price">${price}</p>
       
       <Link to={`/book/${book.id}`}>
         <button className="learn-more-btn">Learn More</button>
