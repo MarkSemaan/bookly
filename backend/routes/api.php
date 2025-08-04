@@ -86,7 +86,7 @@ Route::group(["prefix" => "v0.1"], function () {
         Route::prefix('orders')->controller(OrderController::class)->group(function () {
             Route::get('orders', [OrderController::class, 'getOrders']);
             Route::get('orders/{id}', [OrderController::class, 'getOrders']);
-            Route::get('users/{userId}', [OrderController::class, 'getUserOrders']);
+            Route::get('users/{userId?}', [OrderController::class, 'getUserOrders']);
             Route::post('/', [OrderController::class, 'storeOrUpdate']);
             Route::post('from-cart/{userId}', [OrderController::class, 'createFromCart']);
             Route::post('{order}/cancel', [OrderController::class, 'cancel']);

@@ -29,9 +29,10 @@ class OrderController extends Controller
         }
     }
 
-    public function getUserOrders(int $userId)
+    public function getUserOrders(int $userId = null)
     {
         try {
+            if(!$userId) $userId = auth()->id();
             $orders = OrderService::getUserOrders($userId);
             return $this->responseJSON($orders, "User's orders loaded");
         } catch (Exception $e) {
