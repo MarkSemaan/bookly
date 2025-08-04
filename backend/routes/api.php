@@ -89,13 +89,16 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::get('users/{userId?}', [OrderController::class, 'getUserOrders']);
             Route::post('/', [OrderController::class, 'storeOrUpdate']);
             Route::post('from-cart/{userId}', [OrderController::class, 'createFromCart']);
-            Route::post('{order}/cancel', [OrderController::class, 'cancel']);
+            Route::post('/cancel/{id}', [OrderController::class, 'cancel']);
             Route::delete('{order}', [OrderController::class, 'destroy']);
         });
 
         Route::group(["prefix" => "admin"], function () {
             Route::group(["middleware" => "isAdmin"], function () {
                 //Admin APIs
+                Route::get('/orders', [OrderController::class, 'getAllOrders']);
+                Route::post('/orders/move_status/{id}', [OrderController::class, 'moveStatus']);
+                Route::get('/books', [BookController::class, 'getAllBooks']);
             });
         });
     });

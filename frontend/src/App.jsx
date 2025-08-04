@@ -7,6 +7,7 @@ import BookList from "./Pages/BookList/BookList";
 import HomePage from "./Pages/HomePage/HomePage";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
+import OrderManagement from "./Components/orderManagement/OrderManagement";
 import UserCart from "./Pages/UserCart/UserCart";
 
 import {
@@ -39,6 +40,7 @@ const MyRoutes = () => {
           <Route path="/book/:id" element={<BookDetails />} />
           <Route path="/cart" element={<UserCart />} />
           <Route path="/my_orders" element={<UserOrders />} />
+          <Route path="/management" element={<OrderManagement />} />
         </Route>
       </Routes>
   );

@@ -73,6 +73,13 @@ class BookService
     {
         return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
     }
+  
+    public static function getAllBooks()
+    {
+        $books = Book::all();
+        return $books;
+    }
+
     public static function available()
     {
         $books = Book::where('is_available', true);
