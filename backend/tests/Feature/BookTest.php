@@ -194,7 +194,7 @@ class BookTest extends TestCase
         $response->assertOk()
             ->assertJson([
                 'status' => 'Book deleted',
-                'payload' => null
+                'payload' => true
             ]);
 
         $this->assertDatabaseMissing('books', ['id' => $book->id]);
