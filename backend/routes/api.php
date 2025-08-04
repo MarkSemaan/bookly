@@ -8,7 +8,12 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
+
 use App\Http\Controllers\CategoryController;
+
+use App\Http\Controllers\ReviewController;
+
+
 
 Route::get('/greeting', function () {
     return 'Hello World';
@@ -36,7 +41,7 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::prefix('categories')->group(function () {
                Route::get('/', [CategoryController::class, 'getCategories']);
             });
-           
+        
 
             Route::group(["prefix" => "recommender"], function () {
                 //APIs for ai

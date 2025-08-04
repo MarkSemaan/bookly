@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
+
 class CategoryController extends Controller
 {
     public function getCategories(Request $request, $id = null)
