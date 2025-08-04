@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +14,7 @@ use App\Models\Review;
 use App\Services\BookService;
 use function Laravel\Prompts\search;
 use App\Services\CartService;
+
 class AgentService
 {
     private static $system_message = <<<EOT
@@ -72,7 +74,6 @@ class AgentService
         })->get();
 
         return $books;
-
     }
     private static function getUserBooks($user_id)
     {
@@ -104,8 +105,8 @@ class AgentService
             'getUserViews' => self::getUserViews($user_id),
             'getUserBooks' => self::getUserBooks($user_id),
             'getUserReviews' => self::getUserReviews($user_id),
-            'getCartItems' => CartService::getCartItems($user_id),
             'available' => BookService::available(),
+            'getCartItems' => CartService::getCartItems($user_id),
             'getTopRatedBooks' => BookService::getTopRatedBooks(),
             default => ["role" => "assistant", "content" => "Unknown tool requested: " . $action],
         };
@@ -171,8 +172,8 @@ class AgentService
         $system_message = self::$system_message;
         $goal_prompt = 'Recommend 5 books for the user based on their search, views, purchases, cart, and reviews.';
         $json = file_get_contents(storage_path('app/private/tools.json'));
-        $tools = json_decode($json, true);
         $available_books = BookService::available();
+        $tools = json_decode($json, true);
         $messages = [
             ["role" => "system", "content" => $system_message],
             ["role" => "system", "content" => "User Id: " . $user_id],
@@ -191,6 +192,4 @@ class AgentService
         $result = self::process($max_iterations, $headers, $url, $user_id, $messages);
         return $result;
     }
-
-
 }

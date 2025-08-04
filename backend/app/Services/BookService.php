@@ -22,8 +22,11 @@ class BookService
 
     public static function getBooksByCategory(int $categoryId)
     {
-        return Book::where('category_id', $categoryId)->latest('id')->limit(50)->get();
+        return Book::whereHas('categories', function ($q) use ($categoryId) {
+            $q->where('category_id', $categoryId);
+        })->latest('id')->limit(50)->get();
     }
+
 
     public static function createOrUpdateBook(array $data, ?Book $book = null)
     {
@@ -70,10 +73,16 @@ class BookService
     {
         return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
     }
+  
     public static function getAllBooks()
     {
         $books = Book::all();
         return $books;
     }
 
+    public static function available()
+    {
+        $books = Book::where('is_available', true);
+        return $books;
+    }
 }
