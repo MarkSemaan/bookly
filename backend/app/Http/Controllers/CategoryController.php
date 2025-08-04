@@ -20,7 +20,7 @@ class CategoryController extends Controller
                 return $this->fail("Category not found", "fail", 404);
             }
 
-            return $this->responseJSON($categories, $id ? "Category found" : "Categories loaded");
+            return $this->responseJSON($categories, "Categories loaded successfully");
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }

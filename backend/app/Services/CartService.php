@@ -9,7 +9,6 @@ use Exception;
 
 class CartService
 {
-    
     public static function getUserCartItems($userId)
     {
         return CartItem::with('book')->where('user_id', $userId)->get();
@@ -63,7 +62,6 @@ class CartService
         $cartItem->delete();
     }
 
-    
     public function getCartTotal($userId)
     {
         $cartItems = CartItem::with('book')->where('user_id', $userId)->get();
@@ -78,7 +76,6 @@ class CartService
         return $total;
     }
 
-    
     public static function decreaseCartItemQuantity($userId, $bookId)
     {
         $cartItem = CartItem::where('user_id', $userId)

@@ -15,22 +15,22 @@ class CartController extends Controller
     use ResponseTrait;
 
 
-  public function getCartItems(Request $request, $id = null)
-{
-    try {
-        $search = $request->query('search');
-        $service = app()->make(CartService::class);
-        $items = $service->getCartItems($id, $search);
+    public function getCartItems(Request $request, $id = null)
+    {
+        try {
+            $search = $request->query('search');
+            $service = app()->make(CartService::class);
+            $items = $service->getCartItems($id, $search);
 
-        if ($id && !$items) {
-            return $this->fail("Cart item not found", "fail", 404);
+            if ($id && !$items) {
+                return $this->fail("Cart item not found", "fail", 404);
+            }
+
+            return $this->responseJSON($items, $id ? "Cart item found" : "Cart items loaded");
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
         }
-
-        return $this->responseJSON($items, $id ? "Cart item found" : "Cart items loaded");
-    } catch (\Exception $e) {
-        return $this->fail($e->getMessage(), "error", 500);
     }
-}
 
 
 

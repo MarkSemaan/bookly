@@ -9,6 +9,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ReviewController;
+
+
 
 Route::get('/greeting', function () {
     return 'Hello World';
@@ -24,7 +27,6 @@ Route::group(["prefix" => "v0.1"], function () {
         //AUTHENTICATED APIs
         Route::group(["prefix" => "user"], function () {
             Route::prefix('books')->group(function () {
-
                 Route::get('/book/{id?}', [BookController::class, 'getBooks']);
                 Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
                 Route::post('/books', [BookController::class, 'storeOrUpdate']);
@@ -44,8 +46,8 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::post('/save_view', [AgentController::class, 'saveBookView']);
                 Route::get('/get', [AgentController::class, 'getRecommended']);
             });
-
         });
+
         //Customer APIs
         Route::prefix('cartitems')->controller(CartController::class)->group(function () {
             Route::get('/', 'getCartItems');
@@ -58,6 +60,15 @@ Route::group(["prefix" => "v0.1"], function () {
         });
 
 
+        Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
+            Route::get('/', 'getReviews');
+            Route::get('/{id}', 'getReviews');
+            Route::post('/', 'storeOrUpdate');
+            Route::delete('/{id}', 'destroy');
+        });
+
+
+
         Route::prefix('orders')->controller(OrderController::class)->group(function () {
             Route::get('orders', [OrderController::class, 'getOrders']);
             Route::get('orders/{id}', [OrderController::class, 'getOrders']);
@@ -66,9 +77,6 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::post('from-cart', [OrderController::class, 'createFromCart']);
             Route::post('{order}/cancel', [OrderController::class, 'cancel']);
             Route::delete('{order}', [OrderController::class, 'destroy']);
-       
-
-
         });
 
         Route::group(["prefix" => "admin"], function () {
@@ -76,12 +84,10 @@ Route::group(["prefix" => "v0.1"], function () {
                 //Admin APIs
             });
         });
-
     });
 
     Route::group(["prefix" => "guest"], function () {
         Route::post("/login", [AuthController::class, "login"]);
         Route::post("/register", [AuthController::class, "register"]);
-
     });
 });

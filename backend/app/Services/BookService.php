@@ -23,7 +23,7 @@ class BookService
     public static function getBooksByCategory(int $categoryId)
     {
         return Book::whereHas('categories', function ($q) use ($categoryId) {
-           $q->where('category_id', $categoryId);
+            $q->where('category_id', $categoryId);
         })->latest('id')->limit(50)->get();
     }
 
@@ -56,7 +56,7 @@ class BookService
     }
     public static function getTopSellingBooks()
     {
-        
+
         return Book::where('sold', '>', 0)->orderByDesc('sold')->limit(15)->get();
     }
 
@@ -70,8 +70,12 @@ class BookService
     }
 
     public static function getTopRatedBooks()
-        {
-            return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
-        }
-
+    {
+        return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
+    }
+    public static function available()
+    {
+        $books = Book::where('is_available', true);
+        return $books;
+    }
 }
