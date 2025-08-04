@@ -2,84 +2,117 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Book\StoreBookRequest;
-use App\Models\Book;
-use App\Services\BookService;
+use App\Http\Requests\Cart\StoreCartItemRequest;
+use App\Models\CartItem;
+use App\Services\CartService;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
-class BookController extends Controller
+class CartController extends Controller
 {
-    public function getBooks( Request $request, $id = null)
+    use ResponseTrait;
+
+
+    public function getCartItems(Request $request, $id = null)
     {
         try {
             $search = $request->query('search');
-            $books = BookService::getBooks($id, $search);
+            $service = app()->make(CartService::class);
+            $items = $service->getCartItems($id, $search);
 
-            if ($id && !$books) {
-                return $this->fail("Book not found", "fail", 404);
+            if ($id && !$items) {
+                return $this->fail("Cart item not found", "fail", 404);
             }
 
-            return $this->responseJSON($books, $id ? "Book found" : "Books loaded");
+            return $this->responseJSON($items, $id ? "Cart item found" : "Cart items loaded");
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
 
-      public function getTopRatedBooks()
-    {
-        $books = BookService::getTopRatedBooks();
-        return $this->responseJSON($books);
-    }
 
-    public function getTopSellingBooks()
+    public function storeOrUpdate(StoreCartItemRequest $request)
     {
         try {
-            $books = BookService::getTopSellingBooks();
-            return $this->responseJSON($books, "Top 15 best-selling books loaded");
+            $validatedData = $request->validated();
+            $validatedData['user_id'] = Auth::id();
+
+            $service = app()->make(CartService::class);
+            $item = $service->createOrUpdateCartItem($validatedData);
+
+            return $this->responseJSON($item, "Cart item added/updated", 200);
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
 
-      public function getBooksByCategory(int $categoryId)
+
+    public function getUserCartItems()
     {
         try {
-            $books = BookService::getBooksByCategory($categoryId);
-            return $this->responseJSON($books, "Books by category loaded");
-        } catch (Exception $e) {
+            $userId = Auth::id();
+
+            $service = app()->make(CartService::class);
+            $cartItems = $service->getUserCartItems($userId);
+
+            return $this->responseJSON($cartItems, "User cart items loaded");
+        } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
 
 
-    public function storeOrUpdate(StoreBookRequest $request)
+    public function getCartTotal()
     {
         try {
-            $validated = $request->validated();
-            $id = $validated['id'] ?? null;
-            $book = $id ? Book::find($id) : null;
+            $userId = Auth::id();
 
-            if ($id && !$book) {
-                return $this->fail("Book not found", "fail", 404);
+            $service = app()->make(CartService::class);
+            $total = $service->getCartTotal($userId);
+
+            return $this->responseJSON($total, "Cart total calculated");
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
+    }
+
+
+    public function destroy(CartItem $cartItem)
+    {
+        try {
+            $service = app()->make(CartService::class);
+            $service->deleteCartItem($cartItem);
+
+            return $this->responseJSON(null, "Cart item deleted");
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
+    }
+
+
+    public function decreaseCartItem(Request $request)
+    {
+        try {
+            $userId = Auth::id();
+            $bookId = $request->input('book_id');
+
+            $item = CartService::decreaseCartItemQuantity($userId, $bookId);
+
+            if (!$item) {
+                return $this->responseJSON(['message' => 'Item not found'], 404);
             }
 
-            $result = BookService::createOrUpdateBook($validated, $book);
-
-
-            return $this->responseJSON($result, $id ? "Book updated" : "Book added", $id ? 200 : 201);
+            return $this->responseJSON([
+                'message' => 'Quantity decreased',
+                'item' => $item
+            ]);
         } catch (\Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
-        }
-    }
-
-    public function destroy(Book $book)
-    {
-        try {
-            BookService::deleteBook($book);
-            return $this->responseJSON(null, "Book deleted");
-        } catch (\Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
+            return $this->responseJSON([
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
