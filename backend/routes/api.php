@@ -29,17 +29,21 @@ Route::group(["prefix" => "v0.1"], function () {
         //AUTHENTICATED APIs
         Route::group(["prefix" => "user"], function () {
             Route::prefix('books')->group(function () {
-
                 Route::get('/book/{id?}', [BookController::class, 'getBooks']);
                 Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
+
                 Route::post('/books', [BookController::class, 'storeOrUpdate']);
                 Route::put('/books/{id}', [BookController::class, 'storeOrUpdate']);
-                Route::delete('/{book}', [BookController::class, 'destroy']);
+
+
+                Route::delete('/{book_id}', [BookController::class, 'destroy']);
+
                 Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
             });
 
             Route::prefix('categories')->group(function () {
-               Route::get('/', [CategoryController::class, 'getCategories']);
+
+                Route::get('/', [CategoryController::class, 'getCategories']);
             });
         
 
@@ -49,13 +53,13 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::post('/save_view', [AgentController::class, 'saveBookView']);
                 Route::get('/get', [AgentController::class, 'getRecommended']);
             });
-
         });
+
         //Customer APIs
         Route::prefix('cartitems')->controller(CartController::class)->group(function () {
             Route::get('/', 'getCartItems');
             Route::get('/{id}', 'getCartItems');
-           Route::get('/total/cart', 'getCartTotal');
+            Route::get('/total/cart', 'getCartTotal');
             Route::get('/user/cart', 'getUserCartItems');
             Route::post('/cart', [CartController::class, 'storeOrUpdate']);
             Route::delete('/delete/{cartItem}', 'destroy');
@@ -63,30 +67,38 @@ Route::group(["prefix" => "v0.1"], function () {
         });
 
 
+
+        Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
+            Route::get('/', 'getReviews');
+            Route::get('/{id}', 'getReviews');
+            Route::post('/', 'storeOrUpdate');
+            Route::delete('/{id}', 'destroy');
+        });
+
+
         Route::prefix('orders')->controller(OrderController::class)->group(function () {
             Route::get('orders', [OrderController::class, 'getOrders']);
             Route::get('orders/{id}', [OrderController::class, 'getOrders']);
-            Route::get('users/{userId}', [OrderController::class, 'getUserOrders']);
+            Route::get('users/{userId?}', [OrderController::class, 'getUserOrders']);
             Route::post('/', [OrderController::class, 'storeOrUpdate']);
+
             Route::post('from-cart', [OrderController::class, 'createFromCart']);
             Route::post('{order}/cancel', [OrderController::class, 'cancel']);
             Route::delete('{order}', [OrderController::class, 'destroy']);
-       
-
-
         });
 
         Route::group(["prefix" => "admin"], function () {
             Route::group(["middleware" => "isAdmin"], function () {
                 //Admin APIs
+                Route::get('/orders', [OrderController::class, 'getAllOrders']);
+                Route::post('/orders/move_status/{id}', [OrderController::class, 'moveStatus']);
+                Route::get('/books', [BookController::class, 'getAllBooks']);
             });
         });
-
     });
 
     Route::group(["prefix" => "guest"], function () {
         Route::post("/login", [AuthController::class, "login"]);
         Route::post("/register", [AuthController::class, "register"]);
-
     });
 });

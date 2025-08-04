@@ -116,3 +116,49 @@
 .learn-more-btn:hover {
   background-color: #a25a36;
 }
+
+
+
+/* Admin Buttons Styles */
+.admin-btns {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.admin-btns button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: lowercase;
+  min-width: 60px;
+}
+
+.admin-btns button:first-child {
+  background: #8B4513;
+  color: white;
+}
+
+.admin-btns button:first-child:hover {
+  background: #A0522D;
+  transform: translateY(-1px);
+}
+
+.admin-btns button:last-child {
+  background: #dc3545;
+  color: white;
+}
+
+.admin-btns button:last-child:hover {
+  background: #c82333;
+  transform: translateY(-1px);
+}
+
+.admin-btns button:active {
+  transform: translateY(0);
+}
