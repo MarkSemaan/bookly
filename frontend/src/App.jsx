@@ -15,6 +15,7 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
+import BooksManagement from "./Pages/BooksManagement/BooksManagement";
 
 
 const App = () => {
@@ -41,6 +42,7 @@ const MyRoutes = () => {
           <Route path="/cart" element={<UserCart />} />
           <Route path="/my_orders" element={<UserOrders />} />
           <Route path="/management" element={<OrderManagement />} />
+          <Route path="/booksManagement" element={<BooksManagement />} />
         </Route>
       </Routes>
   );
