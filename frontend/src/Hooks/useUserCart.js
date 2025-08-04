@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import api from "../../src/Services/axios/useAxios";
+import { getUserCartItems, getCartTotal } from "../api"
 
 const useUserCart = () => {
   const [cart, setCart] = useState([]);
@@ -7,15 +7,14 @@ const useUserCart = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   useEffect(() => {
     const fetchCartData = async () => {
       setLoading(true);
       try {
-        const cartResponse = await api.get("/cartitems/user/cart");
+        const cartResponse = await getUserCartItems();
         setCart(cartResponse.data.payload || []);
 
-        const totalResponse = await api.get("/cartitems/total/cart");
+        const totalResponse = await getCartTotal();
         setTotal(totalResponse.data.payload || 0);
       } catch (err) {
         setError("Failed to load cart data");

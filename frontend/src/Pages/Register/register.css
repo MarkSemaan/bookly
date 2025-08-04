@@ -25,32 +25,32 @@
 .register-container {
   display: flex;
   justify-content: center;
-  align-items: left;
+  align-items: flex-start;
   gap: 4rem;
-  padding-top: 2rem; 
+  padding-top: 2rem;
   flex-wrap: wrap;
   z-index: 2;
   position: relative;
   margin-top: 2rem;
-
 }
 
-.Animation {
+.register-animation {
   flex: 1;
   max-width: 270px;
   margin-top: 2rem;
 }
 
-.form-title{
+.form-title {
   font-size: 1rem;
 }
+
 .register-form {
- color: black;
+  color: black;
   flex: 1;
   max-width: 230px;
   height: 300px;
-  background: white; 
-  padding: 2rem 2rem 3rem 2rem; 
+  background: white;
+  padding: 2rem 2rem 3rem 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   display: flex;
@@ -68,7 +68,7 @@
   flex: 1;
 }
 
-.firstlast{
+.firstlast {
   color: black;
   display: flex;
   align-items: center;
@@ -76,20 +76,21 @@
   width: 90%;
   margin-left: -3px;
 }
+
 .firstlast input {
-  width: 80px; 
+  width: 80px;
   height: 3px;
 }
 
-.Second{
+.Second {
   margin-top: -20px;
 }
 
-.button-register{
+.button-register {
   margin-top: 5px;
 }
 
-.back{
+.back {
   font-family: 'Great Vibes', cursive;
   font-size: 1rem;
   letter-spacing: 1px;
@@ -107,17 +108,34 @@
 
   .register-container {
     flex-direction: column;
-    padding-top: 4rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5rem;
+    padding-top: 6rem;
   }
-  
-  .name-row {
-    flex-direction: column;
-  }
-}
 
-@media (max-width: 1014px) {
-  .Animation {
+  .register-animation {
     display: none;
   }
+
+  .register-footer {
+    margin-top: 3rem;
+  }
+
+  .register-title-wrapper {
+    position: absolute;
+    top: 0.3rem;
+    width: 90%;
+    z-index: 2;
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .register-title {
+    font-size: 1.4rem;
+    padding: 0.3rem;
+
+  }
+
 
 }

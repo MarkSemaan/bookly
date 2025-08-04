@@ -95,7 +95,7 @@ class OrderService
                     'status' => $data['status'] ?? 'pending',
                     'total' => $total,
                 ]);
-                event(new OrderCreated($order)); 
+             
             }
 
             foreach ($data['items'] as $item) {

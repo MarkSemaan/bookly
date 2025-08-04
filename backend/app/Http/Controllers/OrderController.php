@@ -8,6 +8,7 @@ use App\Services\OrderService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -67,7 +68,8 @@ class OrderController extends Controller
   public function createFromCart(Request $request)
 {
     try {
-        $userId = auth()->id(); 
+        $userId = Auth::id(); 
+
         $order = OrderService::createOrderFromCart($userId);
         return $this->responseJSON($order, "Order created from cart");
     } catch (Exception $e) {

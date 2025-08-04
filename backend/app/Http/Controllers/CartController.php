@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Services\CartService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
@@ -50,12 +51,12 @@ class CartController extends Controller
         }
     }
 
-
    
     public function getUserCartItems()
     {
         try {
-            $userId = auth()->id();
+
+            $userId =  Auth::id();
 
             $service = app()->make(CartService::class);
             $cartItems = $service->getUserCartItems($userId);
@@ -70,7 +71,8 @@ class CartController extends Controller
     public function getCartTotal()
     {
         try {
-            $userId = auth()->id();
+            $userId =  Auth::id();
+
 
             $service = app()->make(CartService::class);
             $total = $service->getCartTotal($userId);
@@ -98,7 +100,9 @@ class CartController extends Controller
     public function decreaseCartItem(Request $request)
     {
         try {
-            $userId = auth()->id();
+
+            $userId =  Auth::id();
+
             $bookId = $request->input('book_id');
 
             $item = CartService::decreaseCartItemQuantity($userId, $bookId);
@@ -119,3 +123,4 @@ class CartController extends Controller
         }
     }
 }
+

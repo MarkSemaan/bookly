@@ -1,14 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
+import {useTheme} from "../../../Context/ThemeContext";
 import { useNavigate } from "react-router-dom"; 
 import Lottie from "lottie-react";
 import BookLogo from "../../../Assets/Animations/BookLogo.json";
 import Notification from "../../../Assets/Icons/notfication.svg";
 import checkout from "../../../Assets/Icons/checkout.svg";
 import ThemeToggle from "../../themeToggle/ThemeToggle"; 
+import  emptypfp from "../../../Assets/Icons/emptypfp.png";
+import  emptypfpnight from "../../../Assets/Icons/emptypfpnight.png" ;  
 import useAuth from "../../../Hooks/useAuth";
 import "./navbar.css";
 
 const Navbar = () => {
+
+const { theme } = useTheme();
+
   const { isAuthenticated, logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef();
@@ -38,7 +44,7 @@ const Navbar = () => {
 
   return (
     <nav className='Navbar'>
-      <div className='Navbar-logo'>
+      <div className='Navbar-logo' onClick={() => navigate("/")} > 
         <Lottie animationData={BookLogo} loop={true} className='Navbar-animation' />
         <div className='title'><h2>Bookly</h2></div>
       </div>
@@ -75,14 +81,17 @@ const Navbar = () => {
 
         {isAuthenticated && (
           <div className="Navbar-profile" onClick={toggleDropdown} ref={dropdownRef}>
-            <img
-              src="https://static.vecteezy.com/system/resources/previews/027/448/973/large_2x/avatar-account-icon-default-social-media-profile-photo-vector.jpg"
+           <img
+              src={theme === 'dark' ? emptypfpnight : emptypfp}
               alt="Profile"
               className="pro-pic"
             />
+
             {showDropdown && (
               <ul className="dropdown">
-                <li><a onClick={handleLogout}>Logout</a></li>
+                <li>
+                  <button className="dropdown-logout-btn" onClick={handleLogout}>Logout</button>
+                </li>
               </ul>
             )}
           </div>

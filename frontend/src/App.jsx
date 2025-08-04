@@ -19,12 +19,16 @@ import {
 import BooksManagement from "./Pages/BooksManagement/BooksManagement";
 
 
+import "./Assets/Styles/App.css";
+import "./Assets/Styles/variable.css";
+import AppRoutes from "./Routes/AppRouters";
+
 const App = () => {
-  const location = useLocation();
+
 
   return (
     <div className="App">
-      <MyRoutes />
+      <AppRoutes />
     </div>
   );
 };
@@ -52,3 +56,4 @@ const MyRoutes = () => {
       </Routes>
   );
 };
+

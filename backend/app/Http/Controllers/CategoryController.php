@@ -11,13 +11,9 @@ use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
-
 class CategoryController extends Controller
 {
     public function getCategories(Request $request, $id = null)
-
-
-
     {
         try {
             $search = $request->query('search');
@@ -33,7 +29,6 @@ class CategoryController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
-
 
     public function storeOrUpdate(StoreCategoryRequest $request)
     {

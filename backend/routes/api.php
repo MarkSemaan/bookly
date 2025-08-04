@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/greeting', function () {
     return 'Hello World';
@@ -30,17 +31,25 @@ Route::group(["prefix" => "v0.1"], function () {
 
                 Route::post('/books', [BookController::class, 'storeOrUpdate']);
                 Route::put('/books/{id}', [BookController::class, 'storeOrUpdate']);
-
-
-                Route::delete('/{book_id}', [BookController::class, 'destroy']);
-
+                Route::delete('/{book}', [BookController::class, 'destroy']);
                 Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
             });
 
             Route::prefix('categories')->group(function () {
-
-                Route::get('/', [CategoryController::class, 'getCategories']);
+               Route::get('/', [CategoryController::class, 'getCategories']);
             });
+           
+           
+           
+
+
+        Route::prefix('notifications')->group(function () {
+            Route::get('/', [NotificationController::class, 'index']);
+            Route::get('/unread', [NotificationController::class, 'unread']);
+            Route::post('/read/{id}', [NotificationController::class, 'markAsRead']);
+            Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
+        });
+
 
 
             Route::group(["prefix" => "recommender"], function () {
@@ -55,7 +64,7 @@ Route::group(["prefix" => "v0.1"], function () {
         Route::prefix('cartitems')->controller(CartController::class)->group(function () {
             Route::get('/', 'getCartItems');
             Route::get('/{id}', 'getCartItems');
-            Route::get('/total/cart', 'getCartTotal');
+           Route::get('/total/cart', 'getCartTotal');
             Route::get('/user/cart', 'getUserCartItems');
             Route::post('/cart', [CartController::class, 'storeOrUpdate']);
             Route::delete('/delete/{cartItem}', 'destroy');
@@ -77,7 +86,6 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::get('orders/{id}', [OrderController::class, 'getOrders']);
             Route::get('users/{userId?}', [OrderController::class, 'getUserOrders']);
             Route::post('/', [OrderController::class, 'storeOrUpdate']);
-
             Route::post('from-cart', [OrderController::class, 'createFromCart']);
             Route::post('{order}/cancel', [OrderController::class, 'cancel']);
             Route::delete('{order}', [OrderController::class, 'destroy']);
