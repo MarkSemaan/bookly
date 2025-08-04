@@ -26,6 +26,19 @@ jobs:
         run: composer install --no-interaction --prefer-dist
         working-directory: ./backend
 
+      - name: Create .env file
+        run: |-
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+        working-directory: ./backend
+
+      - name: Generate application key
+        run: php artisan key:generate --ansi
+        working-directory: ./backend
+
+      - name: Generate JWT secret
+        run: php artisan jwt:secret --force
+        working-directory: ./backend
+
       - name: Run backend tests
         run: php artisan test
         working-directory: ./backend
