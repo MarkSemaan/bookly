@@ -10,7 +10,7 @@ use Exception;
 
 class BookController extends Controller
 {
-    public function getBooks( Request $request, $id = null)
+    public function getBooks(Request $request, $id = null)
     {
         try {
             $search = $request->query('search');
@@ -25,8 +25,8 @@ class BookController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
-
-      public function getTopRatedBooks()
+  
+    public function getTopRatedBooks()
     {
         $books = BookService::getTopRatedBooks();
         return $this->responseJSON($books);
@@ -42,6 +42,7 @@ class BookController extends Controller
         }
     }
       public function getBooksByCategory(int $categoryId)
+
     {
         try {
             $books = BookService::getBooksByCategory($categoryId);
@@ -67,12 +68,22 @@ public function storeOrUpdate(Request $request, $id = null)
         }
     }
 
-    public function destroy(Book $book)
+    public function destroy($book_id)
     {
         try {
-            BookService::deleteBook($book);
-            return $this->responseJSON(null, "Book deleted");
+            $book = BookService::deleteBook($book_id);
+            return $this->responseJSON($book, "Book deleted");
         } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
+    }
+
+    public function getAllBooks()
+    {
+        try {
+            $books = BookService::getAllBooks();
+            return $this->responseJSON($books);
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }

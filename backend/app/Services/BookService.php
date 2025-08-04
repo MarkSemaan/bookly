@@ -24,6 +24,7 @@ class BookService
 
     public static function getBooksByCategory(int $categoryId)
     {
+
         return Book::where('category_id', $categoryId)
            ->latest('id')
            ->limit(50)
@@ -67,6 +68,7 @@ class BookService
         return $book;
     }
 
+
     private static function saveBase64Image($base64Image)
     {
         preg_match("/^data:image\/(.*);base64,/", $base64Image, $matches);
@@ -89,16 +91,18 @@ class BookService
     }
     
     public static function deleteBook(Book $book)
+
     {
+        $book = Book::find($book_id);
         if ($book->image) {
             Storage::disk('public')->delete($book->image);
         }
 
-        $book->delete();
+        return $book->delete();
     }
     public static function getTopSellingBooks()
     {
-        
+
         return Book::where('sold', '>', 0)->orderByDesc('sold')->limit(15)->get();
     }
 
@@ -112,8 +116,19 @@ class BookService
     }
 
     public static function getTopRatedBooks()
-        {
-            return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
-        }
+    {
+        return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
+    }
+  
+    public static function getAllBooks()
+    {
+        $books = Book::all();
+        return $books;
+    }
 
+    public static function available()
+    {
+        $books = Book::where('is_available', true);
+        return $books;
+    }
 }
