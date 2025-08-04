@@ -105,6 +105,7 @@ class AgentService
             'getUserViews' => self::getUserViews($user_id),
             'getUserBooks' => self::getUserBooks($user_id),
             'getUserReviews' => self::getUserReviews($user_id),
+            'available' => BookService::available(),
             'getCartItems' => CartService::getCartItems($user_id),
             'getTopRatedBooks' => BookService::getTopRatedBooks(),
             default => ["role" => "assistant", "content" => "Unknown tool requested: " . $action],
@@ -171,10 +172,12 @@ class AgentService
         $system_message = self::$system_message;
         $goal_prompt = 'Recommend 5 books for the user based on their search, views, purchases, cart, and reviews.';
         $json = file_get_contents(storage_path('app/private/tools.json'));
+        $available_books = BookService::available();
         $tools = json_decode($json, true);
         $messages = [
             ["role" => "system", "content" => $system_message],
             ["role" => "system", "content" => "User Id: " . $user_id],
+            ["role" => "system", "content" => "Available books: " . json_encode($available_books)],
             ["role" => "system", "content" => "Available tools: " . json_encode($tools)],
             ["role" => "user", "content" => $goal_prompt],
         ];
