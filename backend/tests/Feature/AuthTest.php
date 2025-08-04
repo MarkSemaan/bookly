@@ -13,30 +13,30 @@ class AuthTest extends TestCase
 
     private string $email = 'ali@example.com';
     private string $password = 'secret123';
+    private string $firstName = 'Ali';
+    private string $lastName = 'Serhan';
 
     public function test_user_can_register()
     {
         $res = $this->postJson('/api/v0.1/guest/register', [
-            'firstname' => 'Ali',
-            'lastname' => 'Serhan',
+            'first_name' => $this->firstName,
+            'last_name' => $this->lastName,
             'email' => $this->email,
             'password' => $this->password,
             'password_confirmation' => $this->password,
         ]);
 
-        $res->assertCreated()
+        $res->assertOk()
             ->assertJsonStructure([
                 'status',
                 'payload' => [
-                    'user' => [
-                        'id',
-                        'firstname',
-                        'lastname',
-                        'email',
-                        'created_at',
-                        'updated_at',
-                    ],
-                    'access_token'
+                    'id',
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'created_at',
+                    'updated_at',
+                    'token'
                 ]
             ]);
 
@@ -59,9 +59,11 @@ class AuthTest extends TestCase
             ->assertJsonStructure([
                 'status',
                 'payload' => [
-                    'access_token'
+                    'token'
                 ]
             ]);
+
+        $this->assertNotNull($res->json('payload.token'));
     }
 
     public function test_user_cannot_login_with_invalid_credentials()
@@ -73,8 +75,8 @@ class AuthTest extends TestCase
 
         $res->assertUnauthorized()
             ->assertJson([
-                'status' => false,
-                'payload' => 'Unauthorized'
+                'status' => 'error',
+                'payload' => null
             ]);
     }
 }

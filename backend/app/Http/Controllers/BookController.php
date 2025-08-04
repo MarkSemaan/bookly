@@ -59,7 +59,7 @@ public function storeOrUpdate(Request $request, $id = null)
            return $this->responseJSON([
                 'message' => $id ? 'Book updated successfully.' : 'Book created successfully.',
                 'data' => $book
-            ], 200);
+            ], $id ? 200 : 201);
         } catch (\Exception $e) {
              return $this->responseJSON([
                 'error' => 'Failed to create or update book.',

@@ -76,7 +76,7 @@ class OrderTest extends TestCase
         $response = $this->getJson("/api/v0.1/orders/users/{$this->user->id}");
 
         $response->assertOk()
-            ->assertJsonCount(2, 'payload')
+            ->assertJsonCount(2)
             ->assertJsonPath('payload.0.user_id', $this->user->id);
     }
 

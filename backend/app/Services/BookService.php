@@ -90,10 +90,10 @@ class BookService
         return 'storage/' . $relativePath;
     }
     
-    public static function deleteBook(Book $book)
+    public static function deleteBook(int $bookId)
 
     {
-        $book = Book::find($book_id);
+        $book = Book::find($bookId);
         if ($book->image) {
             Storage::disk('public')->delete($book->image);
         }
