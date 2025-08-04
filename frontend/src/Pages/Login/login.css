@@ -72,6 +72,7 @@ padding: 2rem 2rem 3rem 2rem;
 
 
 @media (max-width: 821px) {
+
   .login-title {
     font-size: 2.2rem;
   }
@@ -79,13 +80,35 @@ padding: 2rem 2rem 3rem 2rem;
   .login-form {
     max-width: 100%;
   }
-
-  .Animation {
+  .login-animations{
     display: none;
   }
 
+  .login-title-wrapper {
+  position: absolute;
+  top: 0.3rem;
+  width:95%;
+  z-index: 2;
+  margin-top: 2rem;
+  text-align: center;
+}
+  .login-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  padding: 0.3rem;
+ 
+}
+
   .login-container {
+
     flex-direction: column;
-    padding-top: 4rem;
+    align-items: center;
+    justify-content: center;
+    margin-top:7rem ;
+    padding-top: 6rem;
+  }
+  .login-footer{
+    margin-top: 3rem;
   }
 }

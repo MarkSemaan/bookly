@@ -12,10 +12,15 @@ const Login = () => {
       <LoginHeader />
       <Circles />
       <div className="login-container">
+        <div className="login-animations">
         <LoginAnimations />
+        </div>
+
         <LoginCard />
       </div>
+      <div className="login-footer">
       <LoginFooter />
+      </div>
     </div>
   );
 };
