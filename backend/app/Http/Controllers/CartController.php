@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Services\CartService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -35,7 +36,7 @@ class CartController extends Controller
     {
         try {
             $validatedData = $request->validated();
-            $validatedData['user_id'] = auth()->id();
+            $validatedData['user_id'] = Auth::id();
 
             $service = app()->make(CartService::class);
             $item = $service->createOrUpdateCartItem($validatedData);
