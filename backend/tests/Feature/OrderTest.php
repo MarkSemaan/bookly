@@ -107,7 +107,7 @@ class OrderTest extends TestCase
 
         $response = $this->getJson("/api/v0.1/orders/orders/{$order->id}");
 
-        $response->assertStatus(404); // not found for the wrong user
+        $response->assertStatus(404); // no found for the wrong user
     }
 
     public function test_unauthenticated_user_cannot_create_an_order()
