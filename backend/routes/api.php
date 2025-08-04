@@ -8,33 +8,12 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
-
 use App\Http\Controllers\CategoryController;
-
-use App\Http\Controllers\ReviewController;
-
-
 
 Route::get('/greeting', function () {
     return 'Hello World';
 });
 
-
-Route::prefix('users')->controller(UserController::class)->group(function () {
-    Route::get('/', 'getUsers');
-    Route::get('/{id}', 'getUsers');
-    Route::put('/{id}', 'update');
-    Route::put('/{id}/upgrade', 'upgrade');
-    Route::get('/{id}/reviews', 'getUserReviews');
-});
-
-Route::prefix('categories')->controller(CategoryController::class)->group(function () {
-    Route::get('/', 'getCategories');
-    Route::get('/{id}', 'getCategories');
-    Route::post('/', 'storeOrUpdate');
-    Route::post('/{id}', 'storeOrUpdate');
-    Route::delete('/{id}', 'destroy');
-});
 
 
 
@@ -47,14 +26,21 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::prefix('books')->group(function () {
                 Route::get('/book/{id?}', [BookController::class, 'getBooks']);
                 Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
-                Route::post('/', [BookController::class, 'storeOrUpdate']);
+
+                Route::post('/books', [BookController::class, 'storeOrUpdate']);
+                Route::put('/books/{id}', [BookController::class, 'storeOrUpdate']);
+
+
                 Route::delete('/{book_id}', [BookController::class, 'destroy']);
+
                 Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
             });
 
             Route::prefix('categories')->group(function () {
-                Route::get('/', [CategoryController::class, 'getAllCategories']);
+
+                Route::get('/', [CategoryController::class, 'getCategories']);
             });
+
 
             Route::group(["prefix" => "recommender"], function () {
                 //APIs for ai
@@ -68,10 +54,13 @@ Route::group(["prefix" => "v0.1"], function () {
         Route::prefix('cartitems')->controller(CartController::class)->group(function () {
             Route::get('/', 'getCartItems');
             Route::get('/{id}', 'getCartItems');
-            Route::get('/user/{userId}', 'getUserCartItems');
+            Route::get('/total/cart', 'getCartTotal');
+            Route::get('/user/cart', 'getUserCartItems');
             Route::post('/cart', [CartController::class, 'storeOrUpdate']);
-            Route::delete('/{cartItem}', 'destroy');
+            Route::delete('/delete/{cartItem}', 'destroy');
+            Route::post('/decrease', [CartController::class, 'decreaseCartItem']);
         });
+
 
 
         Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
@@ -87,8 +76,9 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::get('orders/{id}', [OrderController::class, 'getOrders']);
             Route::get('users/{userId?}', [OrderController::class, 'getUserOrders']);
             Route::post('/', [OrderController::class, 'storeOrUpdate']);
-            Route::post('from-cart/{userId}', [OrderController::class, 'createFromCart']);
-            Route::post('/cancel/{id}', [OrderController::class, 'cancel']);
+
+            Route::post('from-cart', [OrderController::class, 'createFromCart']);
+            Route::post('{order}/cancel', [OrderController::class, 'cancel']);
             Route::delete('{order}', [OrderController::class, 'destroy']);
         });
 

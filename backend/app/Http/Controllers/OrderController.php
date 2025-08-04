@@ -64,15 +64,17 @@ class OrderController extends Controller
         }
     }
 
-    public function createFromCart(Request $request, int $userId)
-    {
-        try {
-            $order = OrderService::createOrderFromCart($userId);
-            return $this->responseJSON($order, "Order created from cart");
-        } catch (Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
-        }
+  public function createFromCart(Request $request)
+{
+    try {
+        $userId = auth()->id(); 
+        $order = OrderService::createOrderFromCart($userId);
+        return $this->responseJSON($order, "Order created from cart");
+    } catch (Exception $e) {
+        return $this->fail($e->getMessage(), "error", 500);
     }
+}
+
 
     public function cancel(Order $order)
     {

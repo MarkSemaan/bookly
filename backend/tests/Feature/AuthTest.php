@@ -17,8 +17,8 @@ class AuthTest extends TestCase
     public function test_user_can_register()
     {
         $res = $this->postJson('/api/v0.1/guest/register', [
-            'first_name' => 'Ali',
-            'last_name' => 'Serhan',
+            'firstname' => 'Ali',
+            'lastname' => 'Serhan',
             'email' => $this->email,
             'password' => $this->password,
             'password_confirmation' => $this->password,
@@ -28,13 +28,15 @@ class AuthTest extends TestCase
             ->assertJsonStructure([
                 'status',
                 'payload' => [
-                    'id',
-                    'first_name',
-                    'last_name',
-                    'email',
-                    'created_at',
-                    'updated_at',
-                    'token'
+                    'user' => [
+                        'id',
+                        'firstname',
+                        'lastname',
+                        'email',
+                        'created_at',
+                        'updated_at',
+                    ],
+                    'access_token'
                 ]
             ]);
 
@@ -57,7 +59,7 @@ class AuthTest extends TestCase
             ->assertJsonStructure([
                 'status',
                 'payload' => [
-                    'token'
+                    'access_token'
                 ]
             ]);
     }
@@ -71,8 +73,8 @@ class AuthTest extends TestCase
 
         $res->assertUnauthorized()
             ->assertJson([
-                'status' => 'error',
-                'payload' => null
+                'status' => false,
+                'payload' => 'Unauthorized'
             ]);
     }
 }

@@ -9,7 +9,7 @@ const registerService = async (data) => {
       email: data.email,
       password: data.password,
     });
-    return response.data;
+    return response.data.payload.token;
   } catch (error) {
     console.error("API error response:", error.response?.data || error.message);
     throw error;
