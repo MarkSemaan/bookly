@@ -4,6 +4,7 @@ import BookDetails from "./Components/bookDetails/BookDetails";
 import AppLayout from "./Components/Shared/Layouts/AppLayout";
 import UserOrders from "./Components/userOrders/UserOrders";
 import BookList from "./Pages/BookList/BookList";
+import CreateBook from "./Pages/CreateBook";
 import HomePage from "./Pages/HomePage/HomePage";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
@@ -40,9 +41,13 @@ const MyRoutes = () => {
           <Route path="/bookList" element={<BookList />} />
           <Route path="/book/:id" element={<BookDetails />} />
           <Route path="/cart" element={<UserCart />} />
+
+          <Route path="/createbook" element={<CreateBook />} />
+
           <Route path="/my_orders" element={<UserOrders />} />
           <Route path="/management" element={<OrderManagement />} />
           <Route path="/booksManagement" element={<BooksManagement />} />
+
         </Route>
       </Routes>
   );

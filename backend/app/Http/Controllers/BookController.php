@@ -31,7 +31,7 @@ class BookController extends Controller
         $books = BookService::getTopRatedBooks();
         return $this->responseJSON($books);
     }
-
+    
     public function getTopSellingBooks()
     {
         try {
@@ -41,8 +41,8 @@ class BookController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
+      public function getBooksByCategory(int $categoryId)
 
-    public function getBooksByCategory(int $categoryId)
     {
         try {
             $books = BookService::getBooksByCategory($categoryId);
@@ -52,24 +52,19 @@ class BookController extends Controller
         }
     }
 
-
-    public function storeOrUpdate(StoreBookRequest $request)
+public function storeOrUpdate(Request $request, $id = null)
     {
         try {
-            $validated = $request->validated();
-            $id = $validated['id'] ?? null;
-            $book = $id ? Book::find($id) : null;
-
-            if ($id && !$book) {
-                return $this->fail("Book not found", "fail", 404);
-            }
-
-            $result = BookService::createOrUpdateBook($validated, $book);
-
-
-            return $this->responseJSON($result, $id ? "Book updated" : "Book added", $id ? 200 : 201);
+            $book = BookService::createOrUpdateBook($request->all(), $id);
+           return $this->responseJSON([
+                'message' => $id ? 'Book updated successfully.' : 'Book created successfully.',
+                'data' => $book
+            ], 200);
         } catch (\Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
+             return $this->responseJSON([
+                'error' => 'Failed to create or update book.',
+                'details' => $e->getMessage()
+            ], 500);
         }
     }
 

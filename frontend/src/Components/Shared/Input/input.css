@@ -1,35 +1,24 @@
-label {
-  display: block;
-  margin-bottom: 0.8rem;   
-  font-size: 1.3rem;       
-  font-weight: 600; 
+.input-wrapperr:hover {
+  border: 2px solid var(--button-bg);
+}
+
+.input-wrapperr {
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 1rem; 
+  border-radius: 5px;
+  padding-right: 10rem;
+  border: 1px solid #DEA283;
+  background-color: #fff;
+  transition: border 0.3s ease;
   text-align: left; 
 }
 
-.input-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 1.6rem;
-  border: 1px solid #ccc;
-  padding: 0.5rem 0.9rem;
-  border-radius: 5px;
-  background-color: #fff;
-}
 
-.input-wrapper i {
-  font-size: 1rem;
-  color: #888;
-}
-
-input {
+ .input {
   flex: 1;
-  border: none;
   outline: none;
   font-size: 0.9rem;
-  padding: 0.5rem 0.5rem;
-}
-.input-wrapper:hover{
-  border: 2px solid var(--button-bg);
+  text-align: left; 
 }
 

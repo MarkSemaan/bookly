@@ -4,8 +4,9 @@ import trash from '../../../src/Assets/Icons/delete.svg';
 import useCartHandlers from '../../Hooks/useCartHandlers';
 
 
-
 const Cart = () => {
+ const backendBaseUrl = "http://127.0.0.1:8000/";
+ 
 const {
   cart,
   total,
@@ -31,8 +32,9 @@ const {
       <div className="cart-items-list">
         {cart.map(item => (
           <div className="cart-item-box" key={item.id}>
+              
             <img
-              src={item.book?.image || '/default-book.png'}
+              src={item.book.image ?`${backendBaseUrl}${item.book.image}` : '/default-book.png'}
               alt={item.book?.title}
               className="book-imagee"
             />

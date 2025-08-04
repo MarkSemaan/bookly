@@ -15,7 +15,6 @@ class CartService
         return CartItem::with('book')->where('user_id', $userId)->get();
     }
 
-
     public static function getCartItems($id = null, $search = null)
     {
         return CartItem::with('book')->where('user_id', $id)->get();
@@ -34,7 +33,6 @@ class CartService
 
         return $cartItem;
     }
-
 
     public function addToCart(int $userId, int $bookId, int $quantity)
     {

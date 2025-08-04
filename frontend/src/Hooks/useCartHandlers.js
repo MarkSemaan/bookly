@@ -28,8 +28,6 @@ const useCartHandlers = () => {
           ci.id === item.id ? { ...ci, quantity: ci.quantity + 1 } : ci
         )
       );
-    } else {
-      alert('Failed to add to cart');
     }
   };
 
@@ -42,19 +40,17 @@ const useCartHandlers = () => {
         ci.id === item.id ? { ...ci, quantity: ci.quantity - 1 } : ci
       )
     );
-  } else {
-    alert('Failed to decrease quantity');
-  }
+  } 
 };
 
 
   const handleRemove = async (itemId) => {
-    const result = await deleteCartItem(itemId);
+  const result = await deleteCartItem(itemId);  
+  if (result) {
+    setCart(prev => prev.filter(item => item.id !== itemId)); 
+  } 
+ };
 
-    if (result) {
-      setCart(prev => prev.filter(item => item.id !== itemId));
-    }
-  };
 
   return {
     cart,

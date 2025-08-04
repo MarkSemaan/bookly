@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    use \App\Traits\ResponseTrait;
+    use ResponseTrait;
 
-
+ 
     public function getCartItems(Request $request, $id = null)
     {
         try {
@@ -21,9 +21,11 @@ class CartController extends Controller
             $service = app()->make(CartService::class);
             $items = $service->getCartItems($id, $search);
 
+
             if ($id && !$items) {
                 return $this->fail("Cart item not found", "fail", 404);
             }
+
 
             return $this->responseJSON($items, $id ? "Cart item found" : "Cart items loaded");
         } catch (\Exception $e) {
@@ -31,12 +33,13 @@ class CartController extends Controller
         }
     }
 
-    //mnzo3a kenet
     public function storeOrUpdate(StoreCartItemRequest $request)
     {
         try {
             $validatedData = $request->validated();
-            $validatedData['user_id'] = Auth::id();
+
+            $validatedData['user_id'] = auth()->id();
+
 
             $service = app()->make(CartService::class);
             $item = $service->createOrUpdateCartItem($validatedData);
@@ -48,10 +51,12 @@ class CartController extends Controller
     }
 
 
-
-    public function getUserCartItems(int $userId)
+   
+    public function getUserCartItems()
     {
         try {
+            $userId = auth()->id();
+
             $service = app()->make(CartService::class);
             $cartItems = $service->getUserCartItems($userId);
 
@@ -61,6 +66,22 @@ class CartController extends Controller
         }
     }
 
+  
+    public function getCartTotal()
+    {
+        try {
+            $userId = auth()->id();
+
+            $service = app()->make(CartService::class);
+            $total = $service->getCartTotal($userId);
+
+            return $this->responseJSON($total, "Cart total calculated");
+        } catch (\Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
+    }
+
+ 
     public function destroy(CartItem $cartItem)
     {
         try {
@@ -70,6 +91,31 @@ class CartController extends Controller
             return $this->responseJSON(null, "Cart item deleted");
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
+        }
+    }
+
+   
+    public function decreaseCartItem(Request $request)
+    {
+        try {
+            $userId = auth()->id();
+            $bookId = $request->input('book_id');
+
+            $item = CartService::decreaseCartItemQuantity($userId, $bookId);
+
+            if (!$item) {
+                return $this->responseJSON(['message' => 'Item not found'], 404);
+            }
+
+            return $this->responseJSON([
+                'message' => 'Quantity decreased',
+                'item' => $item
+            ]);
+        } catch (\Exception $e) {
+            return $this->responseJSON([
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
