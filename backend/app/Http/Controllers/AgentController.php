@@ -7,6 +7,7 @@ use App\Services\BookService;
 use App\Services\CartService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AgentController extends Controller
 {
@@ -31,7 +32,7 @@ class AgentController extends Controller
     public static function getRecommended()
     {
         try {
-            $user_id = auth()->id();
+            $user_id = Auth::id();
             $recommended = AgentService::agentLoop($user_id);
             return ResponseTrait::responseJSON($recommended);
         } catch (\Exception $e) {
