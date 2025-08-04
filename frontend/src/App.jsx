@@ -7,12 +7,14 @@ import BookList from "./Pages/BookList/BookList";
 import HomePage from "./Pages/HomePage/HomePage";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
+import UserCart from "./Pages/UserCart/UserCart";
 
 import {
   Routes,
   Route,
   useLocation,
 } from "react-router-dom";
+
 
 const App = () => {
   const location = useLocation();
@@ -32,11 +34,12 @@ const MyRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route element={<AppLayout />}>
-        <Route path="/homePage" element={<HomePage />} />
-        <Route path="/bookList" element={<BookList />} />
-        <Route path="/book/:id" element={<BookDetails />} />
-        <Route path="/my_orders" element={<UserOrders />}></Route>
-      </Route>
-    </Routes>
+      <Route path="/homePage" element={<HomePage />} />
+          <Route path="/bookList" element={<BookList />} />
+          <Route path="/book/:id" element={<BookDetails />} />
+          <Route path="/cart" element={<UserCart />} />
+          <Route path="/my_orders" element={<UserOrders />} />
+        </Route>
+      </Routes>
   );
 };

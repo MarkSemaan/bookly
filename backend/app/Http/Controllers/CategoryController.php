@@ -2,29 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CategoryService;
+use App\Traits\ResponseTrait;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Models\Category;
-use App\Services\CategoryService;
-use Illuminate\Http\Request;
+
 
 class CategoryController extends Controller
 {
-    public function getCategories(Request $request, $id = null)
+
+    public function getAllCategories()
     {
         try {
-            $search = $request->query('search');
-            $categories = CategoryService::getCategories($id, $search);
+            $categories = CategoryService::getAllCategories();
 
-            if ($id && !$categories) {
-                return $this->fail("Category not found", "fail", 404);
+            if ($categories->isEmpty()) {
+                return $this->fail("No categories found", "fail", 404);
             }
 
-            return $this->responseJSON($categories, $id ? "Category found" : "Categories loaded");
+            return $this->responseJSON($categories, "Categories loaded successfully");
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
+
 
     public function storeOrUpdate(StoreCategoryRequest $request)
     {
