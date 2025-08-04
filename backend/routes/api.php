@@ -12,8 +12,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\NotificationController;
 
-
-
 Route::get('/greeting', function () {
     return 'Hello World';
 });
@@ -30,6 +28,7 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::prefix('books')->group(function () {
                 Route::get('/book/{id?}', [BookController::class, 'getBooks']);
                 Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
+
                 Route::post('/books', [BookController::class, 'storeOrUpdate']);
                 Route::put('/books/{id}', [BookController::class, 'storeOrUpdate']);
                 Route::delete('/{book}', [BookController::class, 'destroy']);
@@ -52,6 +51,7 @@ Route::group(["prefix" => "v0.1"], function () {
         });
 
 
+
             Route::group(["prefix" => "recommender"], function () {
                 //APIs for ai
                 Route::post('/save_search', [AgentController::class, 'saveSearch']);
@@ -72,7 +72,8 @@ Route::group(["prefix" => "v0.1"], function () {
         });
 
 
-        Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
+
+        Route::prefix('reviews')->controller(\App\Http\Controllers\ReviewController::class)->group(function () {
             Route::get('/', 'getReviews');
             Route::get('/{id}', 'getReviews');
             Route::post('/', 'storeOrUpdate');
@@ -80,11 +81,10 @@ Route::group(["prefix" => "v0.1"], function () {
         });
 
 
-
         Route::prefix('orders')->controller(OrderController::class)->group(function () {
             Route::get('orders', [OrderController::class, 'getOrders']);
             Route::get('orders/{id}', [OrderController::class, 'getOrders']);
-            Route::get('users/{userId}', [OrderController::class, 'getUserOrders']);
+            Route::get('users/{userId?}', [OrderController::class, 'getUserOrders']);
             Route::post('/', [OrderController::class, 'storeOrUpdate']);
             Route::post('from-cart', [OrderController::class, 'createFromCart']);
             Route::post('{order}/cancel', [OrderController::class, 'cancel']);
@@ -94,6 +94,9 @@ Route::group(["prefix" => "v0.1"], function () {
         Route::group(["prefix" => "admin"], function () {
             Route::group(["middleware" => "isAdmin"], function () {
                 //Admin APIs
+                Route::get('/orders', [OrderController::class, 'getAllOrders']);
+                Route::post('/orders/move_status/{id}', [OrderController::class, 'moveStatus']);
+                Route::get('/books', [BookController::class, 'getAllBooks']);
             });
         });
     });

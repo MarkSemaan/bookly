@@ -26,8 +26,6 @@ const useCartHandlers = () => {
           ci.id === item.id ? { ...ci, quantity: ci.quantity + 1 } : ci
         )
       );
-    } else {
-      alert('Failed to add to cart');
     }
   };
 
@@ -50,6 +48,26 @@ const useCartHandlers = () => {
       setCart(prev => prev.filter(item => item.id !== itemId));
     }
   };
+=======
+ const handleQuantityChange = async (item) => {
+  const updatedItem = await decreaseQuantity(item.book.id);
+
+  if (updatedItem) {
+    setCart(prev =>
+      prev.map(ci =>
+        ci.id === item.id ? { ...ci, quantity: ci.quantity - 1 } : ci
+      )
+    );
+  } 
+};
+
+
+  const handleRemove = async (itemId) => {
+  const result = await deleteCartItem(itemId);  
+  if (result) {
+    setCart(prev => prev.filter(item => item.id !== itemId)); 
+  } 
+ };
 
   return {
     cart,

@@ -82,7 +82,7 @@ class CartTest extends TestCase
             'book_id' => $this->book->id,
         ]);
 
-        $response = $this->deleteJson("/api/v0.1/cartitems/{$cartItem->id}");
+        $response = $this->deleteJson("/api/v0.1/cartitems/delete/{$cartItem->id}");
 
         $response->assertStatus(200)
             ->assertJson([

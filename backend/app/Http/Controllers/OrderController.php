@@ -18,13 +18,19 @@ class OrderController extends Controller
     {
         try {
             $search = $request->query('search');
-            $orders = OrderService::getOrders($id, $search);
-
-            if ($id && !$orders) {
-                return $this->fail("Order not found", "fail", 404);
+            $order = null;
+            if ($id) {
+                $order = OrderService::getOrders($id, $search);
+                if (!$order) {
+                    return $this->fail("Order not found", "fail", 404);
+                }
+                if ($order->user_id !== auth()->id()) {
+                    return $this->fail("Order not found", "fail", 404);
+                }
+                return $this->responseJSON($order, "Order found");
             }
-
-            return $this->responseJSON($orders, $id ? "Order found" : "Orders loaded");
+            $orders = OrderService::getOrders(null, $search);
+            return $this->responseJSON($orders, "Orders loaded");
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
@@ -63,6 +69,7 @@ class OrderController extends Controller
 {
     try {
         $userId = Auth::id(); 
+
         $order = OrderService::createOrderFromCart($userId);
         return $this->responseJSON($order, "Order created from cart");
     } catch (Exception $e) {

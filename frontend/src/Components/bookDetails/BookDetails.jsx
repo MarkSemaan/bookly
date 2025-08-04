@@ -6,6 +6,7 @@ import "./bookDetails.css";
 
 
 const BookDetails = () => {
+  const backendBaseUrl = "http://127.0.0.1:8000/";
   const { id } = useParams();
   const { book, error, loading } = useBookDetails(id);
   const { handleAddToCart, loading: cartLoading, error: cartError } = useAddToCart();
@@ -25,7 +26,7 @@ const BookDetails = () => {
   return (
     <div className="book-details-container">
       <div className="book-content-wrapper">
-        <img src={book.image} alt={book.title} className="book-img" />
+        <img src={book.image ? `${backendBaseUrl}${book.image}` : '/default-book.png'} className="book-img" /> 
         <h1 className="book-titlee">{book.title}</h1>
 
         <div className="details-box">

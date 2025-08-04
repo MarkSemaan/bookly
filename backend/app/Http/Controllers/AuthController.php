@@ -43,6 +43,6 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $user = AuthService::register($request->validated());
-        return ResponseTrait::responseJSON($user, "success", 201);
+        return ResponseTrait::responseJSON($user);
     }
 }
