@@ -53,16 +53,15 @@ Route::group(["prefix" => "v0.1"], function () {
             });
 
             Route::prefix('categories')->group(function () {
-               Route::get('/', [CategoryController::class, 'getAllCategories']);
+                Route::get('/', [CategoryController::class, 'getAllCategories']);
             });
-        
+
             Route::group(["prefix" => "recommender"], function () {
                 //APIs for ai
                 Route::post('/save_search', [AgentController::class, 'saveSearch']);
                 Route::post('/save_view', [AgentController::class, 'saveBookView']);
                 Route::get('/get', [AgentController::class, 'getRecommended']);
             });
-
         });
 
         //Customer APIs
@@ -74,13 +73,13 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::delete('/{cartItem}', 'destroy');
         });
 
-     
-            Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
-                Route::get('/', 'getReviews');            
-                Route::get('/{id}', 'getReviews');
-                Route::post('/', 'storeOrUpdate');
-                Route::delete('/{id}', 'destroy');
-            });
+
+        Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
+            Route::get('/', 'getReviews');
+            Route::get('/{id}', 'getReviews');
+            Route::post('/', 'storeOrUpdate');
+            Route::delete('/{id}', 'destroy');
+        });
 
 
 
@@ -92,7 +91,6 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::post('from-cart/{userId}', [OrderController::class, 'createFromCart']);
             Route::post('{order}/cancel', [OrderController::class, 'cancel']);
             Route::delete('{order}', [OrderController::class, 'destroy']);
-
         });
 
         Route::group(["prefix" => "admin"], function () {
@@ -100,12 +98,10 @@ Route::group(["prefix" => "v0.1"], function () {
                 //Admin APIs
             });
         });
-
     });
 
     Route::group(["prefix" => "guest"], function () {
         Route::post("/login", [AuthController::class, "login"]);
         Route::post("/register", [AuthController::class, "register"]);
-
-    }); 
+    });
 });
