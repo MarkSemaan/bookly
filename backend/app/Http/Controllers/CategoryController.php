@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Services\CategoryService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -9,7 +10,8 @@ use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Models\Category;
 
 
-class CategoryController extends Controller{
+class CategoryController extends Controller
+{
 
     public function getAllCategories()
     {
@@ -21,11 +23,11 @@ class CategoryController extends Controller{
             }
 
             return $this->responseJSON($categories, "Categories loaded successfully");
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
-    
+
 
     public function storeOrUpdate(StoreCategoryRequest $request)
     {
@@ -61,5 +63,4 @@ class CategoryController extends Controller{
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
-
 }

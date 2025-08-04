@@ -45,7 +45,6 @@ Route::group(["prefix" => "v0.1"], function () {
         //AUTHENTICATED APIs
         Route::group(["prefix" => "user"], function () {
             Route::prefix('books')->group(function () {
-
                 Route::get('/book/{id?}', [BookController::class, 'getBooks']);
                 Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
                 Route::post('/', [BookController::class, 'storeOrUpdate']);
@@ -57,7 +56,6 @@ Route::group(["prefix" => "v0.1"], function () {
                Route::get('/', [CategoryController::class, 'getAllCategories']);
             });
         
-
             Route::group(["prefix" => "recommender"], function () {
                 //APIs for ai
                 Route::post('/save_search', [AgentController::class, 'saveSearch']);
@@ -66,6 +64,7 @@ Route::group(["prefix" => "v0.1"], function () {
             });
 
         });
+
         //Customer APIs
         Route::prefix('cartitems')->controller(CartController::class)->group(function () {
             Route::get('/', 'getCartItems');
@@ -74,37 +73,6 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::post('/cart', [CartController::class, 'storeOrUpdate']);
             Route::delete('/{cartItem}', 'destroy');
         });
-
-        
-           Route::prefix('books')->group(function () {
-                Route::get('/', [BookController::class, 'getBooks']);
-                Route::get('/{id}', [BookController::class, 'getBooks']);
-                  
-                Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
-                Route::post('/', [BookController::class, 'storeOrUpdate']);
-                Route::delete('/{book}', [BookController::class, 'destroy']);
-                Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
-
-            });
-
-     
-            Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
-                Route::get('/', 'getReviews');            
-                Route::get('/{id}', 'getReviews');
-                Route::post('/', 'storeOrUpdate');
-                Route::delete('/{id}', 'destroy');
-            });
-
-
-                Route::get('/', [BookController::class, 'getBooks']);
-                Route::get('/{id}', [BookController::class, 'getBooks']);
-                  
-                Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
-                Route::post('/', [BookController::class, 'storeOrUpdate']);
-                Route::delete('/{book}', [BookController::class, 'destroy']);
-                Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
-
-            });
 
      
             Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
@@ -139,5 +107,5 @@ Route::group(["prefix" => "v0.1"], function () {
         Route::post("/login", [AuthController::class, "login"]);
         Route::post("/register", [AuthController::class, "register"]);
 
-    });
+    }); 
 });
