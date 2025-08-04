@@ -134,9 +134,9 @@ class AgentService
                 continue;
             }
             echo json_encode($messages);
-            //✅ Check for final_answer
+
             if ($json['action'] === 'final_answer') {
-                return $json['result'] ?? []; // ✅ Final return
+                return $json['result'] ?? []; 
             }
 
             if (!isset($json['action'])) {

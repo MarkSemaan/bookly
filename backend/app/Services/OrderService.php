@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\OrderPlaced;
 use App\Models\Order;
 use App\Models\CartItem;
 use App\Models\OrderItem;
@@ -90,6 +91,7 @@ class OrderService
                     'status' => $data['status'] ?? 'pending',
                     'total' => $total,
                 ]);
+                OrderPlaced::dispatch($order);
             }
 
             foreach ($data['items'] as $item) {
