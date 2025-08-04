@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\AnalyticService;
 use App\Events\OrderPlaced;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -23,6 +24,6 @@ class UpdateAnalytics implements ShouldQueue
      */
     public function handle(OrderPlaced $event): void
     {
-        //
+        AnalyticService::saveOrUpdateAnalytic($event->order->total, $event->order->created_at);
     }
 }

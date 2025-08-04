@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('analytics', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('hour')->index();
+            $table->dateTime('hour')->unique()->index();
             $table->integer('orders_count');
             $table->decimal('revenue', 8, 2);
             $table->timestamps();
