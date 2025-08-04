@@ -1,24 +1,16 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 
-export const UserContext = createContext();
+const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [authToken, setAuthToken] = useState(null);
-
-  useEffect(() => {
+  const [currentUser, setCurrentUser] = useState(() => {
     const storedUser = localStorage.getItem("currentUser");
-    if (storedUser) {
-      setCurrentUser(JSON.parse(storedUser));
-    }
-    console.log(localStorage.getItem("token"));
-    console.log(localStorage.getItem("currentUser"));
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-    const token = localStorage.getItem("token");
-    if (token) {
-      setAuthToken(token);
-    }
-  }, []);
+  const [authToken, setAuthToken] = useState(() => {
+    return localStorage.getItem("token");
+  });
 
   useEffect(() => {
     if (currentUser) {
@@ -36,16 +28,23 @@ export const UserProvider = ({ children }) => {
     }
   }, [authToken]);
 
+  const logout = () => {
+    setCurrentUser(null);
+    setAuthToken(null);
+  };
+
   const value = {
     currentUser,
     setCurrentUser,
     authToken,
     setAuthToken,
+    logout,
   };
 
-  return (
-    <UserContext.Provider value={value}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+};
+
+// Custom hook
+export const useUser = () => {
+  return useContext(UserContext);
 };
