@@ -13,13 +13,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\NotificationController;
 
-Route::get('/greeting', function () {
-    return 'Hello World';
-});
-
-
-
-
 
 Route::group(["prefix" => "v0.1"], function () {
     Route::group(["middleware" => "auth:api"], function () {
@@ -37,21 +30,43 @@ Route::group(["prefix" => "v0.1"], function () {
             });
 
             Route::prefix('categories')->group(function () {
-               Route::get('/', [CategoryController::class, 'getCategories']);
+                Route::get('/', [CategoryController::class, 'getCategories']);
             });
-           
-           
-           
 
+            Route::prefix('notifications')->group(function () {
+                Route::get('/', [NotificationController::class, 'index']);
+                Route::get('/unread', [NotificationController::class, 'unread']);
+                Route::post('/read/{id}', [NotificationController::class, 'markAsRead']);
+                Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
+            });
 
-        Route::prefix('notifications')->group(function () {
-            Route::get('/', [NotificationController::class, 'index']);
-            Route::get('/unread', [NotificationController::class, 'unread']);
-            Route::post('/read/{id}', [NotificationController::class, 'markAsRead']);
-            Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
-        });
+            //Customer APIs
+            Route::prefix('cartitems')->controller(CartController::class)->group(function () {
+                Route::get('/', 'getCartItems');
+                Route::get('/{id}', 'getCartItems');
+                Route::get('/total/cart', 'getCartTotal');
+                Route::get('/user/cart', 'getUserCartItems');
+                Route::post('/cart', [CartController::class, 'storeOrUpdate']);
+                Route::delete('/delete/{cartItem}', 'destroy');
+                Route::post('/decrease', [CartController::class, 'decreaseCartItem']);
+            });
 
+            Route::prefix('reviews')->controller(\App\Http\Controllers\ReviewController::class)->group(function () {
+                Route::get('/', 'getReviews');
+                Route::get('/{id}', 'getReviews');
+                Route::post('/', 'storeOrUpdate');
+                Route::delete('/{id}', 'destroy');
+            });
 
+            Route::prefix('orders')->controller(OrderController::class)->group(function () {
+                Route::get('orders', [OrderController::class, 'getOrders']);
+                Route::get('orders/{id}', [OrderController::class, 'getOrders']);
+                Route::get('users/{userId?}', [OrderController::class, 'getUserOrders']);
+                Route::post('/', [OrderController::class, 'storeOrUpdate']);
+                Route::post('from-cart', [OrderController::class, 'createFromCart']);
+                Route::post('{order}/cancel', [OrderController::class, 'cancel']);
+                Route::delete('{order}', [OrderController::class, 'destroy']);
+            });
 
             Route::group(["prefix" => "recommender"], function () {
                 //APIs for ai
@@ -59,37 +74,6 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::post('/save_view', [AgentController::class, 'saveBookView']);
                 Route::get('/get', [AgentController::class, 'getRecommended']);
             });
-        });
-
-        //Customer APIs
-        Route::prefix('cartitems')->controller(CartController::class)->group(function () {
-            Route::get('/', 'getCartItems');
-            Route::get('/{id}', 'getCartItems');
-           Route::get('/total/cart', 'getCartTotal');
-            Route::get('/user/cart', 'getUserCartItems');
-            Route::post('/cart', [CartController::class, 'storeOrUpdate']);
-            Route::delete('/delete/{cartItem}', 'destroy');
-            Route::post('/decrease', [CartController::class, 'decreaseCartItem']);
-        });
-
-
-
-        Route::prefix('reviews')->controller(\App\Http\Controllers\ReviewController::class)->group(function () {
-            Route::get('/', 'getReviews');
-            Route::get('/{id}', 'getReviews');
-            Route::post('/', 'storeOrUpdate');
-            Route::delete('/{id}', 'destroy');
-        });
-
-
-        Route::prefix('orders')->controller(OrderController::class)->group(function () {
-            Route::get('orders', [OrderController::class, 'getOrders']);
-            Route::get('orders/{id}', [OrderController::class, 'getOrders']);
-            Route::get('users/{userId?}', [OrderController::class, 'getUserOrders']);
-            Route::post('/', [OrderController::class, 'storeOrUpdate']);
-            Route::post('from-cart', [OrderController::class, 'createFromCart']);
-            Route::post('{order}/cancel', [OrderController::class, 'cancel']);
-            Route::delete('{order}', [OrderController::class, 'destroy']);
         });
 
         Route::group(["prefix" => "admin"], function () {
