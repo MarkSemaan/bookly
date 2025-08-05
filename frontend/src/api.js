@@ -23,6 +23,7 @@ export const registerUser = (userData) => axiosInstance.post(`/guest/register`, 
 export const loginUser = (userData) => axiosInstance.post(`/guest/login`, userData);
 
 
+export const searchBooks = (payload) => axiosInstance.get(`/user/books/book`, { params: payload });
 export const getBooks = (id = '') => axiosInstance.get(`/user/books/book/${id}`);
 export const getBooksByCategory = (categoryId) => axiosInstance.get(`/user/books/category/${categoryId}`);
 export const addOrUpdateBook = (bookData, id = '') =>

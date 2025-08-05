@@ -13,9 +13,10 @@ class BookController extends Controller
     public function getBooks(Request $request, $id = null)
     {
         try {
-            $search = $request->query('search');
-            $books = BookService::getBooks($id, $search);
-
+          if (empty( $request->search))
+            $books = BookService::getBooks($id,   $request->search);
+        else
+            $books = BookService::searchBooks($request->search);
             if ($id && !$books) {
                 return $this->fail("Book not found", "fail", 404);
             }

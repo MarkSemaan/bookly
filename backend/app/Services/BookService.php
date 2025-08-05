@@ -25,6 +25,25 @@ class BookService
     {
         return Book::where('category_id', $categoryId)->latest('id')->limit(50)->get();
     }
+    
+       public static function searchBooks(string $term)
+    {
+        $term = trim($term);
+
+        if ($term === '') {
+          
+            return collect();
+        }
+
+        return Book::where(function ($q) use ($term) {
+                $q->where('title',     'LIKE', "%{$term}%")
+                  ->orWhere('author',   'LIKE', "%{$term}%")
+                  ->orWhere('publisher','LIKE', "%{$term}%");
+            })
+            ->latest('id')
+            ->get();
+    }
+
 
 
     public static function createOrUpdateBook(array $data, ?Book $book = null)
