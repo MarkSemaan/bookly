@@ -25,7 +25,7 @@ class BookRecommendationAgent
             make sure these books exist in the database.
             EOT;
 
-    public function run(int $userId): array
+    public function run(int $user_id): array
     {
         $availableBooks = BookService::getAvailable();
         $tools = json_decode(file_get_contents(storage_path('app/private/tools.json')), true);
@@ -34,7 +34,7 @@ class BookRecommendationAgent
                 "role" => "system",
                 "content" => $this->system_message
             ],
-            ["role" => "system", "content" => "User Id: {$userId}"],
+            ["role" => "system", "content" => "User Id: {$user_id}"],
             ["role" => "system", "content" => "Available books: " . json_encode($availableBooks)],
             ["role" => "system", "content" => "Available tools: " . json_encode($tools)],
             [
@@ -43,7 +43,13 @@ class BookRecommendationAgent
             ],
         ];
 
-        return $this->processConversation($messages, $userId);
+        $recommendations = $this->processConversation($messages, $user_id);
+        $result = [
+            'user_id' => $user_id,
+            'book_ids' => $recommendations['result'],
+            'reason' => $recommendations['reason']
+        ];
+        return $result;
     }
 
     private function processConversation(array &$messages, int $userId): array
@@ -72,8 +78,7 @@ class BookRecommendationAgent
             }
 
             if ($json['action'] === 'final_answer') {
-                dd($content);
-                return $json['result'] ?? [];
+                return $json ?? [];
             }
 
             $toolExecutor = new ToolExecutorService();

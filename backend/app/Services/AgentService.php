@@ -8,13 +8,13 @@ use App\Models\RecommendationLog;
 
 class AgentService
 {
-    public function recommendBooks(int $userId): array
+    public static function recommendBooks(int $userId): array
     {
         $agent = new BookRecommendationAgent();
         return $agent->run($userId);
     }
 
-    public function saveSearch($request)
+    public static function saveSearch($request)
     {
         return UserSearchHistory::create([
             'user_id' => $request->user()->id,
@@ -22,7 +22,7 @@ class AgentService
         ]);
     }
 
-    public function saveBookView($request)
+    public static function saveBookView($request)
     {
         return UserBookView::create([
             'user_id' => $request->user()->id,
@@ -30,12 +30,12 @@ class AgentService
         ]);
     }
 
-    public function saveRecommendationLog(object $recommendation)
+    public static function saveRecommendationLog($recommendation)
     {
         return RecommendationLog::create([
-            'user_id' => $recommendation->user_id,
-            'book_ids' => $recommendation->book_ids,
-            'reason' => $recommendation->reason,
+            'user_id' => $recommendation['user_id'],
+            'book_ids' => json_encode($recommendation['book_ids']),
+            'reason' => $recommendation['reason'],
         ]);
     }
 }

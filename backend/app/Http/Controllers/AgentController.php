@@ -39,6 +39,7 @@ class AgentController extends Controller
         try {
             $user_id = Auth::id();
             $recommended = app(BookRecommendationAgent::class)->run($user_id);
+            AgentService::saveRecommendationLog($recommended);
             return $this->responseJSON($recommended);
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
