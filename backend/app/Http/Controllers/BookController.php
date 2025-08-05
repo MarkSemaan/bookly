@@ -68,23 +68,22 @@ public function storeOrUpdate(Request $request, $id = null)
         }
     }
 
-    public function destroy($book_id)
-    {
-        try {
-            $book = BookService::deleteBook($book_id);
-            return $this->responseJSON($book, "Book deleted");
-        } catch (\Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
-        }
-    }
+  public function destroy($book_id)
+{
+    try {
 
-    public function getAllBooks()
-    {
-        try {
-            $books = BookService::getAllBooks();
-            return $this->responseJSON($books);
-        } catch (Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
-        }
+        $book = Book::findOrFail($book_id);
+        BookService::deleteBook($book);
+        return $this->responseJSON(
+            ['message' => 'Book deleted successfully.'],
+            200
+        );
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return $this->fail('Book not found', 'fail', 404);
+    } catch (\Exception $e) {
+        return $this->fail($e->getMessage(), 'error', 500);
     }
+}
+
+
 }
