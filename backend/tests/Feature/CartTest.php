@@ -31,7 +31,7 @@ class CartTest extends TestCase
             'quantity' => 1,
         ];
 
-        $response = $this->postJson('/api/v0.1/cartitems/cart', $cartData);
+        $response = $this->postJson('/api/v0.1/user/cartitems/cart', $cartData);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -62,7 +62,7 @@ class CartTest extends TestCase
             'book_id' => $this->book->id,
         ]);
 
-        $response = $this->getJson('/api/v0.1/cartitems');
+        $response = $this->getJson('/api/v0.1/user/cartitems');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -82,7 +82,7 @@ class CartTest extends TestCase
             'book_id' => $this->book->id,
         ]);
 
-        $response = $this->deleteJson("/api/v0.1/cartitems/delete/{$cartItem->id}");
+        $response = $this->deleteJson("/api/v0.1/user/cartitems/delete/{$cartItem->id}");
 
         $response->assertStatus(200)
             ->assertJson([
@@ -101,7 +101,7 @@ class CartTest extends TestCase
             'quantity' => 1,
         ];
 
-        $response = $this->postJson('/api/v0.1/cartitems/cart', $cartData);
+        $response = $this->postJson('/api/v0.1/user/cartitems/cart', $cartData);
 
         $response->assertStatus(401);
     }
@@ -110,7 +110,7 @@ class CartTest extends TestCase
     {
         $this->actingAs($this->user, 'api');
 
-        $response = $this->postJson('/api/v0.1/cartitems/cart', ['quantity' => 1]);
+        $response = $this->postJson('/api/v0.1/user/cartitems/cart', ['quantity' => 1]);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors('book_id');
@@ -120,7 +120,7 @@ class CartTest extends TestCase
     {
         $this->actingAs($this->user, 'api');
 
-        $response = $this->postJson('/api/v0.1/cartitems/cart', ['book_id' => $this->book->id]);
+        $response = $this->postJson('/api/v0.1/user/cartitems/cart', ['book_id' => $this->book->id]);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors('quantity');
@@ -130,7 +130,7 @@ class CartTest extends TestCase
     {
         $this->actingAs($this->user, 'api');
 
-        $response = $this->postJson('/api/v0.1/cartitems/cart', [
+        $response = $this->postJson('/api/v0.1/user/cartitems/cart', [
             'book_id' => $this->book->id,
             'quantity' => 0
         ]);
