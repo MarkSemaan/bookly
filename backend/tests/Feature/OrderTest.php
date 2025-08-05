@@ -43,7 +43,7 @@ class OrderTest extends TestCase
             ],
         ];
 
-        $response = $this->postJson('/api/v0.1/orders', $orderData);
+        $response = $this->postJson('/api/v0.1/user/orders', $orderData);
 
         $response->assertCreated()
             ->assertJsonStructure([
@@ -73,7 +73,7 @@ class OrderTest extends TestCase
         $order2 = Order::factory()->create(['user_id' => $this->user->id]);
         Order::factory()->create(); // other user
 
-        $response = $this->getJson("/api/v0.1/orders/users/{$this->user->id}");
+        $response = $this->getJson("/api/v0.1/user/orders/users/{$this->user->id}");
 
         $response->assertOk()
             ->assertJsonCount(2)
@@ -85,7 +85,7 @@ class OrderTest extends TestCase
         $order = Order::factory()->create(['user_id' => $this->user->id]);
         OrderItem::factory()->count(2)->create(['order_id' => $order->id]);
 
-        $response = $this->getJson("/api/v0.1/orders/orders/{$order->id}");
+        $response = $this->getJson("/api/v0.1/user/orders/orders/{$order->id}");
 
         $response->assertOk()
             ->assertJsonPath('payload.id', $order->id)
@@ -114,7 +114,7 @@ class OrderTest extends TestCase
     {
         auth()->logout();
 
-        $response = $this->postJson('/api/v0.1/orders', []);
+        $response = $this->postJson('/api/v0.1/user/orders', []);
         $response->assertUnauthorized();
     }
 
@@ -122,7 +122,7 @@ class OrderTest extends TestCase
     {
         auth()->logout();
 
-        $response = $this->getJson("/api/v0.1/orders/users/{$this->user->id}");
+        $response = $this->getJson("/api/v0.1/user/orders/users/{$this->user->id}");
         $response->assertUnauthorized();
     }
 }
