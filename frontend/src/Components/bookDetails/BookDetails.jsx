@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import useBookDetails from '../../Hooks/useBookDetails';
 import useAddToCart from '../../Hooks/useAddToCart';
+import { CartContext } from '../../Context/CartContext';
 import "./bookDetails.css";
 
 const BookDetails = () => {
@@ -9,12 +10,27 @@ const BookDetails = () => {
   const { id } = useParams();
   const { book, error, loading } = useBookDetails(id);
   const { handleAddToCart, loading: cartLoading, error: cartError } = useAddToCart();
+  const { cart, setCart } = useContext(CartContext);
 
   const [successMessage, setSuccessMessage] = useState('');
 
   const handleClick = async () => {
+    if (!book || !book.id) return;
     const result = await handleAddToCart(book.id, 1);
     if (result) {
+      const existingItem = cart.find(item => item.book.id === book.id);
+      if (existingItem) {
+        setCart(prev =>
+          prev.map(item =>
+            item.book.id === book.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        );
+      } else {
+        setCart(prev => [...prev, { book, quantity: 1 }]);
+      }
+
       setSuccessMessage('✅ Book added to your cart!');
       setTimeout(() => setSuccessMessage(''), 3000);
     } else {
@@ -24,11 +40,12 @@ const BookDetails = () => {
 
   if (loading) return <p>Loading book details...</p>;
   if (error) return <p>{error}</p>;
+  if (!book) return <p>Book not found.</p>;
 
   return (
     <div className="book-details-container">
       <div className="book-content-wrapper">
-        <img src={book.image ? `${backendBaseUrl}${book.image}` : '/default-book.png'} className="book-img" alt={book.title} /> 
+        <img src={book.image ? `${backendBaseUrl}${book.image}` : '/default-book.png'} className="book-img" alt={book.title} />
         <h1 className="book-titlee">{book.title}</h1>
 
         <div className="details-box">
