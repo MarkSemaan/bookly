@@ -18,7 +18,7 @@ const LoginForm = () => {
       const token = await authService(form.email, form.password);
       localStorage.setItem("token", token);
       setMessage({ type: "success", text: "Login successful" });
-      navigate("/homePage");
+      navigate("/");
     } catch (error) {
       setMessage({ type: "error", text: "Login failed" });
       console.error("Login error:", error);

@@ -18,12 +18,6 @@ class Book extends Model
     'description', 'price', 'stock', 'sold', 'category_id', 'image', 'is_available','rating'
 ];
 
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class, 'book_category');
-    }
-
     public function category()
     {
      return $this->belongsTo(Category::class, 'category_id');

@@ -24,7 +24,7 @@ class OrderController extends Controller
                 if (!$order) {
                     return $this->fail("Order not found", "fail", 404);
                 }
-                if ($order->user_id !== auth()->id()) {
+                if ($order->user_id !== Auth::id()) {
                     return $this->fail("Order not found", "fail", 404);
                 }
                 return $this->responseJSON($order, "Order found");
@@ -56,7 +56,7 @@ class OrderController extends Controller
             if ($id && !$order) {
                 return $this->fail("Order not found", "fail", 404);
             }
-            $validated['user_id'] = auth()->id();
+            $validated['user_id'] = Auth::id();
 
             $result = OrderService::createOrUpdateOrder($validated, $order);
 
@@ -69,7 +69,7 @@ class OrderController extends Controller
     public function createFromCart(Request $request)
     {
         try {
-            $userId = auth()->id();
+            $userId = Auth::id();
             $order = OrderService::createOrderFromCart($userId);
             return $this->responseJSON($order, "Order created from cart");
         } catch (Exception $e) {

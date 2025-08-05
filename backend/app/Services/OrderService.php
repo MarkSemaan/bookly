@@ -66,7 +66,7 @@ class OrderService
                 ]);
             }
             CartItem::where('user_id', $userId)->delete();
-            // event(new OrderCreated($order));
+         
             OrderPlaced::dispatch($order);
             return $order->fresh('items.book');
         });

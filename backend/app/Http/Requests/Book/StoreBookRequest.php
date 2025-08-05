@@ -35,6 +35,7 @@ class StoreBookRequest extends FormRequest
             "stock" => "nullable|integer|min:0",
             "image" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
             "sold" => "nullable|integer|min:0",
+            "category_id" => "required|integer|exists:categories,id",
             "is_available" => "nullable|boolean",
             "rating" => "nullable|integer|min:1|max:5"
         ];
