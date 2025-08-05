@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnalyticController;
 use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -97,6 +98,7 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::get('/orders', [OrderController::class, 'getAllOrders']);
                 Route::post('/orders/move_status/{id}', [OrderController::class, 'moveStatus']);
                 Route::get('/books', [BookController::class, 'getAllBooks']);
+                Route::get('/dashboard', [AnalyticController::class, 'getAnalytics']);
             });
         });
     });

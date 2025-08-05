@@ -17,6 +17,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import BooksManagement from "./Pages/BooksManagement/BooksManagement";
+import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 
 
 import "./Assets/Styles/App.css";
@@ -41,19 +42,15 @@ const MyRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route element={<AppLayout />}>
-      <Route path="/homePage" element={<HomePage />} />
-          <Route path="/bookList" element={<BookList />} />
-          <Route path="/book/:id" element={<BookDetails />} />
-          <Route path="/cart" element={<UserCart />} />
-
-          <Route path="/createbook" element={<CreateBook />} />
-
-          <Route path="/my_orders" element={<UserOrders />} />
-          <Route path="/management" element={<OrderManagement />} />
-          <Route path="/booksManagement" element={<BooksManagement />} />
-
-        </Route>
-      </Routes>
+        <Route path="/homePage" element={<HomePage />} />
+        <Route path="/bookList" element={<BookList />} />
+        <Route path="/book/:id" element={<BookDetails />} />
+        <Route path="/myOrders" element={<UserOrders />} />
+        <Route path="/management" element={<OrderManagement />} />
+        <Route path="/booksManagement" element={<BooksManagement />} />
+        <Route path="/dashboard" element={<AdminDashboard />} />
+      </Route>
+    </Routes>
   );
 };
 

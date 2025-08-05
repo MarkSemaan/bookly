@@ -1,0 +1,35 @@
+.sales-graph {
+  background-color: #fdf3ef;
+  border-radius: 20px;
+  padding: 20px;
+  width: 25rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.sales-graph h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #1e1e1e;
+}
+
+.graph-container {
+  width: 100%;
+  height: auto;
+}
+
+.graph-svg {
+  width: 100%;
+  height: 200px;
+}
+
+.graph-svg path {
+  stroke: #333;
+  stroke-width: 2;
+  fill: none;
+}
+
+.graph-svg line {
+  stroke: #ddd;
+  stroke-width: 1;
+}

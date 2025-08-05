@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\OrderPlaced;
 use App\Models\Order;
 use App\Models\CartItem;
 use App\Models\OrderItem;
@@ -42,6 +43,7 @@ class OrderService
             $cartItems = CartItem::with('book')->where('user_id', $userId)->get();
             
 
+
             if ($cartItems->isEmpty()) {
                 throw new \Exception("No items in cart to create order.");
             }
@@ -64,8 +66,8 @@ class OrderService
                 ]);
             }
             CartItem::where('user_id', $userId)->delete();
-            event(new OrderCreated($order)); 
-
+            // event(new OrderCreated($order));
+            OrderPlaced::dispatch($order);
             return $order->fresh('items.book');
         });
     }

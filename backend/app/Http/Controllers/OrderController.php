@@ -56,6 +56,7 @@ class OrderController extends Controller
             if ($id && !$order) {
                 return $this->fail("Order not found", "fail", 404);
             }
+            $validated['user_id'] = auth()->id();
 
             $result = OrderService::createOrUpdateOrder($validated, $order);
 
@@ -65,15 +66,15 @@ class OrderController extends Controller
         }
     }
 
-  public function createFromCart(Request $request)
-{
-    try {
-        $userId = Auth::id(); 
-
-        $order = OrderService::createOrderFromCart($userId);
-        return $this->responseJSON($order, "Order created from cart");
-    } catch (Exception $e) {
-        return $this->fail($e->getMessage(), "error", 500);
+    public function createFromCart(Request $request)
+    {
+        try {
+            $userId = auth()->id();
+            $order = OrderService::createOrderFromCart($userId);
+            return $this->responseJSON($order, "Order created from cart");
+        } catch (Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
     }
 }
 

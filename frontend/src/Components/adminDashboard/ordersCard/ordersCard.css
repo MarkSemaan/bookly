@@ -1,0 +1,60 @@
+.orders-card {
+  background-color: #fdf3ef;
+  border-radius: 20px;
+  padding: 20px;
+  width: 25rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.orders-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1e1e1e;
+}
+
+.orders-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.orders-additional {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.order-stat {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e9e2df;
+  color: #1e1e1e;
+}
+.order-stat-up {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e9e2df;
+  color: #1e1e1e;
+}
+
+.order-stat:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.stat-value {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
