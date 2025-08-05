@@ -45,11 +45,6 @@ const useCartHandlers = () => {
       alert("Failed to decrease quantity");
     }
   };
-
-  const result = deleteCartItem(itemId);
-  if (result) {
-    setCart((prev) => prev.filter((item) => item.id !== itemId));
-  }
 };
 const handleQuantityChange = async (item) => {
   const updatedItem = await decreaseQuantity(item.book.id);
@@ -82,8 +77,9 @@ return {
   checkoutError,
   handleCheckout,
   handleIncrease,
-  handleQuantityChange,
+  handleDecrease,
   handleRemove,
+  handleQuantityChange,
 };
 
 export default useCartHandlers;
