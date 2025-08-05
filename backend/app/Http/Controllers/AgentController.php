@@ -3,40 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Services\AgentService;
-use App\Services\BookService;
-use App\Services\CartService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Agents\BookRecommendationAgent;
 
 class AgentController extends Controller
 {
-    public static function saveSearch($request)
+    use ResponseTrait;
+
+    protected AgentService $agentService;
+
+    public function saveSearch(Request $request)
     {
         try {
-            $search = AgentService::saveSearch($request);
-            return ResponseTrait::responseJSON($search);
+            $search = $this->agentService->saveSearch($request);
+            return $this->responseJSON($search);
         } catch (\Exception $e) {
-            return ResponseTrait::fail($e->getMessage(), "error", 500);
+            return $this->fail($e->getMessage(), "error", 500);
         }
     }
-    public static function saveBookView($request)
+
+    public function saveBookView(Request $request)
     {
         try {
-            $view = AgentService::saveBookView($request);
-            return ResponseTrait::responseJSON($view);
+            $view = $this->agentService->saveBookView($request);
+            return $this->responseJSON($view);
         } catch (\Exception $e) {
-            return ResponseTrait::fail($e->getMessage(), "error", 500);
+            return $this->fail($e->getMessage(), "error", 500);
         }
     }
-    public static function getRecommended()
+
+    public function getRecommended()
     {
         try {
             $user_id = Auth::id();
-            $recommended = AgentService::agentLoop($user_id);
-            return ResponseTrait::responseJSON($recommended);
+            $recommended = app(BookRecommendationAgent::class)->run($user_id);
+            AgentService::saveRecommendationLog($recommended);
+            return $this->responseJSON($recommended);
         } catch (\Exception $e) {
-            return ResponseTrait::fail($e->getMessage(), "error", 500);
+            return $this->fail($e->getMessage(), "error", 500);
         }
     }
 }

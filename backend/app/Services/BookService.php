@@ -88,7 +88,7 @@ class BookService
         return Book::all();
     }
 
-    public static function available()
+    public static function getAvailable()
     {
         return Book::where('is_available', true)->get();
     }
