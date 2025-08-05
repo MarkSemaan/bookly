@@ -34,10 +34,10 @@ services:
       MYSQL_USER: ali
       MYSQL_PASSWORD: password
     ports:
-      - "3306:3306"
+      - "3307:3306"
 
-  adminer:
-    image: adminer
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
     restart: always
     ports:
       - 8080:8080

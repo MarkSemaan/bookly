@@ -29,8 +29,9 @@ const RegisterForm = () => {
       navigate("/homePage"); 
     }, 500); 
   } catch (error) {
-    setMessage({ type: "error", text: "Failed to register" });
-    console.error(error);
+    const errorMessage = error.response?.data?.message || "Failed to register";
+    setMessage({ type: "error", text: errorMessage });
+    console.error("Registration error:", error.response?.data || error.message);
   }
 };
 
