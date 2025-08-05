@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Traits\ResponseTrait;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Models\Category;
@@ -20,7 +23,8 @@ class CategoryController extends Controller
                 return $this->fail("Category not found", "fail", 404);
             }
 
-            return $this->responseJSON($categories, "Categories loaded successfully");
+            return $this->responseJSON($categories, $id ? "Category found" : "Categories loaded");
+
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }

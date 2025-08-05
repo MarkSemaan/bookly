@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Book;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class BookService
 {
@@ -16,17 +15,16 @@ class BookService
         }
 
         return Book::when($search, function ($query) use ($search) {
-            $query->where('title', 'like', "%$search%")->orWhere('author', 'like', "%$search%")->orWhere('publisher', 'like', "%$search%");
+            $query->where('title', 'like', "%$search%")
+                  ->orWhere('author', 'like', "%$search%")
+                  ->orWhere('publisher', 'like', "%$search%");
         })->latest('id')->limit(50)->get();
     }
 
     public static function getBooksByCategory(int $categoryId)
     {
-        return Book::whereHas('categories', function ($q) use ($categoryId) {
-            $q->where('category_id', $categoryId);
-        })->latest('id')->limit(50)->get();
+        return Book::where('category_id', $categoryId)->latest('id')->limit(50)->get();
     }
-
 
     public static function createOrUpdateBook(array $data, ?Book $book = null)
     {
@@ -54,10 +52,25 @@ class BookService
 
         $book->delete();
     }
+
     public static function getTopSellingBooks()
     {
-
         return Book::where('sold', '>', 0)->orderByDesc('sold')->limit(15)->get();
+    }
+
+    public static function getTopRatedBooks()
+    {
+        return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
+    }
+
+    public static function getAllBooks()
+    {
+        return Book::all();
+    }
+
+    public static function available()
+    {
+        return Book::where('is_available', true)->get();
     }
 
     private static function handleImageUpload(UploadedFile $imageFile, ?string $oldImagePath = null): string
@@ -67,15 +80,5 @@ class BookService
         }
 
         return $imageFile->store('book-covers', 'public');
-    }
-
-    public static function getTopRatedBooks()
-    {
-        return Book::where('rating', '>', 0)->orderByDesc('rating')->limit(15)->get();
-    }
-    public static function available()
-    {
-        $books = Book::where('is_available', true);
-        return $books;
     }
 }
