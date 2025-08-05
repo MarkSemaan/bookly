@@ -1,4 +1,4 @@
-import React from 'react';
+
 import './cart.css';
 import trash from '../../../src/Assets/Icons/delete.svg';
 import useCartHandlers from '../../Hooks/useCartHandlers';

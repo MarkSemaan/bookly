@@ -1,4 +1,4 @@
-import React from 'react';
+
 import './salesGraph.css';
 
 const SalesGraph = ({ title, data = [] }) => {

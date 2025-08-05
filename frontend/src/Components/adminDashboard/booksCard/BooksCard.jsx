@@ -1,4 +1,3 @@
-import React from 'react';
 import './booksCard.css';
 
 const BooksCard = ({ title, books, showSales }) => {

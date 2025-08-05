@@ -1,4 +1,4 @@
-import React from 'react';
+
 import './dashboardCard.css';
 
 const DashboardCard = ({ title, value, isSmall, notifications }) => {
