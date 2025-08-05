@@ -55,7 +55,8 @@ class BookController extends Controller
 public function storeOrUpdate(Request $request, $id = null)
     {
         try {
-            $book = BookService::createOrUpdateBook($request->all(), $id);
+            $book = $id ? Book::find($id) : null;
+            $book = BookService::createOrUpdateBook($request->all(), $book);
            return $this->responseJSON([
                 'message' => $id ? 'Book updated successfully.' : 'Book created successfully.',
                 'data' => $book
