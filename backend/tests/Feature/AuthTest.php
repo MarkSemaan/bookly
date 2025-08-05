@@ -26,7 +26,7 @@ class AuthTest extends TestCase
             'password_confirmation' => $this->password,
         ]);
 
-        $res->assertOk()
+        $res->assertCreated()
             ->assertJsonStructure([
                 'status',
                 'payload' => [
