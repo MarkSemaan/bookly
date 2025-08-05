@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import api from "../../src/Services/booklist/bestlistService"; 
 const useBooksByCategory = (categoryId) => {
   const [books, setBooks] = useState([]);
