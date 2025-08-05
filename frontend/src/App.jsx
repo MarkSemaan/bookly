@@ -4,10 +4,12 @@ import BookDetails from "./Components/bookDetails/BookDetails";
 import AppLayout from "./Components/Shared/Layouts/AppLayout";
 import UserOrders from "./Components/userOrders/UserOrders";
 import BookList from "./Pages/BookList/BookList";
+import CreateBook from "./Pages/CreateBook";
 import HomePage from "./Pages/HomePage/HomePage";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import OrderManagement from "./Components/orderManagement/OrderManagement";
+import UserCart from "./Pages/UserCart/UserCart";
 
 import {
   Routes,
@@ -17,12 +19,17 @@ import {
 import BooksManagement from "./Pages/BooksManagement/BooksManagement";
 import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 
+
+import "./Assets/Styles/App.css";
+import "./Assets/Styles/variable.css";
+import AppRoutes from "./Routes/AppRouters";
+
 const App = () => {
-  const location = useLocation();
+
 
   return (
     <div className="App">
-      <MyRoutes />
+      <AppRoutes />
     </div>
   );
 };
@@ -46,3 +53,4 @@ const MyRoutes = () => {
     </Routes>
   );
 };
+

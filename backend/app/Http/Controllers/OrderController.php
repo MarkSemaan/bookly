@@ -8,32 +8,37 @@ use App\Services\OrderService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
     use ResponseTrait;
 
-    public function getOrders(?int $id = null, Request $request)
+    public function getOrders(Request $request, ?int $id = null)
     {
         try {
             $search = $request->query('search');
-            $orders = OrderService::getOrders($id, $search);
-
-            if ($id && !$orders) {
-                return $this->fail("Order not found", "fail", 404);
+            $order = null;
+            if ($id) {
+                $order = OrderService::getOrders($id, $search);
+                if (!$order) {
+                    return $this->fail("Order not found", "fail", 404);
+                }
+                if ($order->user_id !== auth()->id()) {
+                    return $this->fail("Order not found", "fail", 404);
+                }
+                return $this->responseJSON($order, "Order found");
             }
-
-            return $this->responseJSON($orders, $id ? "Order found" : "Orders loaded");
+            $orders = OrderService::getOrders(null, $search);
+            return $this->responseJSON($orders, "Orders loaded");
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
 
-    public function getUserOrders(int $userId = null)
+    public function getUserOrders(int $userId)
     {
         try {
-            if (!$userId)
-                $userId = auth()->id();
             $orders = OrderService::getUserOrders($userId);
             return $this->responseJSON($orders, "User's orders loaded");
         } catch (Exception $e) {
@@ -60,6 +65,7 @@ class OrderController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
+
     public function createFromCart(Request $request)
     {
         try {
@@ -70,11 +76,13 @@ class OrderController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
+}
 
-    public function cancel($id)
+
+    public function cancel(Order $order)
     {
         try {
-            $order = OrderService::cancelOrder($id);
+            $order = OrderService::cancelOrder($order);
             return $this->responseJSON($order, "Order cancelled");
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
@@ -86,24 +94,6 @@ class OrderController extends Controller
         try {
             OrderService::deleteOrder($order);
             return $this->responseJSON(null, "Order deleted");
-        } catch (Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
-        }
-    }
-    public function getAllOrders()
-    {
-        try {
-            $orders = OrderService::getAllOrders();
-            return $this->responseJSON($orders);
-        } catch (Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
-        }
-    }
-    public function moveStatus($id)
-    {
-        try {
-            $order = OrderService::moveStatus($id);
-            return $this->responseJSON($order);
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }

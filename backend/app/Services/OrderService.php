@@ -7,6 +7,8 @@ use App\Models\Order;
 use App\Models\CartItem;
 use App\Models\OrderItem;
 use App\Models\Book;
+use App\Events\OrderCreated;
+use App\Events\OrderStatusChanged;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -39,6 +41,7 @@ class OrderService
     {
         return DB::transaction(function () use ($userId) {
             $cartItems = CartItem::with('book')->where('user_id', $userId)->get();
+            
 
 
             if ($cartItems->isEmpty()) {
@@ -74,7 +77,8 @@ class OrderService
         $order = Order::find($order_id);
         $order->status = 'cancelled';
         $order->save();
-        return $order;
+        event(new OrderStatusChanged($order, 'cancelled'));
+        return $order->fresh('items.book');
     }
 
     public static function createOrUpdateOrder(array $data, ?Order $order = null): Order
@@ -93,6 +97,7 @@ class OrderService
                     'status' => $data['status'] ?? 'pending',
                     'total' => $total,
                 ]);
+             
             }
 
             foreach ($data['items'] as $item) {

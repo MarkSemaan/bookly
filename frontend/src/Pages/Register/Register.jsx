@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Circles from "../../Components/Shared/Circles/Circles";
 import RegisterHeader from "../../Components/auth/register/RegisterHeader";
 import RegisterCard from "../../Components/auth/register/RegisterForm";
@@ -10,16 +9,17 @@ import "./register.css";
 const Register = () => {
   return (
     <div className="register-container-wrapper">
-      <Circles />
-
       <RegisterHeader />
-
+      <Circles />
       <div className="register-container">
         <RegisterCard />
-        <RegisterAnimations />
+        <div className="register-animation">
+          <RegisterAnimations />
+        </div>
       </div>
-
-      <RegisterFooter />
+      <div className="register-footer">
+        <RegisterFooter />
+      </div>
     </div>
   );
 };

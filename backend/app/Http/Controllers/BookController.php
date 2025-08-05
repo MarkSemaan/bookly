@@ -10,7 +10,7 @@ use Exception;
 
 class BookController extends Controller
 {
-    public function getBooks($id = null, Request $request)
+    public function getBooks(Request $request, $id = null)
     {
         try {
             $search = $request->query('search');
@@ -25,11 +25,13 @@ class BookController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
+  
     public function getTopRatedBooks()
     {
         $books = BookService::getTopRatedBooks();
         return $this->responseJSON($books);
     }
+    
     public function getTopSellingBooks()
     {
         try {
@@ -39,33 +41,30 @@ class BookController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
-    public function getBooksByCategory(int $categoryId)
+      public function getBooksByCategory(int $categoryId)
+
     {
         try {
             $books = BookService::getBooksByCategory($categoryId);
             return $this->responseJSON($books, "Books by category loaded");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
 
-    public function storeOrUpdate(StoreBookRequest $request)
+public function storeOrUpdate(Request $request, $id = null)
     {
         try {
-            $validated = $request->validated();
-            $id = $validated['id'] ?? null;
-            $book = $id ? Book::find($id) : null;
-
-            if ($id && !$book) {
-                return $this->fail("Book not found", "fail", 404);
-            }
-
-            $result = BookService::createOrUpdateBook($validated, $book);
-
-
-            return $this->responseJSON($result, $id ? "Book updated" : "Book added", $id ? 200 : 201);
+            $book = BookService::createOrUpdateBook($request->all(), $id);
+           return $this->responseJSON([
+                'message' => $id ? 'Book updated successfully.' : 'Book created successfully.',
+                'data' => $book
+            ], $id ? 200 : 201);
         } catch (\Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
+             return $this->responseJSON([
+                'error' => 'Failed to create or update book.',
+                'details' => $e->getMessage()
+            ], 500);
         }
     }
 

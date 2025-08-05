@@ -2,53 +2,65 @@
 
 namespace App\Notifications;
 
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\MailMessage;
 
-class OrderStatusUpdated extends Notification
+class OrderStatusUpdated extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct()
+    protected Order $order;
+    protected string $messageText;
+
+    public function __construct(Order $order, string $messageText)
     {
-        //
+
+        $this->order = $order->load('items.book');
+        $this->messageText = $messageText;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
+    public function via($notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail($notifiable): MailMessage
     {
+        // Build list from items -> book titles and quantities
+        $booksList = $this->order->items->map(function ($item) {
+            return "{$item->book->title} (Qty: {$item->quantity})";
+        })->implode("\n");
+
+        $total = number_format($this->order->total, 2);
+
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject("Invoice for Order #{$this->order->id}")
+            ->greeting("Hello {$notifiable->name},")
+            ->line($this->messageText)
+            ->line("Here is a summary of your order:")
+            ->line($booksList)
+            ->line("**Total Paid:** \${$total}")
+            ->action('View your order', url("/orders/{$this->order->id}"))
+            ->line('Thank you for your purchase!');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
+    public function toDatabase($notifiable): array
     {
         return [
-            //
+            'order_id' => $this->order->id,
+            'status' => $this->order->status,
+            'message' => $this->messageText,
+            'items' => $this->order->items->map(function ($item) {
+                return [
+                    'title' => $item->book->title,
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                ];
+            }),
+            'total' => $this->order->total,
         ];
     }
 }

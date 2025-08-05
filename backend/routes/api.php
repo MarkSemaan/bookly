@@ -9,30 +9,14 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CategoryController;
-
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/greeting', function () {
     return 'Hello World';
 });
 
-
-Route::prefix('users')->controller(UserController::class)->group(function () {
-    Route::get('/', 'getUsers');
-    Route::get('/{id}', 'getUsers');
-    Route::put('/{id}', 'update');
-    Route::put('/{id}/upgrade', 'upgrade');
-    Route::get('/{id}/reviews', 'getUserReviews');
-});
-
-Route::prefix('categories')->controller(CategoryController::class)->group(function () {
-    Route::get('/', 'getCategories');
-    Route::get('/{id}', 'getCategories');
-    Route::post('/', 'storeOrUpdate');
-    Route::post('/{id}', 'storeOrUpdate');
-    Route::delete('/{id}', 'destroy');
-});
 
 
 
@@ -43,14 +27,31 @@ Route::group(["prefix" => "v0.1"], function () {
         //AUTHENTICATED APIs
         Route::group(["prefix" => "user"], function () {
             Route::prefix('books')->group(function () {
-
-                Route::get('/', [BookController::class, 'getBooks']);
+                Route::get('/book/{id?}', [BookController::class, 'getBooks']);
                 Route::get('/category/{categoryId}', [BookController::class, 'getBooksByCategory']);
-                Route::post('/', [BookController::class, 'storeOrUpdate']);
-                Route::post('/delete/{book_id}', [BookController::class, 'destroy']);
-                Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
 
+                Route::post('/books', [BookController::class, 'storeOrUpdate']);
+                Route::put('/books/{id}', [BookController::class, 'storeOrUpdate']);
+                Route::delete('/{book}', [BookController::class, 'destroy']);
+                Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
             });
+
+            Route::prefix('categories')->group(function () {
+               Route::get('/', [CategoryController::class, 'getCategories']);
+            });
+           
+           
+           
+
+
+        Route::prefix('notifications')->group(function () {
+            Route::get('/', [NotificationController::class, 'index']);
+            Route::get('/unread', [NotificationController::class, 'unread']);
+            Route::post('/read/{id}', [NotificationController::class, 'markAsRead']);
+            Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
+        });
+
+
 
             Route::group(["prefix" => "recommender"], function () {
                 //APIs for ai
@@ -58,19 +59,22 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::post('/save_view', [AgentController::class, 'saveBookView']);
                 Route::get('/get', [AgentController::class, 'getRecommended']);
             });
-
         });
+
         //Customer APIs
         Route::prefix('cartitems')->controller(CartController::class)->group(function () {
             Route::get('/', 'getCartItems');
             Route::get('/{id}', 'getCartItems');
-            Route::get('/user/{userId}', 'getUserCartItems');
-            Route::post('/', 'storeOrUpdate');
-            Route::delete('/{cartItem}', 'destroy');
+           Route::get('/total/cart', 'getCartTotal');
+            Route::get('/user/cart', 'getUserCartItems');
+            Route::post('/cart', [CartController::class, 'storeOrUpdate']);
+            Route::delete('/delete/{cartItem}', 'destroy');
+            Route::post('/decrease', [CartController::class, 'decreaseCartItem']);
         });
 
 
-        Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
+
+        Route::prefix('reviews')->controller(\App\Http\Controllers\ReviewController::class)->group(function () {
             Route::get('/', 'getReviews');
             Route::get('/{id}', 'getReviews');
             Route::post('/', 'storeOrUpdate');
@@ -83,10 +87,9 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::get('orders/{id}', [OrderController::class, 'getOrders']);
             Route::get('users/{userId?}', [OrderController::class, 'getUserOrders']);
             Route::post('/', [OrderController::class, 'storeOrUpdate']);
-            Route::post('from-cart/{userId}', [OrderController::class, 'createFromCart']);
-            Route::post('/cancel/{id}', [OrderController::class, 'cancel']);
+            Route::post('from-cart', [OrderController::class, 'createFromCart']);
+            Route::post('{order}/cancel', [OrderController::class, 'cancel']);
             Route::delete('{order}', [OrderController::class, 'destroy']);
-
         });
 
         Route::group(["prefix" => "admin"], function () {
@@ -98,12 +101,10 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::get('/dashboard', [AnalyticController::class, 'getAnalytics']);
             });
         });
-
     });
 
     Route::group(["prefix" => "guest"], function () {
         Route::post("/login", [AuthController::class, "login"]);
         Route::post("/register", [AuthController::class, "register"]);
-
     });
 });
