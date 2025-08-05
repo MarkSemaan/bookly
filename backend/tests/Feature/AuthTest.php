@@ -13,18 +13,20 @@ class AuthTest extends TestCase
 
     private string $email = 'ali@example.com';
     private string $password = 'secret123';
+    private string $firstName = 'Ali';
+    private string $lastName = 'Serhan';
 
     public function test_user_can_register()
     {
         $res = $this->postJson('/api/v0.1/guest/register', [
-            'first_name' => 'Ali',
-            'last_name' => 'Serhan',
+            'first_name' => $this->firstName,
+            'last_name' => $this->lastName,
             'email' => $this->email,
             'password' => $this->password,
             'password_confirmation' => $this->password,
         ]);
 
-        $res->assertCreated()
+        $res->assertOk()
             ->assertJsonStructure([
                 'status',
                 'payload' => [
@@ -60,6 +62,8 @@ class AuthTest extends TestCase
                     'token'
                 ]
             ]);
+
+        $this->assertNotNull($res->json('payload.token'));
     }
 
     public function test_user_cannot_login_with_invalid_credentials()

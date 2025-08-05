@@ -13,14 +13,22 @@ class Book extends Model
 {
     use HasFactory;
     protected $fillable = [
+
     'title', 'author', 'publisher', 'published_year',
-    'description', 'price', 'stock', 'sold', 'image', 'is_available','rating'
+    'description', 'price', 'stock', 'sold', 'category_id', 'image', 'is_available','rating'
 ];
+
 
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'book_category');
     }
+
+    public function category()
+    {
+     return $this->belongsTo(Category::class, 'category_id');
+    }
+
 
     public function orderItems()
     {
@@ -36,4 +44,11 @@ class Book extends Model
     {
         return $this->hasMany(Review::class);
     }
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_items')
+            ->withPivot('quantity', 'price')
+            ->withTimestamps();
+    }
+
 }

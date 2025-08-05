@@ -125,23 +125,25 @@ class BookTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson('/api/v0.1/user/books', $bookData);
+        ])->postJson('/api/v0.1/user/books/books', $bookData);
 
-        $response->assertCreated()
+        $response->assertOk()
             ->assertJsonStructure([
                 'status',
                 'payload' => [
-                    'id',
-                    'title',
-                    'author',
-                    'description',
-                    'price',
-                    'stock',
-                    'publisher',
-                    'published_year',
-                    'is_available',
-                    'created_at',
-                    'updated_at'
+                    'data' => [
+                        'id',
+                        'title',
+                        'author',
+                        'description',
+                        'price',
+                        'stock',
+                        'publisher',
+                        'published_year',
+                        'is_available',
+                        'created_at',
+                        'updated_at'
+                    ]
                 ]
             ]);
 
@@ -166,17 +168,19 @@ class BookTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson('/api/v0.1/user/books', array_merge(['id' => $book->id], $updateData));
+        ])->putJson('/api/v0.1/user/books/books/' . $book->id, $updateData);
 
-        $response->assertCreated()
+        $response->assertOk()
             ->assertJsonStructure([
                 'status',
                 'payload' => [
-                    'id',
-                    'title',
-                    'author',
-                    'created_at',
-                    'updated_at'
+                    'data' => [
+                        'id',
+                        'title',
+                        'author',
+                        'created_at',
+                        'updated_at'
+                    ]
                 ]
             ]);
 
@@ -194,7 +198,7 @@ class BookTest extends TestCase
         $response->assertOk()
             ->assertJson([
                 'status' => 'Book deleted',
-                'payload' => null
+                'payload' => true,
             ]);
 
         $this->assertDatabaseMissing('books', ['id' => $book->id]);

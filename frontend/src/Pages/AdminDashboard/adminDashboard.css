@@ -1,0 +1,153 @@
+.admin-dashboard {
+  padding: 40px;
+  min-height: 100vh;
+  font-family: Poppins, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 40px 0;
+  text-align: center;
+}
+
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.stats-box {
+  grid-area: stats;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 25rem;
+  align-self: start;
+}
+
+.row-1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+}
+
+.row-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+}
+
+.upper-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.second-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.bottom-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.graph-section {
+  grid-area: graph;
+}
+
+.books-section {
+  grid-area: books;
+}
+
+.orders-section {
+  grid-area: orders;
+}
+
+.low-stock-section {
+  grid-area: lowstock;
+  width: 30rem;
+}
+
+
+.notifications-section {
+  grid-area: notifications;
+  width: 22rem;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-areas:
+      "stats stats stats stats"
+      "graph graph graph graph"
+      "books books books books"
+      "orders orders lowstock lowstock"
+      "notifications notifications notifications notifications";
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 20px;
+  }
+
+  .dashboard-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .dashboard-grid {
+    grid-template-areas:
+      "stats stats"
+      "graph graph"
+      "books books"
+      "orders orders"
+      "lowstock lowstock"
+      "notifications notifications";
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid {
+    grid-template-areas:
+      "stats"
+      "graph"
+      "books"
+      "orders"
+      "lowstock"
+      "notifications";
+    grid-template-columns: 1fr;
+  }
+}

@@ -18,13 +18,19 @@ class OrderController extends Controller
     {
         try {
             $search = $request->query('search');
-            $orders = OrderService::getOrders($id, $search);
-
-            if ($id && !$orders) {
-                return $this->fail("Order not found", "fail", 404);
+            $order = null;
+            if ($id) {
+                $order = OrderService::getOrders($id, $search);
+                if (!$order) {
+                    return $this->fail("Order not found", "fail", 404);
+                }
+                if ($order->user_id !== auth()->id()) {
+                    return $this->fail("Order not found", "fail", 404);
+                }
+                return $this->responseJSON($order, "Order found");
             }
-
-            return $this->responseJSON($orders, $id ? "Order found" : "Orders loaded");
+            $orders = OrderService::getOrders(null, $search);
+            return $this->responseJSON($orders, "Orders loaded");
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
@@ -50,6 +56,7 @@ class OrderController extends Controller
             if ($id && !$order) {
                 return $this->fail("Order not found", "fail", 404);
             }
+            $validated['user_id'] = auth()->id();
 
             $result = OrderService::createOrUpdateOrder($validated, $order);
 
@@ -59,16 +66,16 @@ class OrderController extends Controller
         }
     }
 
-  public function createFromCart(Request $request)
-{
-    try {
-        $userId = Auth::id(); 
-        $order = OrderService::createOrderFromCart($userId);
-        return $this->responseJSON($order, "Order created from cart");
-    } catch (Exception $e) {
-        return $this->fail($e->getMessage(), "error", 500);
+    public function createFromCart(Request $request)
+    {
+        try {
+            $userId = auth()->id();
+            $order = OrderService::createOrderFromCart($userId);
+            return $this->responseJSON($order, "Order created from cart");
+        } catch (Exception $e) {
+            return $this->fail($e->getMessage(), "error", 500);
+        }
     }
-}
 
 
     public function cancel(Order $order)

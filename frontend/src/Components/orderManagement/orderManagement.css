@@ -1,0 +1,263 @@
+.orders-container {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.orders-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 2rem 0;
+}
+
+.table-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-header {
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.header-cell {
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #d97706;
+  border: none;
+}
+
+.table-row {
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+  background-color: #fafafa;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-cell {
+  padding: 1.5rem 2rem;
+  font-size: 0.95rem;
+  color: #1f2937;
+  border: none;
+}
+
+.order-id {
+  color: #d97706;
+  font-weight: 500;
+}
+
+.status {
+  font-weight: 500;
+}
+
+.status.delivered {
+  color: #059669;
+}
+
+.status.canceled {
+  color: #dc2626;
+}
+
+.status.cancelled {
+  color: #dc2626;
+}
+
+.status.on-the-way {
+  color: #d97706;
+}
+
+.status.pending {
+  color: #d97706;
+}
+
+.status.processing {
+  color: #7c3aed;
+}
+
+.total {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.actions-cell {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.edit-btn {
+  background-color: #d2b48c;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.edit-btn:hover:not(:disabled) {
+  background-color: #c19a6b;
+  transform: translateY(-1px);
+}
+
+.edit-btn:disabled {
+  background-color: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.edit-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.delete-btn {
+  background-color: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+.delete-btn:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.delete-btn img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.delete-btn:hover img {
+  opacity: 1;
+}
+
+.loading-cell,
+.error-cell,
+.no-orders-cell {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.loading {
+  font-size: 1.1rem;
+  color: #6b7280;
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.error {
+  color: #ef4444;
+  font-size: 1.1rem;
+}
+
+.retry-btn {
+  background-color: #d97706;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.retry-btn:hover {
+  background-color: #b45309;
+}
+
+.no-orders {
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+.no-orders p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .orders-container {
+    padding: 1rem;
+  }
+
+  .orders-title {
+    font-size: 2rem;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .header-cell,
+  .table-cell {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .loading-cell,
+  .error-cell,
+  .no-orders-cell {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-title {
+    font-size: 1.75rem;
+  }
+
+  .header-cell,
+  .table-cell {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .table-container {
+    border-radius: 8px;
+  }
+}

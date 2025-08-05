@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\OrderPlaced;
 use App\Models\Order;
 use App\Models\CartItem;
 use App\Models\OrderItem;
@@ -32,7 +33,8 @@ class OrderService
 
     public static function getUserOrders(int $userId)
     {
-        return Order::with('items.book')->where('user_id', $userId)->get();
+        $orders = Order::with('books')->where('user_id', $userId)->get();
+        return $orders;
     }
 
     public static function createOrderFromCart(int $userId): Order
@@ -40,6 +42,7 @@ class OrderService
         return DB::transaction(function () use ($userId) {
             $cartItems = CartItem::with('book')->where('user_id', $userId)->get();
             
+
 
             if ($cartItems->isEmpty()) {
                 throw new \Exception("No items in cart to create order.");
@@ -63,15 +66,17 @@ class OrderService
                 ]);
             }
             CartItem::where('user_id', $userId)->delete();
-            event(new OrderCreated($order)); 
-
+            // event(new OrderCreated($order));
+            OrderPlaced::dispatch($order);
             return $order->fresh('items.book');
         });
     }
 
-    public static function cancelOrder(Order $order)
+    public static function cancelOrder($order_id)
     {
-        $order->update(['status' => 'cancelled']);
+        $order = Order::find($order_id);
+        $order->status = 'cancelled';
+        $order->save();
         event(new OrderStatusChanged($order, 'cancelled'));
         return $order->fresh('items.book');
     }
@@ -112,4 +117,31 @@ class OrderService
         $order->items()->delete();
         $order->delete();
     }
+    public static function getAllOrders()
+    {
+        $orders = Order::all();
+        return $orders;
+    }
+
+
+    public static function moveStatus($id)
+    {
+        $order = Order::find($id);
+        if ($order->status === 'pending')
+            $order->status = 'paid';
+        else if ($order->status === 'paid')
+            $order->status = 'packed';
+        else if ($order->status === 'packed')
+            $order->status = 'shipped';
+        else if ($order->status === 'shipped')
+            $order->status = 'delivered';
+        else if ($order->status === 'cancelled')
+            return $order;
+        else if ($order->status === 'delivered')
+            return $order;
+        $order->save();
+        return $order;
+
+    }
+
 }
