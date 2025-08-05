@@ -25,7 +25,7 @@ const RegisterForm = () => {
       const data = await registerService(form);
       localStorage.setItem("token", data.token); 
       setMessage({ type: "success", text: "Registration successful!" });
-      navigate("/homePage");
+      navigate("/");
     } catch (error) {
       setMessage({ type: "error", text: "Failed to register" });
       console.error(error);

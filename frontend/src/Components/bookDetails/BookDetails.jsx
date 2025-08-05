@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useBookDetails from '../../Hooks/useBookDetails';
-import useAddToCart  from '../../Hooks/useAddToCart';
+import useAddToCart from '../../Hooks/useAddToCart';
 import "./bookDetails.css";
-
 
 const BookDetails = () => {
   const { id } = useParams();
   const { book, error, loading } = useBookDetails(id);
   const { handleAddToCart, loading: cartLoading, error: cartError } = useAddToCart();
 
+  const [successMessage, setSuccessMessage] = useState('');
+
   const handleClick = async () => {
     const result = await handleAddToCart(book.id, 1);
     if (result) {
-      alert('Added to cart!');
+      setSuccessMessage('✅ Book added to your cart!');
+      setTimeout(() => setSuccessMessage(''), 3000);
     } else {
-      alert('Failed to add to cart');
+      setSuccessMessage('');
     }
   };
 
@@ -60,11 +62,16 @@ const BookDetails = () => {
             </div>
           </div>
 
-          <button className='add-to-cart' onClick={handleClick} disabled={cartLoading}>
+          <button
+            className='add-to-cart'
+            onClick={handleClick}
+            disabled={cartLoading}
+          >
             {cartLoading ? 'Adding...' : 'Add to Cart'}
           </button>
-          {cartError && <p style={{ color: 'red' }}>{cartError}</p>}
 
+          {successMessage && <p className="success-message">{successMessage}</p>}
+          {cartError && <p className="error-message">{cartError}</p>}
         </div>
       </div>
     </div>

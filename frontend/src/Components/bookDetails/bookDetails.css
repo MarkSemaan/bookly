@@ -150,4 +150,10 @@
 .add-to-cart:hover{
     background-color: #bb7147b6;
 }
+.success-message {
+  color: green;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: opacity 0.3s ease;
+}
 
