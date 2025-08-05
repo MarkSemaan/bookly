@@ -28,7 +28,7 @@ const BookDetails = () => {
   return (
     <div className="book-details-container">
       <div className="book-content-wrapper">
-        <img src={book.image ? `${backendBaseUrl}${book.image}` : '/default-book.png'} className="book-img" /> 
+        <img src={book.image ? `${backendBaseUrl}${book.image}` : '/default-book.png'} className="book-img" alt={book.title} /> 
         <h1 className="book-titlee">{book.title}</h1>
 
         <div className="details-box">

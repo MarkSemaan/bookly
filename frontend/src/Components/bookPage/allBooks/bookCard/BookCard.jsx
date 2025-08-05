@@ -1,5 +1,4 @@
-import React from "react";
-import axios from 'axios';
+
 import { Link, useNavigate } from 'react-router-dom';
 import "./bookCard.css";
 
@@ -20,7 +19,7 @@ const BookCard = ({ book, isAdminCard, onDelete }) => {
   return (
     <div className="book-card">
 
-       <img src={image ? `${backendBaseUrl}${image}` : '/default-book.png'} className="book-card-image" />
+       <img src={image ? `${backendBaseUrl}${image}` : '/default-book.png'} className="book-card-image"  alt={title}/>
       <h3 className="book-title">{title}</h3>
       <div className="book-rating">{stars}</div>
       <p className="book-price">${price}</p>
