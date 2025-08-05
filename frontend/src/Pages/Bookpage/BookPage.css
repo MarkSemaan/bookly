@@ -1,0 +1,54 @@
+.books-page-container {
+  max-width: 1600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fdf3ef;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.books-page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #8B4513;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.books-page-content {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.search-results-container {
+  margin-top: 2rem;
+}
+
+.books-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: flex-start;
+}
+
+.loading-message,
+.error-message,
+.no-results-message {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #A0522D;
+  margin-top: 2rem;
+}
+
+@media (max-width: 900px) {
+  .books-grid {
+    gap: 1rem;
+  }
+  .books-page-container {
+    padding: 1rem;
+  }
+  .books-page-title {
+    font-size: 1.3rem;
+  }
+}
