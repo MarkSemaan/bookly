@@ -1,0 +1,53 @@
+.dashboard-card {
+  background-color: #fdf3ef;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  width: 100%;
+}
+
+.dashboard-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e1e1e;
+  margin-bottom: 10px;
+}
+
+.card-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1e1e1e;
+}
+
+.small-card {
+  width: 160px;
+  padding: 15px;
+}
+
+/* Notifications styling */
+.notifications-card {
+  background-color: #fdf3ef;
+  border-radius: 20px;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #1e1e1e;
+}
+
+.notification-icon {
+  font-size: 16px;
+}

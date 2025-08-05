@@ -15,6 +15,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import BooksManagement from "./Pages/BooksManagement/BooksManagement";
+import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 
 const App = () => {
   const location = useLocation();
@@ -40,6 +41,7 @@ const MyRoutes = () => {
         <Route path="/myOrders" element={<UserOrders />} />
         <Route path="/management" element={<OrderManagement />} />
         <Route path="/booksManagement" element={<BooksManagement />} />
+        <Route path="/dashboard" element={<AdminDashboard />} />
       </Route>
     </Routes>
   );
