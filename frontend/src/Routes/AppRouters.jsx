@@ -17,6 +17,7 @@ const AppRoutes = () => {
 
       <Route element={<AppLayout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/homepage" element={<HomePage />} />
         <Route path="/bookList" element={<BookList />} />
         <Route path="/book/:id" element={<BookDetails />} />
         <Route path="/cart" element={<UserCart />} />
