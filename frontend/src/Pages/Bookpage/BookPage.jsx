@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import SearchBox from '../../Components/SearchBar/SearchBar';
 import BookCard from '../../Components/bookPage/allBooks/bookCard/BookCard';
 import { searchBooks, getBooks } from '../../api';

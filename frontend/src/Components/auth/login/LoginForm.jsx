@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Button from "../../Shared/Button/Button";
 import Input from "../../Shared/AuthInput/AuthInput";
 import { useNavigate } from "react-router-dom";

@@ -1,4 +1,4 @@
-import React from "react";
+ 
 import useCategories from "../../../Hooks/useCategories";
 import "./category.css";
 const Category = ({ onCategoryClick }) => {

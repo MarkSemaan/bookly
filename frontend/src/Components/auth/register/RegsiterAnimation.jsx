@@ -1,4 +1,4 @@
-import React from "react";
+
 import Lottie from "lottie-react";
 import Animation from "../../../Assets/Animations/registerbook.json";
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {useTheme} from "../../../Context/ThemeContext";
 import { useNavigate } from "react-router-dom"; 
 import Lottie from "lottie-react";
