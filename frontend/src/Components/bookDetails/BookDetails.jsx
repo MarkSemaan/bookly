@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+
 import { useParams } from 'react-router-dom';
 import useBookDetails from '../../Hooks/BookDeatils/useBookDetails';
 import useCartHandlerForBookDetails from '../../Hooks/BookDeatils/useCartHandlerForBookDetails';
@@ -6,7 +6,7 @@ import "./bookDetails.css";
 
 const BookDetails = () => {
   
-  const backendBaseUrl = "http://127.0.0.1:8000/";
+  const backendBaseUrl = "http://127.0.0.1:8000/storage/";
   const { id } = useParams();
   const { book, error, loading } = useBookDetails(id);
   const { handleClick, successMessage, cartLoading, cartError } = useCartHandlerForBookDetails(book?.id);
@@ -20,8 +20,9 @@ const BookDetails = () => {
     <div className="book-details-container">
       <div className="book-content-wrapper">
         <img
-          src={book.image ? `${backendBaseUrl}${book.image}` : '/default-book.png'}
+          src={book.image ? `${backendBaseUrl}${book.image}` : '/default-book.png' }
           className="book-img"
+          alt={book.title}
         />
         <h1 className="book-titlee">{book.title}</h1>
 

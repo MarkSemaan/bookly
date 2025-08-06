@@ -28,7 +28,7 @@ class OrderStatusUpdated extends Notification implements ShouldQueue
 
     public function toMail($notifiable): MailMessage
     {
-        // Build list from items -> book titles and quantities
+ 
         $booksList = $this->order->items->map(function ($item) {
             return "{$item->book->title} (Qty: {$item->quantity})";
         })->implode("\n");

@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\AnalyticService;
+use App\Services\AnalyticService;
 use App\Events\OrderPlaced;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;

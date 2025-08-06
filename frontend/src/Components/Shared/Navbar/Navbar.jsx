@@ -28,11 +28,11 @@ const Navbar = () => {
 
   return (
     <nav className='Navbar'>
-      <div className='Navbar-logo' onClick={() => navigate("/")} > 
+      <div className='Navbar-logo'>
         <Lottie animationData={BookLogo} loop={true} className='Navbar-animation' />
       <div className='title'>
       <h2 className='bookly'>
-       <Link to="/homePage"  className="bookly-link">
+       <Link to="/"  className="bookly-link">
         Bookly
         </Link>
       </h2>
@@ -78,17 +78,14 @@ const Navbar = () => {
 
         {isAuthenticated && (
           <div className="Navbar-profile" onClick={toggleDropdown} ref={dropdownRef}>
-           <img
-              src={theme === 'dark' ? emptypfpnight : emptypfp}
+            <img
+              src="https://static.vecteezy.com/system/resources/previews/027/448/973/large_2x/avatar-account-icon-default-social-media-profile-photo-vector.jpg"
               alt="Profile"
               className="pro-pic"
             />
-
             {showDropdown && (
               <ul className="dropdown">
-                <li>
-                  <button className="dropdown-logout-btn" onClick={handleLogout}>Logout</button>
-                </li>
+                <li><a onClick={handleLogout}>Logout</a></li>
               </ul>
             )}
           </div>

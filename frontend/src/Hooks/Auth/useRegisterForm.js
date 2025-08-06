@@ -37,7 +37,7 @@ const useRegister = (initialForm = {
      
       timeoutRef.current = setTimeout(() => {
         setMessage({ type: "", text: "" });
-        navigate("/homePage");
+        navigate("/");
       }, 700);
     } catch (error) {
       setMessage({ type: "error", text: error?.response?.data?.message || "Failed to register" });

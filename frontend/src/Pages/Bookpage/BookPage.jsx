@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import SearchBox from '../../Components/SearchBar/SearchBar';
 import BookCard from '../../Components/bookPage/allBooks/bookCard/BookCard';
 import { searchBooks, getBooks } from '../../api';
-import './BookPage.css';
+import './BookPage.css'; // Keep using the original CSS
 
-export default function BooksPage() {
+export default function BookSearchList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -46,10 +46,7 @@ export default function BooksPage() {
       }
     };
 
-    const debounceTimer = setTimeout(() => {
-      fetchBooks();
-    }, 400);
-
+    const debounceTimer = setTimeout(fetchBooks, 400);
     return () => clearTimeout(debounceTimer);
   }, [searchTerm]);
 

@@ -25,7 +25,7 @@ const handleLogin = async (e) => {
 
     setMessage({ type: "success", text: "Login successful" });
     setTimeout(() => setMessage({ type: "", text: "" }), 3000);
-    navigate("/homePage");
+    navigate("/");
   } catch (error) {
     setMessage({ type: "error", text: "Login failed" });
     setTimeout(() => setMessage({ type: "", text: "" }), 3000);

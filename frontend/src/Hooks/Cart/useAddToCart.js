@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addOrUpdateCartItem } from '../api';
+import { addOrUpdateCartItem } from '../../api';
 
 export default function useAddToCart() {
   const [loading, setLoading] = useState(false);

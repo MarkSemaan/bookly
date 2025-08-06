@@ -4,7 +4,7 @@ import "./bookCard.css";
 const BookCard = ({ book, isAdminCard, onDelete }) => {
   const { title, price, rating, image } = book;
 
-  const backendBaseUrl = "http://127.0.0.1:8000/";
+  const backendBaseUrl = "http://127.0.0.1:8000/storage/";
 
   const navigate = useNavigate();
 

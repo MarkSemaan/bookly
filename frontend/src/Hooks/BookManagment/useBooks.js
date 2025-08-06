@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {fetchBooksFromApi, deleteBookById} from '../../Services/bookService/bookManagmentService';
+import { getBooks,deleteBook } from '../../api';
 
 const useBooks = () => {
   const [books, setBooks] = useState([]);
@@ -14,7 +14,7 @@ const useBooks = () => {
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      const response = await fetchBooksFromApi();
+      const response = await getBooks();
       const fetchedBooks = response.data.payload.sort((a, b) => b.id - a.id);
       setBooks(fetchedBooks);
       setError(null);
@@ -29,7 +29,7 @@ const useBooks = () => {
 
   const handleDelete = async (bookId) => {
     try {
-      await deleteBookById(bookId);
+      await deleteBook(bookId);
       setBooks((prev) => prev.filter((book) => book.id !== bookId));
     } catch (err) {
       console.error('Delete failed:', err);

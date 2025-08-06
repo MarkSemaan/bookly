@@ -18,36 +18,41 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-
+// Auth
 export const registerUser = (userData) => axiosInstance.post(`/guest/register`, userData);
 export const loginUser = (userData) => axiosInstance.post(`/guest/login`, userData);
 
-
+// Books
 export const searchBooks = (payload) => axiosInstance.get(`/user/books/book`, { params: payload });
 export const getBooks = (id = '') => axiosInstance.get(`/user/books/book/${id}`);
 export const getBooksByCategory = (categoryId) => axiosInstance.get(`/user/books/category/${categoryId}`);
 export const addOrUpdateBook = (bookData, id = '') =>
-    id ? axiosInstance.put(`/user/books/books/${id}`, bookData) : axiosInstance.post(`/user/books/books`, bookData);
-export const deleteBook = (bookId) => axiosInstance.delete(`/user/books/${bookId}`);
+  id ? axiosInstance.put(`/user/books/books/${id}`, bookData) : axiosInstance.post(`/user/books/books`, bookData);
+export const deleteBook = (bookId) => axiosInstance.post(`/user/books/delete/${bookId}`);
 export const getTopRatedBooks = () => axiosInstance.get(`/user/books/toprated`);
 
-
+// Categories
 export const getCategories = () => axiosInstance.get(`/user/categories`);
 
+// AI Recommender
 export const saveSearch = (payload) => axiosInstance.post(`/user/recommender/save_search`, payload);
 export const saveBookView = (payload) => axiosInstance.post(`/user/recommender/save_view`, payload);
 export const getRecommended = () => axiosInstance.get(`/user/recommender/get`);
 
-export const getCartItems = (id = '') => axiosInstance.get(`user/cartitems/${id}`);
-export const getUserCartItems = () => axiosInstance.get(`user/cartitems/user/cart`);
-export const getCartTotal = () => axiosInstance.get(`user/cartitems/total/cart`);
-export const addOrUpdateCartItem = (data) => axiosInstance.post(`user/cartitems/cart`, data);
-export const decreaseCartItem = (data) => axiosInstance.post(`user/cartitems/decrease`, data);
-export const deleteCartItem = (id) => axiosInstance.delete(`user/cartitems/delete/${id}`);
+// Cart
+export const getCartItems = (id = '') => axiosInstance.get(`/cartitems/${id}`);
+export const getUserCartItems = () => axiosInstance.get(`/cartitems/user/cart`);
+export const getCartTotal = () => axiosInstance.get(`/cartitems/total/cart`);
+export const addOrUpdateCartItem = (data) => axiosInstance.post(`/cartitems/cart`, data);
+export const decreaseCartItem = (data) => axiosInstance.post(`/cartitems/decrease`, data);
+export const deleteCartItem = (id) => axiosInstance.delete(`/cartitems/delete/${id}`);
 
-export const getOrders = (id = '') => axiosInstance.get(`user/orders/orders/${id}`);
-export const getUserOrders = (userId) => axiosInstance.get(`user/orders/users/${userId}`);
-export const createOrder = (data) => axiosInstance.post(`user/orders`, data);
-export const createOrderFromCart = (data) => axiosInstance.post(`user/orders/from-cart`, data);
-export const cancelOrder = (orderId) => axiosInstance.post(`user/orders/${orderId}/cancel`);
-export const deleteOrder = (orderId) => axiosInstance.delete(`user/orders/${orderId}`);
+// Orders
+export const getOrders = (id = '') => axiosInstance.get(`/orders/orders/${id}`);
+export const getUserOrders = () => axiosInstance.get(`/orders/users`);
+export const createOrder = (data) => axiosInstance.post(`/orders`, data);
+export const createOrderFromCart = (data) => axiosInstance.post(`/orders/from-cart`, data);
+export const cancelOrder = (orderId) => axiosInstance.post(`/orders/${orderId}/cancel`);
+export const deleteOrder = (orderId) => axiosInstance.delete(`/orders/${orderId}`);
+
+

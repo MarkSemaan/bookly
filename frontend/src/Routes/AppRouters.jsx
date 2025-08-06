@@ -18,15 +18,12 @@ import EditBook from "../Pages/EditBook/EditBook";
 
 import {
   Routes,
-  Route,
-  useLocation,
+  Route
 } from "react-router-dom";
 import AdminDashboard from "../Pages/AdminDashboard/AdminDashboard";
 
 
 const AppRouters = () => {
-  const location = useLocation();
-
   return (
     <div className="App">
       <MyRoutes />
@@ -42,7 +39,7 @@ const MyRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route element={<AppLayout />}>
-      <Route path="/homePage" element={<HomePage />} />
+      <Route path="/" element={<HomePage />} />
       <Route path="/bookList" element={<BookList />} />
       <Route path="/book/:id" element={<BookDetails />} />
       <Route path="/cart" element={<UserCart />} />

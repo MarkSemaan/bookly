@@ -9,7 +9,7 @@
   margin-left: -35px;
   margin-right:-35px;
   margin-bottom:-35px;
-  padding-left: 4rem;
+  padding-left: 3rem;
 }
 
 .container {
@@ -51,6 +51,7 @@
   display: flex;
   gap: 0.8rem;
   margin-top: 0.5rem;
+  justify-content: center;
 }
 
 .social-icons-img img {
@@ -93,7 +94,6 @@
   font-weight: 500;
   color: var(--main-color);
   transition: all 0.2s ease;
-  color: var(--main-color);
 }
 
 .footer-links li:hover {
@@ -113,14 +113,8 @@
   font-weight: 500;
 }
 
-.social-icons-img{
-  justify-content: center;
-}
-
 @media (max-width: 768px) {
-  .social-icons-img img {
-  justify-content: center;
+  .social-icons-img {
+    justify-content: center;
   }
-
-
 }

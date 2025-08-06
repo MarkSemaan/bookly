@@ -9,7 +9,6 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\AnalyticController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NotificationController;
 
