@@ -13,11 +13,10 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\NotificationController;
 
-
 Route::group(["prefix" => "v0.1"], function () {
     Route::group(["middleware" => "auth:api"], function () {
 
-        //AUTHENTICATED APIs
+        
         Route::group(["prefix" => "user"], function () {
             Route::prefix('books')->group(function () {
                 Route::get('/book/{id?}', [BookController::class, 'getBooks']);
@@ -28,7 +27,7 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::delete('/{book}', [BookController::class, 'destroy']);
                 Route::get('/toprated', [BookController::class, 'getTopRatedBooks']);
             });
-
+           
             Route::prefix('categories')->group(function () {
                 Route::get('/', [CategoryController::class, 'getCategories']);
             });

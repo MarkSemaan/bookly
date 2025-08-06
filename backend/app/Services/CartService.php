@@ -30,7 +30,7 @@ class CartService
         return $cartItem;
     }
 
-
+    
     public function addToCart(int $userId, int $bookId, int $quantity)
     {
         $book = Book::findOrFail($bookId);
@@ -88,3 +88,4 @@ class CartService
         return $cartItem;
     }
 }
+

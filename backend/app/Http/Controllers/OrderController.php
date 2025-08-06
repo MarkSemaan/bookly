@@ -75,7 +75,6 @@ class OrderController extends Controller
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
-    }
 
 
     public function cancel(Order $order)
