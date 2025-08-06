@@ -23,7 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withSchedule(function (Schedule $schedule) {
         
-        $schedule->command('app:activate-capsules')->dailyAt('00:01');
+        $schedule->command('report:nightly')->dailyAt('00:01');
     })->create();
 
 

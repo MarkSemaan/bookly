@@ -1,4 +1,4 @@
-import React from "react";
+ 
 import FeaturesCard from "./Cards";
 import HomeCar from "../../../Assets/Icons/HomeCar.svg";
 import HomeBooks from "../../../Assets/Icons/HomeBooks.svg";

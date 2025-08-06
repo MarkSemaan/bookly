@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import useBooksByCategory from "../../../../Hooks/useBooksByCategory"; 
 import BookCard from "../bookCard/BookCard";
 

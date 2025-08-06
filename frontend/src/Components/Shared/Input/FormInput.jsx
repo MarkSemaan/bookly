@@ -1,4 +1,4 @@
-import React from "react";
+ 
 import "./input.css";
 
 const FormInput = ({ type, name, hint, required, onChangeListener }) => {

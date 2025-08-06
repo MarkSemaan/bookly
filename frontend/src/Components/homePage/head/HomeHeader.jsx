@@ -1,4 +1,4 @@
-import React from "react";
+ 
 import homeImg from "../../../Assets/Images/home.png";
 import "./homeHeader.css";
 
