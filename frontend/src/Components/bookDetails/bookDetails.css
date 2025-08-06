@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   width: 1112px;
-  height: 780px;
+  height: 920px;
   margin-left: 7rem;
   border-radius: 10px;
   margin-top: 15px;
@@ -17,7 +17,7 @@
 }
 
 .book-img {
-  width: 280px;
+  width: 250px;
   height: 360px;
   border-radius: 10px;
   position: absolute;
@@ -34,7 +34,7 @@
 
 .details-box {
   background-color: white;
-  margin-top: 120px;
+  margin-top: 100px;
   padding: 60px  30px ;
   border-radius: 20px;
   position: relative;
@@ -114,7 +114,7 @@
 .description{
     margin-top: -20px;
     text-align: left;
-      color: black;
+    color: black;
 }
 
 .description-container {
@@ -138,17 +138,20 @@
 }
 
 .add-to-cart {
-  padding: 12px 20px;
-  background-color: #d4885fb6;
+  padding: 15px 20px;
+  background-color: var(--button-bg);
   border: none;
   color: white;
   font-weight: bold;
   border-radius: 8px;
+  justify-items: right;
+  text-align: right;
   cursor: pointer;
+  margin-left: 45rem;
   transition: background-color 0.3s ease;
 }
 .add-to-cart:hover{
-    background-color: #bb7147b6;
+    background-color: #eb5e0cca;
 }
 .success-message {
   color: green;
@@ -157,3 +160,23 @@
   transition: opacity 0.3s ease;
 }
 
+.message-box {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50; 
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  opacity: 0.9;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 1000;
+}
+
+
+.message-box.hide {
+  opacity: 0;
+  pointer-events: none;
+}

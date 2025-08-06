@@ -2,7 +2,8 @@
   background-color: #fdf3ef;
   border-radius: 20px;
   padding: 20px;
-  width: 25rem;
+  width: 480px;
+  margin-right: 7rem;
   font-family: 'Segoe UI', sans-serif;
 }
 
@@ -10,7 +11,7 @@
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 10px;
-  color: #1e1e1e;
+  color: black;
 }
 
 .graph-container {
@@ -19,12 +20,13 @@
 }
 
 .graph-svg {
-  width: 100%;
+  width: 140%;
   height: 200px;
+  
 }
 
 .graph-svg path {
-  stroke: #333;
+  stroke:black;
   stroke-width: 2;
   fill: none;
 }

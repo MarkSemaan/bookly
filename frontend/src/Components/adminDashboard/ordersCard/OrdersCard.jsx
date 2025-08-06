@@ -1,4 +1,3 @@
-
 import './ordersCard.css';
 
 const OrdersCard = ({ title, orderStats }) => {

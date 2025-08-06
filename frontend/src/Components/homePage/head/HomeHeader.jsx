@@ -10,7 +10,6 @@ const HomeHeader = () => {
         <img src={homeImg} alt="Welcome" />
       </div>
 
-     
       <div className="right-section">
         <h1 className="welcome-title">Welcome to Bookly</h1>
 
@@ -20,7 +19,7 @@ const HomeHeader = () => {
             build your dream shelf, and let your next chapter begin.
           </p>
           <p>
-            Curated just for you — whether you're into thrillers, romance, or cozy fantasy. 
+            Curated just for you whether you're into thrillers, romance, or cozy fantasy. 
             Get comfy and let's find your next favorite read.
           </p>
         </div>

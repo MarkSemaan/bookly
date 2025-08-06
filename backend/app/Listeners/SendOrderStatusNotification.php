@@ -28,4 +28,3 @@ class SendOrderStatusNotification implements ShouldQueue
         $user->notify(new OrderStatusUpdated($order, $text));
     }
 }
-

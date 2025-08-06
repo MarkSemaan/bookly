@@ -1,5 +1,5 @@
- 
-import useCategories from "../../../Hooks/useCategories";
+
+import useCategories from "../../../Hooks/Categories/useCategories";
 import "./category.css";
 const Category = ({ onCategoryClick }) => {
   const { categories, loading, error } = useCategories();
@@ -9,6 +9,8 @@ const Category = ({ onCategoryClick }) => {
 
   return (
     <section className="category-section">
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {loading && <p>Loading categories...</p>}
       <h2 className="category-title">Categories</h2>
       <div className="category-cards">
         {categories.map((cat) => (

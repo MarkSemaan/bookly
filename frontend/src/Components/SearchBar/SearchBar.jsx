@@ -1,7 +1,8 @@
-import './SearchBar.css';
+import './searchBar.css';
 import { IoIosSearch } from "react-icons/io";
 
 const SearchBox = ({ placeholder, onChangeHandler }) => {
+    
   return (
     <div className="search-wrapper">
       <input

@@ -1,42 +1,14 @@
-import { useState } from "react";
+
 import Button from "../../Shared/Button/Button";
 import Input from "../../Shared/AuthInput/AuthInput";
-import { useNavigate } from "react-router-dom";
-import registerService from "../../../Services/authService/registerService";
-import useForm from "../../../Hooks/useForm";
+import useRegister from "../../../Hooks/Auth/useRegisterForm";
 
 const RegisterForm = () => {
-  const [form, handleChange] = useForm({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-  });
 
-  const [message, setMessage] = useState({ type: "", text: "" });
-  const navigate = useNavigate();
-  const handleRegister = async (e) => {
-  e.preventDefault();
-  console.log("Form state at submission:", form);
-
-  try {
-    const data = await registerService(form);
-    localStorage.setItem("token", data); 
-    setMessage({ type: "success", text: "Registration successful!" });
-
-
-    setTimeout(() => {
-      navigate("/homePage"); 
-    }, 500); 
-  } catch (error) {
-    setMessage({ type: "error", text: "Failed to register" });
-    console.error(error);
-  }
-};
-
+  const { form, handleChange, handleSubmit, message, loading } = useRegister();
 
   return (
-    <form className="register-form" onSubmit={handleRegister}>
+    <form className="register-form" onSubmit={handleSubmit}>
       <h2 className="form-title">Create your account</h2>
 
       {message.text && (
@@ -82,7 +54,7 @@ const RegisterForm = () => {
       </div>
 
       <div className="button-register">
-        <Button text="Register" />
+        <Button text={loading ? "Registering..." : "Register"} disabled={loading} />
       </div>
     </form>
   );

@@ -1,0 +1,58 @@
+:root {
+  --main-color: #D4885F;
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --input-bg: #ffffff;
+  --border-color: var(--main-color);
+}
+
+.body.dark{
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --input-bg: #1e1e1e;
+  --border-color: #ffab80;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.search-wrapper {
+  position: relative;
+  width: 300px;
+  margin: 20px auto;
+}
+
+.searchbox {
+  width: 100%;
+  padding: 10px 40px 10px 14px;
+  font-size: 16px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease-in-out, background-color 0.2s, color 0.2s;
+}
+
+.searchbox:focus {
+  border-color: var(--main-color);
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: var(--border-color);
+  font-size: 20px;
+  pointer-events: none;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}

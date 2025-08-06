@@ -1,4 +1,3 @@
-
 import './salesGraph.css';
 
 const SalesGraph = ({ title, data = [] }) => {
@@ -26,12 +25,12 @@ const SalesGraph = ({ title, data = [] }) => {
       <div className="sales-graph">
         <h3>{title || 'Sales Graph'}</h3>
         <svg width={width} height={height} className="graph-svg">
-          {/* Axes */}
+
           <line x1={padding} y1={padding} x2={padding} y2={height - padding} stroke="#ccc" />
           <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#ccc" />
 
-          {/* Single dot */}
-          <circle cx={x} cy={y} r="4" fill="#5A67D8" />
+        
+          <circle cx={x} cy={y} r="4" fill="#d7a35aff" />
           <text x={x} y={y - 10} textAnchor="middle" fontSize="12">
             ${cleanedData[0].total}
           </text>
@@ -40,7 +39,7 @@ const SalesGraph = ({ title, data = [] }) => {
     );
   }
 
-  // Multiple points
+  
   const points = cleanedData.map((d, i) => {
     const x = padding + ((width - 2 * padding) / (cleanedData.length - 1)) * i;
     const y = height - padding - ((d.total - minTotal) / (maxTotal - minTotal)) * (height - 2 * padding);

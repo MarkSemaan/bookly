@@ -56,7 +56,7 @@
   display: block;
   margin: 0 auto;
   max-width: 750px;
-  width: 100%;
+  margin-bottom: 6rem;
   border-radius: 20px;
 }
 

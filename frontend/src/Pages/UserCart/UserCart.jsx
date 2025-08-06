@@ -10,7 +10,6 @@ const UserCart = () => {
   return (
     <>
     <Cart />
-
     </>
   );
 };
