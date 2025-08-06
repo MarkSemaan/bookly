@@ -14,7 +14,7 @@ class CartController extends Controller
 {
     use ResponseTrait;
 
- 
+
     public function getCartItems(Request $request, $id = null)
     {
         try {
@@ -33,7 +33,6 @@ class CartController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
-
     public function storeOrUpdate(StoreCartItemRequest $request)
     {
         try {
@@ -51,7 +50,7 @@ class CartController extends Controller
         }
     }
 
-   
+
     public function getUserCartItems()
     {
         try {
@@ -67,7 +66,7 @@ class CartController extends Controller
         }
     }
 
-  
+
     public function getCartTotal()
     {
         try {
@@ -83,7 +82,7 @@ class CartController extends Controller
         }
     }
 
- 
+
     public function destroy(CartItem $cartItem)
     {
         try {
@@ -96,7 +95,7 @@ class CartController extends Controller
         }
     }
 
-   
+
     public function decreaseCartItem(Request $request)
     {
         try {
@@ -123,4 +122,3 @@ class CartController extends Controller
         }
     }
 }
-
