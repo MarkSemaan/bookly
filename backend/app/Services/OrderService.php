@@ -70,13 +70,12 @@ class OrderService
         });
     }
 
-    public static function cancelOrder($order_id)
+public static function cancelOrder($order_id)
     {
         $order = Order::find($order_id);
         $order->status = 'cancelled';
         $order->save();
-        event(new OrderStatusChanged($order, 'cancelled'));
-        return $order->fresh('items.book');
+        return $order;
     }
 
     public static function createOrUpdateOrder(array $data, ?Order $order = null): Order
@@ -115,12 +114,12 @@ class OrderService
         $order->items()->delete();
         $order->delete();
     }
-    public static function getAllOrders()
-    {
-        $orders = Order::all();
-        return $orders;
-    }
 
+    
+  public static function getAllOrders()
+{
+    return Order::all();
+}
 
     public static function moveStatus($id)
     {

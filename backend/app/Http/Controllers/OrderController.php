@@ -35,15 +35,27 @@ class OrderController extends Controller
         }
     }
 
-    public function getUserOrders(int $userId)
-    {
-        try {
-            $orders = OrderService::getUserOrders($userId);
-            return $this->responseJSON($orders, "User's orders loaded");
+   public function getUserOrders()
+   {
+     try {
+         $userId = auth()->id();  
+         $orders = OrderService::getUserOrders($userId);
+         return $this->responseJSON($orders, "User's orders loaded");
         } catch (Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
+         return $this->fail($e->getMessage(), "error", 500);
         }
     }
+
+    public function getAllOrders()
+    {
+    try {
+        $orders = OrderService::getAllOrders(); 
+        return $this->responseJSON($orders, "All orders loaded successfully");
+    } catch (Exception $e) {
+        return $this->fail($e->getMessage(), "error", 500);
+    }
+    }  
+
 
     public function storeOrUpdate(StoreOrderRequest $request)
     {
@@ -65,26 +77,42 @@ class OrderController extends Controller
     }
 
   public function createFromCart(Request $request)
-{
-    try {
-        $userId = auth()->id(); 
-        $order = OrderService::createOrderFromCart($userId);
-        return $this->responseJSON($order, "Order created from cart");
-    } catch (Exception $e) {
-        return $this->fail($e->getMessage(), "error", 500);
-    }
-}
-
-
-    public function cancel(Order $order)
-    {
-        try {
-            $order = OrderService::cancelOrder($order);
-            return $this->responseJSON($order, "Order cancelled");
+  {
+     try {
+         $userId = auth()->id(); 
+         $order = OrderService::createOrderFromCart($userId);
+         return $this->responseJSON($order, "Order created from cart");
         } catch (Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
+          return $this->fail($e->getMessage(), "error", 500);
+        }
+   }
+
+   public function moveStatus($id)
+   {
+     try {
+         $order = OrderService::moveStatus($id);
+         return response()->json([
+             'message' => 'Order status updated successfully',
+             'payload' => $order
+           ]);
+        } catch (\Exception $e) {
+         return response()->json([
+             'message' => 'Failed to update status',
+             'error' => $e->getMessage()
+           ], 500);
         }
     }
+
+    public function cancel($id)
+    {
+      try {
+         $order = OrderService::cancelOrder($id);
+         return $this->responseJSON($order, "Order cancelled"); 
+        } catch (Exception $e) {
+         return $this->fail($e->getMessage(), "error", 500);
+        }
+   }
+
 
     public function destroy(Order $order)
     {

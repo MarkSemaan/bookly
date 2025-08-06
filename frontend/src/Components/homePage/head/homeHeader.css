@@ -1,15 +1,16 @@
 .welcome-section {
   display: flex;
-   align-items: flex-start; 
+  align-items: flex-start; 
   justify-content: flex-start;
   padding: 4rem 8%;
-  gap: 9rem;
+  gap: 6rem;
   flex-wrap: wrap;
+  margin-left: 9rem;
 }
 
 .left-section img {
   width: 100%;
-  max-width:350px;
+  max-width:390px;
   height: auto;
   border-radius: 12px;
 }
@@ -28,16 +29,15 @@
   justify-content: flex-start;
   text-align: left; 
   margin-bottom: 7rem;
+  margin-top: 1rem;
+
 }
 
-.welcome-title h1 {
+.welcome-title{
   font-size: 1.5rem;
   font-weight: 500;
-  font-family: Georgia, 'Times New Roman', Times, serif;
   text-align: left;
-  margin-right: 280px;
- 
-  
+  margin-right: 18rem; 
 }
 
 .welcome-description p {

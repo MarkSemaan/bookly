@@ -1,0 +1,130 @@
+.books-management-wrapper {
+   position: relative;
+  max-width: 1600px;
+  padding: 0 2rem;
+  margin: 3.5rem;
+  margin-top: 2rem;
+}
+.books-management-wrapper h1{
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+}
+
+
+.books-container {
+  display: flex;
+  gap: 1rem;
+  overflow-x: hidden;
+  scroll-behavior: hidden;
+  padding-bottom: 1rem;
+  margin-top: 4rem;
+}
+
+.arrows {
+  position: absolute;
+  top: 50%;
+  left: -30px;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: calc(100% + 50px); 
+}
+
+.arrows button {
+  font-size: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:  0.3s ease;
+}
+
+.arrows button:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Loading and Error States */
+.books-management-wrapper p {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.error {
+  background: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 1rem;
+  border-radius: 4px;
+  text-align: center;
+  margin: 1rem 0;
+}
+.header-with-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.create-btn {
+  background-color: var(--button-bg);
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-btn a {
+  color: var(--cards-color);
+  text-decoration: none;
+  font-weight: 400;
+  display: block;
+}
+
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .books-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .books-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .books-management-wrapper {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .books-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .books-management-wrapper h1 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .pagination-controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .pagination-controls button {
+    width: 100%;
+    max-width: 200px;
+  }
+}

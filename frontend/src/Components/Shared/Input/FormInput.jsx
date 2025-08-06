@@ -1,7 +1,7 @@
 import React from "react";
 import "./input.css";
 
-const FormInput = ({ type, name, hint, required, onChangeListener }) => {
+const FormInput = ({ type, name, hint,value, required, onChangeListener }) => {
   return (
       <input
         type={type}
@@ -9,6 +9,7 @@ const FormInput = ({ type, name, hint, required, onChangeListener }) => {
         placeholder={hint}
         className="input-wrapperr input"
         required={required}
+        value={value}
         onChange={onChangeListener}
       />
   );

@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Services\CartService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -20,9 +21,11 @@ class CartController extends Controller
             $service = app()->make(CartService::class);
             $items = $service->getCartItems($id, $search);
 
+
             if ($id && !$items) {
                 return $this->fail("Cart item not found", "fail", 404);
             }
+
 
             return $this->responseJSON($items, $id ? "Cart item found" : "Cart items loaded");
         } catch (\Exception $e) {
@@ -30,12 +33,13 @@ class CartController extends Controller
         }
     }
 
-    
     public function storeOrUpdate(StoreCartItemRequest $request)
     {
         try {
             $validatedData = $request->validated();
+
             $validatedData['user_id'] = auth()->id();
+
 
             $service = app()->make(CartService::class);
             $item = $service->createOrUpdateCartItem($validatedData);
@@ -45,6 +49,7 @@ class CartController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
+
 
    
     public function getUserCartItems()

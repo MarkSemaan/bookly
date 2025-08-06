@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import useBooksByCategory from "../../../../Hooks/useBooksByCategory"; 
+import useBooksByCategory from "../../../../Hooks/BooksByCategory/useBooksByCategory"; 
 import BookCard from "../bookCard/BookCard";
 
 const Books = ({ categoryId,categoryName }) => {
@@ -16,11 +16,11 @@ const Books = ({ categoryId,categoryName }) => {
     }
   };
 
-  if (loading) return <p>Loading books...</p>;
-  if (error) return <p>Failed to load books: {error}</p>;
 
   return (
     <section className="bestsellers-section">
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {loading && <p>Loading categories...</p>}
       <div className="bestsellers-header">
          <h2>{categoryName} Books</h2>
       </div>

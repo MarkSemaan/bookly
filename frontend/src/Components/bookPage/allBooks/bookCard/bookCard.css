@@ -2,7 +2,7 @@
   position: relative;
   max-width: 1600px;
   padding: 0 2rem;
-  margin: 3.5rem;
+  margin: 3rem;
   margin-top: 1rem;
 }
 
@@ -66,25 +66,24 @@
   flex: 0 0 19%; 
   background: var(--card-color);
   border-radius: 12px;
-  padding: 1rem;
-  height: 330px;
-  width:100px;
+  padding: 0.7rem;
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
   text-align: center;
 }
 
 .book-card-image {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
+  width: 220px;
+  height: 220px;
+  object-fit: fill;
   border-radius: 8px;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.20rem;
 }
 
-.book-card-title {
+.book-title-card {
   font-weight: 700;
-  margin-top: -0.2rem;
   font-size: 0.9rem;
+  color: var(--main-color);
 }
 
 .book-card-rating .star {
@@ -99,7 +98,7 @@
 .book-card-price {
   font-weight: 700;
   font-size: 0.9rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: var(--price-bg);
 }
 
@@ -130,18 +129,18 @@
 .admin-btns button {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 20px;
+  border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: lowercase;
-  min-width: 60px;
+  min-width: 70px;
 }
 
 .admin-btns button:first-child {
-  background: #8B4513;
-  color: white;
+  background: var(--button-bg);
+  color: var(--cards-color);
 }
 
 .admin-btns button:first-child:hover {

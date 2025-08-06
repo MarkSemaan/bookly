@@ -1,13 +1,13 @@
 import React from 'react';
 import './cart.css';
 import trash from '../../../src/Assets/Icons/delete.svg';
-import useCartHandlers from '../../Hooks/useCartHandlers';
+import useCartHandlers from '../../Hooks/Cart/useCartHandlers';
 
 
 const Cart = () => {
  const backendBaseUrl = "http://127.0.0.1:8000/";
  
-const {
+ const {
   cart,
   total,
   loading,
@@ -19,7 +19,7 @@ const {
   handleIncrease,
   handleQuantityChange,
   handleRemove
-} = useCartHandlers();
+ } = useCartHandlers();
 
   if (loading) return <p>Loading cart...</p>;
   if (error) return <p>{error}</p>;

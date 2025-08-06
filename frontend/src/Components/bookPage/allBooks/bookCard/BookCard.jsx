@@ -1,5 +1,4 @@
 import React from "react";
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import "./bookCard.css";
 
@@ -21,15 +20,15 @@ const BookCard = ({ book, isAdminCard, onDelete }) => {
     <div className="book-card">
 
        <img src={image ? `${backendBaseUrl}${image}` : '/default-book.png'} className="book-card-image" />
-      <h3 className="book-title">{title}</h3>
-      <div className="book-rating">{stars}</div>
+      <h3 className="book-title-card">{title}</h3>
+      <div className="book-card-rating star">{stars}</div>
       <p className="book-price">${price}</p>
 
       {isAdminCard ? (
         <div className="admin-btns">
-          <button onClick={() => navigate('/edit_book')}>
-            Edit
-          </button>
+         <button onClick={() => navigate(`/editbook/${book.id}`)}>
+      Edit
+    </button>
           <button onClick={() => onDelete(book.id)}>
             Delete
           </button>

@@ -11,17 +11,20 @@ use Illuminate\Support\Facades\Validator;
 
 class BookService
 {
-    public static function getBooks(?int $id = null, ?string $search = null)
+     public static function getBooks(?int $id = null, ?string $search = null)
     {
         if ($id) {
             return Book::find($id);
         }
 
         return Book::when($search, function ($query) use ($search) {
-            $query->where('title', 'like', "%$search%")->orWhere('author', 'like', "%$search%")->orWhere('publisher', 'like', "%$search%");
+            $query->where('title', 'like', "%$search%")
+                  ->orWhere('author', 'like', "%$search%")
+                  ->orWhere('publisher', 'like', "%$search%");
         })->latest('id')->limit(50)->get();
     }
 
+ 
     public static function getBooksByCategory(int $categoryId)
     {
 
@@ -32,22 +35,22 @@ class BookService
 
     }
 
- public static function createOrUpdateBook(array $data, $id = null)
+   public static function createOrUpdateBook(array $data, $id = null)
     {
        $rules = [
-    'title' => 'required|string|max:255',
-    'author' => 'required|string|max:255',
-    'publisher' => 'nullable|string|max:255',
-    'published_year' => 'nullable|integer|min:1000|max:' . date('Y'),
-    'description' => 'nullable|string',
-    'price' => 'required|numeric|min:0',
-    'stock' => 'required|integer|min:0',
-    'image' => 'nullable|string',
-    'sold' => 'nullable|integer|min:0',
-    'is_available' => 'boolean',
-    'rating' => 'nullable|integer|min:0|max:5',
-    'category_id' => 'nullable|integer|exists:categories,id' 
-];
+          'title' => 'required|string|max:255',
+          'author' => 'required|string|max:255',
+          'publisher' => 'nullable|string|max:255',
+          'published_year' => 'nullable|integer|min:1000|max:' . date('Y'),
+          'description' => 'nullable|string',
+          'price' => 'required|numeric|min:0',
+          'stock' => 'required|integer|min:0',
+          'image' => 'nullable|string',
+          'sold' => 'nullable|integer|min:0',
+          'is_available' => 'boolean',
+          'rating' => 'nullable|integer|min:0|max:5',
+          'category_id' => 'nullable|integer|exists:categories,id' 
+        ];
 
 
         if ($id) {
@@ -89,17 +92,7 @@ class BookService
 
         return 'storage/' . $relativePath;
     }
-    
-    public static function deleteBook(Book $book)
-
-    {
-        $book = Book::find($book_id);
-        if ($book->image) {
-            Storage::disk('public')->delete($book->image);
-        }
-
-        return $book->delete();
-    }
+   
     public static function getTopSellingBooks()
     {
 
@@ -130,5 +123,21 @@ class BookService
     {
         $books = Book::where('is_available', true);
         return $books;
+    }
+    
+    public static function deleteOrder(Order $order): void
+    {
+        $order->items()->delete();
+        $order->delete();
+    }
+
+    public static function deleteBook($book_id)
+    {
+        $book = Book::find($book_id);
+        if ($book->image) {
+            Storage::disk('public')->delete($book->image);
+        }
+
+        return $book->delete();
     }
 }

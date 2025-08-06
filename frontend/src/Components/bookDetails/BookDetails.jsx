@@ -1,32 +1,27 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import useBookDetails from '../../Hooks/useBookDetails';
-import useAddToCart  from '../../Hooks/useAddToCart';
+import useBookDetails from '../../Hooks/BookDeatils/useBookDetails';
+import useCartHandlerForBookDetails from '../../Hooks/BookDeatils/useCartHandlerForBookDetails';
 import "./bookDetails.css";
 
-
 const BookDetails = () => {
+  
   const backendBaseUrl = "http://127.0.0.1:8000/";
   const { id } = useParams();
   const { book, error, loading } = useBookDetails(id);
-  const { handleAddToCart, loading: cartLoading, error: cartError } = useAddToCart();
-
-  const handleClick = async () => {
-    const result = await handleAddToCart(book.id, 1);
-    if (result) {
-      alert('Added to cart!');
-    } else {
-      alert('Failed to add to cart');
-    }
-  };
+  const { handleClick, successMessage, cartLoading, cartError } = useCartHandlerForBookDetails(book?.id);
 
   if (loading) return <p>Loading book details...</p>;
   if (error) return <p>{error}</p>;
 
+
   return (
     <div className="book-details-container">
       <div className="book-content-wrapper">
-        <img src={book.image ? `${backendBaseUrl}${book.image}` : '/default-book.png'} className="book-img" /> 
+        <img
+          src={book.image ? `${backendBaseUrl}${book.image}` : '/default-book.png'}
+          className="book-img"
+        />
         <h1 className="book-titlee">{book.title}</h1>
 
         <div className="details-box">
@@ -64,8 +59,14 @@ const BookDetails = () => {
           <button className='add-to-cart' onClick={handleClick} disabled={cartLoading}>
             {cartLoading ? 'Adding...' : 'Add to Cart'}
           </button>
-          {cartError && <p style={{ color: 'red' }}>{cartError}</p>}
 
+          {successMessage && (
+            <div className="message-box">
+              {successMessage}
+            </div>
+          )}
+
+          {cartError && <p style={{ color: 'red' }}>{cartError}</p>}
         </div>
       </div>
     </div>

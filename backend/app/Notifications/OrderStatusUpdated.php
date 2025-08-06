@@ -1,11 +1,11 @@
 <?php
 namespace App\Notifications;
 
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Models\Order;
 
 class OrderStatusUpdated extends Notification implements ShouldQueue
 {
@@ -16,31 +16,49 @@ class OrderStatusUpdated extends Notification implements ShouldQueue
 
     public function __construct(Order $order, string $messageText)
     {
-        $this->order       = $order;
+        $this->order = $order->load('items.book');
         $this->messageText = $messageText;
     }
 
     public function via($notifiable): array
     {
-       
         return ['mail', 'database'];
     }
 
     public function toMail($notifiable): MailMessage
     {
+        // Build list from items -> book titles and quantities
+        $booksList = $this->order->items->map(function ($item) {
+            return "{$item->book->title} (Qty: {$item->quantity})";
+        })->implode("\n");
+
+        $total = number_format($this->order->total, 2);
+
         return (new MailMessage)
-            ->subject("Order #{$this->order->id} Update")
+            ->subject("Invoice for Order #{$this->order->id}")
+            ->greeting("Hello {$notifiable->name},")
             ->line($this->messageText)
-            ->action('View Your Order', url("/orders/{$this->order->id}"))
-            ->line('Thanks for shopping with us!');
+            ->line("Here is a summary of your order:")
+            ->line($booksList)
+            ->line("**Total Paid:** \${$total}")
+            ->action('View your order', url("/orders/{$this->order->id}"))
+            ->line('Thank you for your purchase!');
     }
 
-    public function toArray($notifiable): array
+    public function toDatabase($notifiable): array
     {
         return [
             'order_id' => $this->order->id,
-            'status'   => $this->order->status,
-            'message'  => $this->messageText,
+            'status' => $this->order->status,
+            'message' => $this->messageText,
+            'items' => $this->order->items->map(function ($item) {
+                return [
+                    'title' => $item->book->title,
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                ];
+            }),
+            'total' => $this->order->total,
         ];
     }
 }

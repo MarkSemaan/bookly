@@ -1,29 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "../../Shared/Button/Button";
 import Input from "../../Shared/AuthInput/AuthInput";
-import { useNavigate } from "react-router-dom";
-import authService from "../../../Services/authService/loginService";
-import useLoginForm from "../../../Hooks/useForm";
+import useLogin from "../../../Hooks/Auth/useLoginForm";
 
 const LoginForm = () => {
-
-  const [form, handleChange] = useLoginForm({ email: "", password: "" });
-  const [message, setMessage] = useState({ type: "", text: "" });
-
-  const navigate = useNavigate();
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const token = await authService(form.email, form.password);
-      localStorage.setItem("token", token);
-      setMessage({ type: "success", text: "Login successful" });
-      navigate("/homePage");
-    } catch (error) {
-      setMessage({ type: "error", text: "Login failed" });
-      console.error("Login error:", error);
-    }
-  };
+  const { form, handleChange, handleLogin, message } = useLogin();
 
   return (
     <form className="login-form" onSubmit={handleLogin}>
