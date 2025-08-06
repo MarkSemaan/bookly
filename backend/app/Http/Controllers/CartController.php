@@ -70,8 +70,6 @@ class CartController extends Controller
     {
         try {
             $userId =  Auth::id();
-
-
             $service = app()->make(CartService::class);
             $total = $service->getCartTotal($userId);
 
