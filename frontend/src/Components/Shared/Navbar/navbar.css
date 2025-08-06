@@ -14,7 +14,6 @@
 .Navbar-logo {
   display: flex;
   align-items: center;
-  cursor: pointer;
 }
 
 .Navbar-logo h2 {
@@ -28,13 +27,7 @@
   height: 24px;
   cursor: pointer;
   margin: 0 10px;
-  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
-  transition: transform 0.2s ease;
   
-}
-
-.icon-btn:hover {
-  transform: scale(1.15);
 }
 
 .icon-btn img {
@@ -98,7 +91,6 @@
 .dropdown a {
   text-decoration: none;
   color: var(--main-color);
-  font-weight: 500;
   padding: 0.3rem 0.3rem;
   display: block;
   transition: background-color 0.2s;
@@ -120,7 +112,6 @@
 .nav-btn {
   padding: 6px 12px;
   font-size: 10px;
-  font-weight: 500;
   border: none;
   background: none;
   color: var(--main-color);
@@ -161,7 +152,6 @@
 .btn {
   padding: 6px 10px;
   font-size: 15px;
-  font-weight: 500;
   text-decoration: none;
   color: var(--main-color);
   border: none;
@@ -169,9 +159,9 @@
   border-radius: 6px;
   transition: color 0.3s, background-color 0.3s;
   position: relative;
+  font-weight: 546;
   
 }
-
 
 .btn:hover::after {
   width: 100%;
@@ -194,6 +184,74 @@
 .register-btn:hover {
   color: #D4885F;
 }
+
+
+.dropdown-managment {
+  position: relative;
+  display: inline-block;
+}
+
+.styled-dropdown {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background-color: #fff;
+  min-width: 200px;
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  z-index: 100;
+  animation: fadeIn 0.2s ease-in-out;
+  border: 1px solid #f0f0f0;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.styled-dropdown a {
+  color: black;
+  padding: 12px 20px;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.styled-dropdown a:hover {
+  background-color: #f9f9f9;
+  color: #D4885F;
+}
+
+.dropdown-managment:hover .styled-dropdown {
+  display: block;
+}
+
+.bookly {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+
+.bookly-link {
+  color: var(--main-color);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+
+
 
 @media (max-width: 390px) {
   .Navbar-animation {

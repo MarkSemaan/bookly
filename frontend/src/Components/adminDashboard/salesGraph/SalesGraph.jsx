@@ -1,4 +1,4 @@
-
+import React from 'react';
 import './salesGraph.css';
 
 const SalesGraph = ({ title, data = [] }) => {
@@ -31,7 +31,7 @@ const SalesGraph = ({ title, data = [] }) => {
           <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#ccc" />
 
           {/* Single dot */}
-          <circle cx={x} cy={y} r="4" fill="#5A67D8" />
+          <circle cx={x} cy={y} r="4" fill="#d7a35aff" />
           <text x={x} y={y - 10} textAnchor="middle" fontSize="12">
             ${cleanedData[0].total}
           </text>

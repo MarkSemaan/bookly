@@ -1,5 +1,5 @@
-import  { useState, useEffect, createContext } from "react";
-import { getUserCartItems, getCartTotal } from "../api";
+import React, { createContext, useState, useEffect } from "react";
+import { fetchUserCart, fetchUserCartTotal } from "../Services/addCart/userCartService";
 
 export const CartContext = createContext();
 
@@ -10,28 +10,24 @@ export const CartProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchCart = async () => {
+    const fetchCartData = async () => {
       setLoading(true);
       try {
-        const res = await getUserCartItems();
-        setCart(res.data.payload || []);
-        const totalRes = await getCartTotal();
-        setTotal(totalRes.data.payload || 0);
+        const cartData = await fetchUserCart();
+        setCart(cartData);
+        setError(null);
       } catch (err) {
-        setError("Could not load cart");
+        setError("Could not load cart data");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCart();
+    fetchCartData();
   }, []);
 
   useEffect(() => {
-    const newTotal = cart.reduce(
-      (sum, item) => sum + item.book.price * item.quantity,
-      0
-    );
+    const newTotal = cart.reduce((sum, item) => sum + item.book.price * item.quantity, 0);
     setTotal(newTotal);
   }, [cart]);
 

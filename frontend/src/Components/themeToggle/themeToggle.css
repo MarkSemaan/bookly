@@ -27,8 +27,8 @@
 .slider:before {
   position: absolute;
   content: "";
-  height: 30px;
-  width: 30px;
+  height: 28px;
+  width: 28px;
   border-radius: 20px;
   left: 2px;
   bottom: 1px;

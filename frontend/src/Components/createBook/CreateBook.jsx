@@ -1,8 +1,8 @@
- 
-import useCategories from "../../Hooks/useCategories";
+import React from "react";
+import useCategories from "../../Hooks/Categories/useCategories";
 import MediaUpload from "../MediaUpload/MediaUpload";
 import FormInput from "../Shared/Input/FormInput";
-import useCreateBook from "../../Hooks/useCreateBook";
+import useCreateBook from "../../Hooks/BookManagment/useCreateBook";
 import "./createBook.css";
 
 const CreateBook = () => {
@@ -140,12 +140,12 @@ const CreateBook = () => {
 
         <div className="form-group">
           <label className="label">Rating</label>
-          <div className="star-box">
+          <div className="starr-box">
             {stars.map((star) => (
               <span
                 key={star}
                 onClick={() => setRating(star)}
-                className={`star ${star <= rating ? "filled" : ""}`}
+                className={`starr ${star <= rating ? "filled" : ""}`}
               >
                 &#9733;
               </span>

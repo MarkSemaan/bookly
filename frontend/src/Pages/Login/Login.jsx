@@ -1,4 +1,4 @@
- 
+import React from "react";
 import Circles from "../../Components/Shared/Circles/Circles";
 import LoginAnimations from "../../Components/auth/login/LoginAnimation";
 import LoginCard from "../../Components/auth/login/LoginForm";
@@ -12,15 +12,10 @@ const Login = () => {
       <LoginHeader />
       <Circles />
       <div className="login-container">
-        <div className="login-animations">
         <LoginAnimations />
-        </div>
-
         <LoginCard />
       </div>
-      <div className="login-footer">
       <LoginFooter />
-      </div>
     </div>
   );
 };

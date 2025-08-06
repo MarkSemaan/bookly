@@ -1,4 +1,4 @@
- 
+import React from "react";
 import "./authInput.css";
 
 const Input = ({ type = "text", name, hint, placeholder, required, value, onChangeListener }) => {

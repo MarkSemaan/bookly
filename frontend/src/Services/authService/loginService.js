@@ -1,12 +1,8 @@
-import axios from "axios";
+import api from "../axios/useAxios";
 
 const loginService = async (email, password) => {
-  const response = await axios.post("http://localhost:8000/api/v0.1/guest/login", {
-    email,
-    password,
-  });
-
-  return response.data.payload.token;
+  const response = await api.post("/guest/login", { email, password });
+  return response.data;
 };
 
 export default loginService;

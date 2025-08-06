@@ -1,7 +1,7 @@
- 
+import React from "react";
 import "./mediaUpload.css";
 import camera from "../../Assets/Icons/camera.svg";
-import useImageUpload from "../../Hooks/useImageUpload";
+import useImageUpload from "../../Utils/ImageUpload/useImageUpload";
 
 const MediaUpload = ({ setImageBase64 }) => {
   const {

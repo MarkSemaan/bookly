@@ -1,4 +1,4 @@
-
+import React from "react";
 import Lottie from "lottie-react";
 import loginAnimation from "../../../Assets/Animations/Login.json";
 

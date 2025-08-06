@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import useBestsellers from "../../../../Hooks/useBestsellers";
+import React, { useRef } from "react";
+import useBestsellers from "../../../../Hooks/BookBestSeller/useBestsellers";
 import BookCard from "../bookCard/BookCard";
 
 
