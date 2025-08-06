@@ -14,15 +14,13 @@ class CartController extends Controller
 {
     use ResponseTrait;
 
- 
+
     public function getCartItems(Request $request, $id = null)
     {
         try {
             $search = $request->query('search');
             $service = app()->make(CartService::class);
             $items = $service->getCartItems($id, $search);
-
-
             if ($id && !$items) {
                 return $this->fail("Cart item not found", "fail", 404);
             }
@@ -33,7 +31,6 @@ class CartController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
-
     public function storeOrUpdate(StoreCartItemRequest $request)
     {
         try {
@@ -51,28 +48,10 @@ class CartController extends Controller
         }
     }
 
-   
-    public function getUserCartItems()
-    {
-        try {
-
-            $userId =  Auth::id();
-
-            $service = app()->make(CartService::class);
-            $cartItems = $service->getUserCartItems($userId);
-
-            return $this->responseJSON($cartItems, "User cart items loaded");
-        } catch (\Exception $e) {
-            return $this->fail($e->getMessage(), "error", 500);
-        }
-    }
-
-  
     public function getCartTotal()
     {
         try {
             $userId =  Auth::id();
-
 
             $service = app()->make(CartService::class);
             $total = $service->getCartTotal($userId);
@@ -83,7 +62,6 @@ class CartController extends Controller
         }
     }
 
- 
     public function destroy(CartItem $cartItem)
     {
         try {
@@ -96,13 +74,11 @@ class CartController extends Controller
         }
     }
 
-   
+
     public function decreaseCartItem(Request $request)
     {
         try {
-
             $userId =  Auth::id();
-
             $bookId = $request->input('book_id');
 
             $item = CartService::decreaseCartItemQuantity($userId, $bookId);
@@ -123,4 +99,3 @@ class CartController extends Controller
         }
     }
 }
-
