@@ -41,8 +41,6 @@ class OrderService
     {
         return DB::transaction(function () use ($userId) {
             $cartItems = CartItem::with('book')->where('user_id', $userId)->get();
-            
-
 
             if ($cartItems->isEmpty()) {
                 throw new \Exception("No items in cart to create order.");
@@ -66,7 +64,6 @@ class OrderService
                 ]);
             }
             CartItem::where('user_id', $userId)->delete();
-         
             OrderPlaced::dispatch($order);
             return $order->fresh('items.book');
         });
@@ -97,7 +94,6 @@ class OrderService
                     'status' => $data['status'] ?? 'pending',
                     'total' => $total,
                 ]);
-             
             }
 
             foreach ($data['items'] as $item) {

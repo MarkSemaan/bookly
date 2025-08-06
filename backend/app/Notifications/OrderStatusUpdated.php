@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Notifications;
 
 use App\Models\Order;
@@ -17,7 +16,6 @@ class OrderStatusUpdated extends Notification implements ShouldQueue
 
     public function __construct(Order $order, string $messageText)
     {
-
         $this->order = $order->load('items.book');
         $this->messageText = $messageText;
     }

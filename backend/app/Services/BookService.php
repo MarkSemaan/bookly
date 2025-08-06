@@ -46,6 +46,7 @@ class BookService
 
 
 
+
     public static function createOrUpdateBook(array $data, ?Book $book = null)
     {
         if (!empty($data['image']) && $data['image'] instanceof UploadedFile) {

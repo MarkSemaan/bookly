@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Listeners;
 
 use App\Events\OrderCreated;
@@ -14,7 +13,6 @@ class PushOrderWebhook implements ShouldQueue
         if (App::environment('testing')) {
             return;
         }
-
         Http::post('http://localhost:8000/api/mock-webhook', [
             'order_id' => $event->order->id,
             'user_id' => $event->order->user_id,
