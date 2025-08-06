@@ -14,7 +14,7 @@ class CartController extends Controller
 {
     use ResponseTrait;
 
- 
+
     public function getCartItems(Request $request, $id = null)
     {
         try {
@@ -47,8 +47,7 @@ class CartController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
-  
-    public function getCartTotal()
+    public function getUserCartItems()
     {
         try {
             $userId =  Auth::id();
@@ -65,8 +64,6 @@ class CartController extends Controller
     {
         try {
             $userId =  Auth::id();
-
-
             $service = app()->make(CartService::class);
             $total = $service->getCartTotal($userId);
 
@@ -75,7 +72,6 @@ class CartController extends Controller
             return $this->fail($e->getMessage(), "error", 500);
         }
     }
- 
     public function destroy(CartItem $cartItem)
     {
         try {
@@ -88,7 +84,7 @@ class CartController extends Controller
         }
     }
 
-   
+
     public function decreaseCartItem(Request $request)
     {
         try {
