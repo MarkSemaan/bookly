@@ -48,8 +48,13 @@ class BookService
 
     public static function createOrUpdateBook(array $data, ?Book $book = null)
     {
+
         if (!empty($data['image']) && $data['image'] instanceof UploadedFile) {
-            $data['image'] = self::handleImageUpload($data['image'], $book?->image);
+            $data['image'] = self::handleUploadedImage($data['image'], $book?->image);
+        }
+
+        if (!empty($data['image']) && is_string($data['image']) && str_starts_with($data['image'], 'data:image')) {
+            $data['image'] = self::handleBase64Image($data['image'], $book?->image);
         }
 
         if (isset($data['stock'])) {
@@ -63,6 +68,7 @@ class BookService
 
         return Book::create($data);
     }
+
 
     public static function deleteBook(Book $book)
     {
@@ -93,12 +99,35 @@ class BookService
         return Book::where('is_available', true)->get();
     }
 
-    private static function handleImageUpload(UploadedFile $imageFile, ?string $oldImagePath = null): string
+        private static function handleUploadedImage(UploadedFile $imageFile, ?string $oldImagePath = null): string
     {
         if ($oldImagePath) {
             Storage::disk('public')->delete($oldImagePath);
         }
 
         return $imageFile->store('book-covers', 'public');
+    }
+
+    private static function handleBase64Image(string $base64Image, ?string $oldImagePath = null): string
+    {
+        if ($oldImagePath) {
+            Storage::disk('public')->delete($oldImagePath);
+        }
+
+        preg_match("/^data:image\/(.*);base64,/", $base64Image, $matches);
+        $imageType = $matches[1] ?? 'png';
+        $imageData = preg_replace("/^data:image\/(.*);base64,/", '', $base64Image);
+        $imageData = base64_decode($imageData);
+        $fileName = uniqid() . '.' . $imageType;
+        $relativePath = 'book-covers/' . $fileName;
+        $storagePath = storage_path('app/public/' . $relativePath);
+
+        if (!file_exists(dirname($storagePath))) {
+            mkdir(dirname($storagePath), 0755, true);
+        }
+
+        file_put_contents($storagePath, $imageData);
+
+        return 'book-covers/' . $fileName;
     }
 }
