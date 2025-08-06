@@ -12,7 +12,7 @@ class LogOrderAnalytics implements ShouldQueue
     {
         $hour = now()->startOfHour();
 
-        DB::table('orders_per_hour')->updateOrInsert(
+        DB::table('analytics')->updateOrInsert(
             ['hour' => $hour],
             ['count' => DB::raw('count + 1'), 'updated_at' => now()]
         );

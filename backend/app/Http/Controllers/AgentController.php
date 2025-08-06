@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\AgentService;
+use App\Services\BookService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +41,8 @@ class AgentController extends Controller
             $user_id = Auth::id();
             $recommended = app(BookRecommendationAgent::class)->run($user_id);
             AgentService::saveRecommendationLog($recommended);
-            return $this->responseJSON($recommended);
+            $books = BookService::getBooksByIds($recommended['book_ids']);
+            return $this->responseJSON($books);
         } catch (\Exception $e) {
             return $this->fail($e->getMessage(), "error", 500);
         }
