@@ -39,7 +39,6 @@ Route::group(["prefix" => "v0.1"], function () {
                 Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
             });
 
-            //Customer APIs
             Route::prefix('cartitems')->controller(CartController::class)->group(function () {
                 Route::get('/', 'getCartItems');
                 Route::get('/{id}', 'getCartItems');

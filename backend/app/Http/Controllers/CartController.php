@@ -39,7 +39,6 @@ class CartController extends Controller
 
             $validatedData['user_id'] = auth()->id();
 
-
             $service = app()->make(CartService::class);
             $item = $service->createOrUpdateCartItem($validatedData);
 

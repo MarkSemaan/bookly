@@ -25,6 +25,7 @@ class ToolExecutorService
 
     public function run(string $toolName, int $userId): mixed
     {
+        echo $toolName;
         if (isset($this->tool_map[$toolName])) {
             return $this->tool_map[$toolName]->execute($userId);
         }

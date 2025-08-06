@@ -1,0 +1,34 @@
+    Auth + Roles: 
+    Email/password auth with JWT. ✅
+    Roles: Customer and Admin. ✅
+    Protected routes on both React and API. ✅
+    Product Catalog: CRUD for products (name, price, stock, image). ✅
+    Public listing with search, filters, and pagination. ✅
+    Cart & Checkout: Client‑side cart in React - Checkout posts to API. ✅
+    Queues: Configure Redis queue driver. ✅
+    All listeners below must be queued jobs.
+    Event Listeners: 
+    (1) Send an email invoice to the customer. ✅
+    (2) Update stock quantities. ✅
+    (3) Mock a Push Webhook (POST to a local endpoint that records payloads). ✅
+    (4) Send SMS (just a log message). ✅
+    (5) Log analytics (orders_per_hour table). ✅
+    All listeners retried on failure; failures visible in failed_jobs. 
+    (6) Broadcasting: The customer’s order status updates in real time on their Orders page, and the Admin dashboard sees new orders appear live. 
+    Admin Dashboard: 
+    (1) Live table of incoming orders, ✅
+    (2) Buttons to move status: Pending => Paid => Packed => Shipped. ✅
+    (3) Small charts (today’s revenue, orders per hour) using the analytics table. ✅
+    Notifications Center: The react bell icon shows unread notifications. ✅
+    Backed by Laravel notifications API; mark-as-read endpoints. ✅
+    File Uploads: Product image upload with server‑side validation. ✅
+    Thumbnails displayed in React. ✅
+    Caching & Rate Limiting: Cache product list (invalidate on product update). 
+    AI Agent ✅
+    Testing ✅
+
+Stretch Required Goals:
+
+    Scheduled Job: nightly report email to admin (orders, revenue). 
+    Audit log of admin actions (who changed status). 
+    Docker & Docker Compose ✅

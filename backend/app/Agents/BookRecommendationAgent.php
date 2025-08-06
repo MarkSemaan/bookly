@@ -5,42 +5,55 @@ namespace App\Agents;
 use Illuminate\Support\Facades\Http;
 use App\Services\ToolExecutorService;
 use App\Services\BookService;
+use App\Services\CartService;
+use App\Actions\GetUserHistories;
+use App\Actions\GetUserReviews;
+use App\Actions\GetUserViews;
+
 
 class BookRecommendationAgent
 {
-    private $system_message = <<<EOT
-            You are an agent that can use ONLY the defined tools below to recommend 5 books ONLY from the available books for the user.
-            In case you don't have anything to recommend, you can recommend from the best selling and the top rated books
-            Always respond with JSON in this format:
+    private $system_message = "You are an intelligent book recommendation agent in a book platform. Your task is to recommend 7 personalized books to the user, using only the available book dataset and tools.
 
-            {
-            "action": "tool_name" | "final_answer",
-            "parameters": { ... },     // for tool calls
-            "result": [...],            // for final answer with book IDs ONLY
-            "reason": "..."             // the reason why you chose the tool or the reason why you chose the final answer like that, but in a short sentence
-            }
+                    You have access to the user's full history:
+                    - Searches
+                    - Views
+                    - Purchases
+                    - Cart
+                    - Reviews
+                    - Previously recommended books
 
-            If you choose a tool, use the tool_name exactly as defined.
-            If you want to finish, reply with action = "final_answer" and the recommended book names in result,
-            make sure these books exist in the database.
-            EOT;
+                    You must analyze this history carefully and use the provided tools to extract insights. Your recommendation should:
+                    - Be highly relevant to the user's **interests and behavior**
+                    - Avoid using popularity or ratings as a default
+                    - Use **multiple tools if necessary** to enrich your reasoning
+                    - Avoid recommending already purchased books
+
+                    Return your final result in this format:
+
+                    ```json
+                    {
+                    \"action\": \"final_answer\",
+                    \"result\": [book_id_1, book_id_2, ..., book_id_7],
+                    \"reason\": \"Explain briefly in a short sentence of 10 words why these books were selected.\"
+                    }";
+    private $user_message = "Recommend 7 books tailored to the user's interests. Study their full history and use any necessary tools to understand what they like. Make sure the recommendations are personalized and include an explanation of your reasoning.";
 
     public function run(int $user_id): array
     {
         $availableBooks = BookService::getAvailable();
         $tools = json_decode(file_get_contents(storage_path('app/private/tools.json')), true);
+
         $messages = [
-            [
-                "role" => "system",
-                "content" => $this->system_message
-            ],
-            ["role" => "system", "content" => "User Id: {$user_id}"],
+            ["role" => "system", "content" => "User ID: {$user_id}"],
+            ["role" => "system", "content" => "User search history: " . json_encode(app(GetUserHistories::class)->execute($user_id))],
+            ["role" => "system", "content" => "User views: " . json_encode(app(GetUserViews::class)->execute($user_id))],
+            ["role" => "system", "content" => "User cart: " . json_encode(CartService::getCartItems($user_id))],
+            ["role" => "system", "content" => "User reviews: " . json_encode(app(GetUserReviews::class)->execute($user_id))],
             ["role" => "system", "content" => "Available books: " . json_encode($availableBooks)],
             ["role" => "system", "content" => "Available tools: " . json_encode($tools)],
-            [
-                "role" => "user",
-                "content" => "Recommend 5 books for the user based on their search history, views, purchases, cart, and reviews."
-            ],
+            ["role" => "system", "content" => $this->system_message],
+            ["role" => "user", "content" => $this->user_message],
         ];
 
         $recommendations = $this->processConversation($messages, $user_id);
@@ -60,7 +73,7 @@ class BookRecommendationAgent
             'Content-Type' => 'application/json',
         ];
 
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 12; $i++) {
             $response = Http::withHeaders($headers)->post($url, [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => $messages,
@@ -89,7 +102,7 @@ class BookRecommendationAgent
                 "content" => "Tool response for {$json['action']}: " .
                     json_encode($result)
             ];
-            $messages[] = ["role" => "user", "content" => "Got result for {$json['action']}, what's next?"];
+            $messages[] = ["role" => "user", "content" => "Got result for {$json['action']}, You can use another tool to know more if needed?"];
         }
 
         return [];

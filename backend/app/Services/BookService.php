@@ -16,30 +16,39 @@ class BookService
 
         return Book::when($search, function ($query) use ($search) {
             $query->where('title', 'like', "%$search%")
-                  ->orWhere('author', 'like', "%$search%")
-                  ->orWhere('publisher', 'like', "%$search%");
+                ->orWhere('author', 'like', "%$search%")
+                ->orWhere('publisher', 'like', "%$search%");
         })->latest('id')->limit(50)->get();
+    }
+
+    public static function getBooksByIds($book_ids)
+    {
+        $books = [];
+        foreach ($book_ids as $id) {
+            $books[] = static::getBooks((int) $id);
+        }
+        return $books;
     }
 
     public static function getBooksByCategory(int $categoryId)
     {
         return Book::where('category_id', $categoryId)->latest('id')->limit(50)->get();
     }
-    
-       public static function searchBooks(string $term)
+
+    public static function searchBooks(string $term)
     {
         $term = trim($term);
 
         if ($term === '') {
-          
+
             return collect();
         }
 
         return Book::where(function ($q) use ($term) {
-                $q->where('title',     'LIKE', "%{$term}%")
-                  ->orWhere('author',   'LIKE', "%{$term}%")
-                  ->orWhere('publisher','LIKE', "%{$term}%");
-            })
+            $q->where('title', 'LIKE', "%{$term}%")
+                ->orWhere('author', 'LIKE', "%{$term}%")
+                ->orWhere('publisher', 'LIKE', "%{$term}%");
+        })
             ->latest('id')
             ->get();
     }
