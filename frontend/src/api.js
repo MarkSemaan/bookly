@@ -38,16 +38,16 @@ export const saveSearch = (payload) => axiosInstance.post(`/user/recommender/sav
 export const saveBookView = (payload) => axiosInstance.post(`/user/recommender/save_view`, payload);
 export const getRecommended = () => axiosInstance.get(`/user/recommender/get`);
 
-export const getCartItems = (id = '') => axiosInstance.get(`/cartitems/${id}`);
-export const getUserCartItems = () => axiosInstance.get(`/cartitems/user/cart`);
-export const getCartTotal = () => axiosInstance.get(`/cartitems/total/cart`);
-export const addOrUpdateCartItem = (data) => axiosInstance.post(`/cartitems/cart`, data);
-export const decreaseCartItem = (data) => axiosInstance.post(`/cartitems/decrease`, data);
-export const deleteCartItem = (id) => axiosInstance.delete(`/cartitems/delete/${id}`);
+export const getCartItems = (id = '') => axiosInstance.get(`user/cartitems/${id}`);
+export const getUserCartItems = () => axiosInstance.get(`user/cartitems/user/cart`);
+export const getCartTotal = () => axiosInstance.get(`user/cartitems/total/cart`);
+export const addOrUpdateCartItem = (data) => axiosInstance.post(`user/cartitems/cart`, data);
+export const decreaseCartItem = (data) => axiosInstance.post(`user/cartitems/decrease`, data);
+export const deleteCartItem = (id) => axiosInstance.delete(`user/cartitems/delete/${id}`);
 
-export const getOrders = (id = '') => axiosInstance.get(`/orders/orders/${id}`);
-export const getUserOrders = (userId) => axiosInstance.get(`/orders/users/${userId}`);
-export const createOrder = (data) => axiosInstance.post(`/orders`, data);
-export const createOrderFromCart = (data) => axiosInstance.post(`/orders/from-cart`, data);
-export const cancelOrder = (orderId) => axiosInstance.post(`/orders/${orderId}/cancel`);
-export const deleteOrder = (orderId) => axiosInstance.delete(`/orders/${orderId}`);
+export const getOrders = (id = '') => axiosInstance.get(`user/orders/orders/${id}`);
+export const getUserOrders = (userId) => axiosInstance.get(`user/orders/users/${userId}`);
+export const createOrder = (data) => axiosInstance.post(`user/orders`, data);
+export const createOrderFromCart = (data) => axiosInstance.post(`user/orders/from-cart`, data);
+export const cancelOrder = (orderId) => axiosInstance.post(`user/orders/${orderId}/cancel`);
+export const deleteOrder = (orderId) => axiosInstance.delete(`user/orders/${orderId}`);

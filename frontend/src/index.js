@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./Assets/Styles/index.css";
 import App from "./App.jsx";

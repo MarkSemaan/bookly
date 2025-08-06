@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-
-import { getBooksByCategory } from '../api';
+import { getBooks } from '../api';
 
 const useBookDetails = (id) => {
   const [book, setBook] = useState(null);
@@ -10,7 +9,7 @@ const useBookDetails = (id) => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await getBooksByCategory(id);
+        const res = await getBooks(id);
         setBook(res.data.payload);
       } catch (err) {
         setError('Failed to load book');

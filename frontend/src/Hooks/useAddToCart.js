@@ -1,25 +1,32 @@
 import { useState } from 'react';
-import { addToCart } from '../../src/Services/addCart/cartService';
+import { addOrUpdateCartItem } from '../api';
 
-export const useAddToCart = () => {
+export default function useAddToCart() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleAddToCart = async (bookId, quantity = 1) => {
-    try {
-      setLoading(true);
-      setError(null);
+  async function handleAddToCart(bookId, quantity = 1) {
+    setLoading(true);
+    setError(null);
 
-      const result = await addToCart(bookId, quantity);
-      return result;
+    try {
+      if (!bookId) throw new Error('Invalid book ID');
+      await addOrUpdateCartItem({ book_id: bookId, quantity });
+      return true;
     } catch (err) {
       console.error('Error adding to cart:', err);
-      setError(err.response?.data || 'Unknown error');
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else if (err.message) {
+        setError(err.message);
+      } else {
+        setError('Unknown error adding to cart.');
+      }
+      return false;
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return { handleAddToCart, loading, error };
-};
-export default useAddToCart;
+}
