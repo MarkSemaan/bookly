@@ -45,19 +45,21 @@ const Cart = () => {
             </div>
 
             <div className="quantity-controls">
-              <button
-                onClick={() => handleQuantityChange(item)}
-                disabled={cartLoading}
-              >
-                -
-              </button>
+             <button
+  onClick={() => handleQuantityChange(item)}
+  disabled={cartLoading || item.quantity <= 1}
+>
+  -
+</button>
+
               <span>{item.quantity}</span>
-              <button
-                onClick={() => handleIncrease(item)}
-                disabled={cartLoading}
-              >
-                +
-              </button>
+         <button
+  onClick={() => handleIncrease(item)}
+  disabled={cartLoading || item.quantity >= item.book.stock}
+>
+  +
+</button>
+
             </div>
 
             <button

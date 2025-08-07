@@ -33,19 +33,31 @@ class CartService
 
         return $cartItem;
     }
+public function addToCart(int $userId, int $bookId, int $quantity)
+{
+    $book = Book::findOrFail($bookId);
 
-    public function addToCart(int $userId, int $bookId, int $quantity)
-    {
-        $book = Book::findOrFail($bookId);
+    if ($quantity <= 0) {
+        return ['error' => 'Quantity must be at least 1'];
+    }
 
-        $existingItem = CartItem::where('user_id', $userId)
-            ->where('book_id', $bookId)
-            ->first();
+    $existingItem = CartItem::where('user_id', $userId)
+        ->where('book_id', $bookId)
+        ->first();
 
-        if ($existingItem) {
-            $existingItem->quantity += $quantity;
-            $existingItem->save();
-            return $existingItem;
+    if ($existingItem) {
+        $newQuantity = $existingItem->quantity + $quantity;
+
+        if ($newQuantity > $book->stock) {
+            return ['error' => "Cannot add more than available stock ({$book->stock})"];
+        }
+
+        $existingItem->quantity = $newQuantity;
+        $existingItem->save();
+        return $existingItem;
+    } else {
+        if ($quantity > $book->stock) {
+            return ['error' => "Cannot add more than available stock ({$book->stock})"];
         }
 
         return CartItem::create([
@@ -54,6 +66,8 @@ class CartService
             'quantity' => $quantity,
         ]);
     }
+}
+
 
 
     public function deleteCartItem(CartItem $cartItem): void

@@ -94,6 +94,13 @@ Route::group(["prefix" => "v0.1"], function () {
             Route::post('{order}/cancel', [OrderController::class, 'cancel']);
             Route::delete('{order}', [OrderController::class, 'destroy']);
         });
+        
+            Route::group(["prefix" => "recommender"], function () {
+                //APIs for ai
+                Route::post('/save_search', [AgentController::class, 'saveSearch']);
+                Route::post('/save_view', [AgentController::class, 'saveBookView']);
+                Route::get('/get', [AgentController::class, 'getRecommended']);
+            });
 
         Route::group(["prefix" => "admin"], function () {
             Route::group(["middleware" => "isAdmin"], function () {

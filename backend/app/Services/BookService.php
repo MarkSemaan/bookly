@@ -92,6 +92,19 @@ class BookService
 
         return 'storage/' . $relativePath;
     }
+
+    public static function getAvailable()
+    {
+        return Book::where('is_available', true)->get();
+    }
+    public static function getBooksByIds($book_ids)
+    {
+        $books = [];
+        foreach ($book_ids as $id) {
+            $books[] = static::getBooks((int) $id);
+        }
+        return $books;
+    }
    
     public static function getTopSellingBooks()
     {

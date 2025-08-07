@@ -20,18 +20,24 @@ const useCartHandlers = () => {
   };
 
   const handleIncrease = async (item) => {
-    const result = await handleAddToCart(item.book.id, 1);
+  if (item.quantity >= item.book.stock) {
+   
+    return;
+  }
 
-    if (result) {
-      setCart(prev =>
-        prev.map(ci =>
-          ci.id === item.id ? { ...ci, quantity: ci.quantity + 1 } : ci
-        )
-      );
-    }
-  };
+  const result = await handleAddToCart(item.book.id, 1);
+  if (result) {
+    setCart(prev =>
+      prev.map(ci =>
+        ci.id === item.id ? { ...ci, quantity: ci.quantity + 1 } : ci
+      )
+    );
+  }
+};
 
- const handleQuantityChange = async (item) => {
+const handleQuantityChange = async (item) => {
+  if (item.quantity <= 0) return;
+
   const updatedItem = await decreaseQuantity(item.book.id);
 
   if (updatedItem) {
