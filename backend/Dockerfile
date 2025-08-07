@@ -1,9 +1,9 @@
 FROM php:8.3.14-apache
 WORKDIR /var/www/html
 
-
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev default-mysql-client \
+    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev default-mysql-client libjpeg-dev libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 RUN a2enmod rewrite \
@@ -14,6 +14,7 @@ RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /e
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY . .
+
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 RUN chown -R www-data:www-data /var/www/html \

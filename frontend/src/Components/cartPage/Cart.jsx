@@ -5,7 +5,7 @@ import useCartHandlers from '../../Hooks/Cart/useCartHandlers';
 
 
 const Cart = () => {
- const backendBaseUrl = "http://127.0.0.1:8000/";
+ const backendBaseUrl = "http://localhost:8000/";
  
  const {
   cart,

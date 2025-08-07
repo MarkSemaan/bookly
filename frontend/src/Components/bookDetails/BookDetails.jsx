@@ -6,7 +6,7 @@ import "./bookDetails.css";
 
 const BookDetails = () => {
   
-  const backendBaseUrl = "http://127.0.0.1:8000/storage/";
+  const backendBaseUrl = "http://localhost:8000/storage/";
   const { id } = useParams();
   const { book, error, loading } = useBookDetails(id);
   const { handleClick, successMessage, cartLoading, cartError } = useCartHandlerForBookDetails(book?.id);

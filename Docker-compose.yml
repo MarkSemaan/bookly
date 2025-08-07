@@ -1,27 +1,31 @@
+version: "3.8"
+
 services:
   bookly-frontend:
     build: ./frontend
     depends_on:
-      - bookly-backend-app
+      - bookly-backend
     container_name: bookly-frontend
     ports:
       - "3000:80"
     restart: unless-stopped
 
-  bookly-backend-app:
+  bookly-backend:
     build: ./backend
     depends_on:
       - database
-    container_name: bookly-backend-app
+    container_name: bookly-backend
     ports:
       - "8000:80"
     restart: unless-stopped
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/storage:/var/www/html/storage
     command: >
       sh -c "
-        while ! mysqladmin ping -hdatabase --silent; do
-          sleep 1;
-        done;
-        php artisan migrate --force &&
+        while ! mysqladmin ping -hdatabase --silent; do sleep 1; done;
+        php artisan migrate --force;
+        php artisan queue:work --sleep=3 --tries=3 & 
         apache2-foreground
       "
 
@@ -32,12 +36,22 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: bookstore
       MYSQL_USER: ali
-      MYSQL_PASSWORD: password
+      MYSQL_PASSWORD: ali123
     ports:
-      - "3306:3306"
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
 
-  adminer:
-    image: adminer
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - 8080:8080
+      - 8080:80
+    environment:
+      PMA_HOST: database
+      MYSQL_ROOT_PASSWORD: ali123
+    depends_on:
+      - database
+
+volumes:
+  dbdata:

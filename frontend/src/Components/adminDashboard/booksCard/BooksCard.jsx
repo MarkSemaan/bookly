@@ -2,7 +2,7 @@ import React from 'react';
 import './booksCard.css';
 
 const BooksCard = ({ title, books, showSales }) => {
-  const backendBaseUrl = "http://127.0.0.1:8000/storage/";
+  const backendBaseUrl = "http://localhost:8000/storage/";
   return (
     <div className="books-card">
       <div className="books-card-header">
