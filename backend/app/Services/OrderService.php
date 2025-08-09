@@ -137,6 +137,7 @@ public static function cancelOrder($order_id)
         else if ($order->status === 'delivered')
             return $order;
         $order->save();
+         event(new OrderStatusChanged($order,$order->status)); 
         return $order;
 
     }

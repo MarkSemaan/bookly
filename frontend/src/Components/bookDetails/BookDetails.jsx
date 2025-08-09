@@ -55,13 +55,13 @@ const BookDetails = () => {
               </div>
             </div>
           </div>
-<button
-  className='add-to-cart'
-  onClick={handleClick}
-  disabled={cartLoading || book.stock < 1}  
->
-  {book.stock < 1 ? 'Out of Stock' : (cartLoading ? 'Adding...' : 'Add to Cart')}
-</button>
+          <button
+            className='add-to-cart'
+            onClick={handleClick}
+            disabled={cartLoading || book.stock < 1}  
+         >
+         {book.stock < 1 ? 'Out of Stock' : (cartLoading ? 'Adding...' : 'Add to Cart')}
+         </button>
 
           {successMessage && (
             <div className="message-box">
