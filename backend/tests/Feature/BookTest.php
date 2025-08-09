@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Book;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -189,19 +190,13 @@ class BookTest extends TestCase
 
     public function test_can_delete_book()
     {
+        $this->withoutExceptionHandling();
         $book = Book::factory()->create();
 
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $this->token,
-        ])->deleteJson('/api/v0.1/user/books/' . $book->id);
+        $response = $this->postJson("/api/v0.1/user/books/delete/{$book->id}");
 
-        $response->assertOk()
-            ->assertJson([
-                'status' => 200,
-                'payload' => [
-                    'message' => 'Book deleted successfully.',
-                ],
-            ]);
+        $response->assertStatus(200)
+                 ->assertJson(['status' => 'Book deleted', 'payload' => true]);
 
         $this->assertDatabaseMissing('books', ['id' => $book->id]);
     }

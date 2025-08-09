@@ -73,7 +73,7 @@ class OrderTest extends TestCase
         $order2 = Order::factory()->create(['user_id' => $this->user->id]);
         Order::factory()->create(); // other user
 
-        $response = $this->getJson("/api/v0.1/orders/users/{$this->user->id}");
+        $response = $this->getJson("/api/v0.1/orders/users");
 
         $response->assertOk()
             ->assertJsonCount(2, 'payload')
@@ -122,7 +122,7 @@ class OrderTest extends TestCase
     {
         auth()->logout();
 
-        $response = $this->getJson("/api/v0.1/orders/users/{$this->user->id}");
+        $response = $this->getJson("/api/v0.1/orders/users");
         $response->assertUnauthorized();
     }
 }
